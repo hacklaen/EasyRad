@@ -1,0 +1,78 @@
+/* 
+ * EasyRad
+ *
+ * This browser application allows to fill out MRRT templates and copy the result
+ * into the clipboard.
+ * 
+ * Copyright (C) 2017  IFTM Institut für Telematik in der Medizin GmbH
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @version 1.0
+ * @author T. Hacklaender
+ * @date 2017-04-19
+ */
+
+html, body {
+    height: 80%;
+}
+
+html, body {
+    /* background: red; */
+}
+
+#template-panel .panel-heading {
+    font-family: "Arial";
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+}
+
+#header-panel {
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#template-panel {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#footer-panel {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}

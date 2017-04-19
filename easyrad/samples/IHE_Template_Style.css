@@ -1,0 +1,51 @@
+body
+	{
+	font-family:"Arial";
+	font-size:12px;
+	}
+header.level1
+	{
+	font-family:"Arial";
+	font-size:medium;
+	font-weight:bold;
+	margin-top: 0.3cm;
+	margin-bottom: 0.0cm;
+	}
+header.level2
+	{
+	text-align:left;
+	font-family:"Arial";
+	font-size:small;
+	font-weight:bold;
+	margin-top: 0.3cm;
+	margin-bottom: 0.0cm;
+	}
+ section.level1
+	{
+	} 
+ section.level2
+	{
+	padding-left: 0.8cm;
+	} 
+p
+	{
+	padding-left: 0.8cm;
+	margin-top: 0.0cm;
+	margin-bottom: 0.0cm;
+	}
+table, tr, td, th
+	{
+	background-color:#E6E6E6;
+	border:1px solid black;
+	border-collapse: collapse;
+	padding: 0.1cm; 
+	margin-left: 0.8cm;
+	}
+ template-head, template_data, template_UI, template_name, exam_characteristics, exam_code, term, code_meaning, code_value, coding_scheme_designator, exam_code, modality, body_site, subspecialty, contrast, gender, indication, patient_life_stage, provider_group, owner, contributors, parent_template, sanctioning_body, language, top_level_flag, creation_date, revision_number, retired_flag
+	{
+	display: none; <!--was list-item-->
+	}
+section_data, template_section_name, template_section_required, template_section_interleaved, template_section_level
+	{
+	display: none; <!--was list-item-->
+	}

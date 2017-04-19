@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CT Staging Kolorektales Karzinom</title>
+        <meta charset="UTF-8">
+        <!--Dublin Core metadata elements here-->
+        <meta name="dcterms.title" content="CT Staging Kolorektales Karzinom">
+        <meta name="dcterms.description" content="Befundungstemplate zum Staging für Patienten mit kolorektalem Karzinom">
+        <meta name="dcterms.identifier" content="UMMZ.Rad.ct_crlm">
+        <meta name="dcterms.type" content="IMAGE_REPORT_TEMPLATE">
+        <meta name="dcterms.language" content="de">
+        <meta name="dcterms.rights" content="May be used freely, subject to license agreement">
+        <meta name="dcterms.license" content="http://www.radreport.org/license.pdf">
+        <meta name="dcterms.date" content="2016-07-15">
+        <meta name="dcterms.creator" content="Pinto dos Santos D">
+        <meta name="dcterms.contributor" content="Gassmann P">
+        <meta name="dcterms.contributor" content="Klöckner R">
+        <meta name="dcterms.contributor" content="Mildenberger P">
+        <meta name="dcterms.contributor" content="Klos G">
+        <meta name="dcterms.publisher" content="Universitaetsmedizin Mainz, Klinik und Poliklinik für Diagnostische und Interventionelle Radiologie">
+
+        <!--Link to Stylesheet-->
+        <script type="text/xml">
+            <!--
+            <template_attributes>
+            <top-level-flag>0</top-level-flag>
+            <status>ACTIVE</status>
+            </template_attributes>
+                    -->
+        </script>
+
+        <!--Link to Stylesheet-->
+        <style type="text/css">
+            textarea { width:500px; height: 50px; }
+            td { padding-left: 15px; vertical-align: top; }
+            /* input { width: 350px } */
+        </style>
+    </head>
+
+    <body onload="toggelThxAbd(); toggleMetastasen(); toggleDarmTumor(); enablehelpbutton(); calcTNM()">
+
+        <script type="text/javascript">
+
+            function toggelThxAbd() {
+                if (document.getElementById("mz_ct_crlm_thxyn").value == 0)
+                    document.getElementById("mz_ct_crlm_thxtable").style.display = "none"
+                else
+                    document.getElementById("mz_ct_crlm_thxtable").style.display = "table"
+
+                if (document.getElementById("mz_ct_crlm_abdyn").value == 0)
+                    document.getElementById("mz_ct_crlm_abdtable").style.display = "none"
+                else
+                    document.getElementById("mz_ct_crlm_abdtable").style.display = "table"
+            }
+
+            function toggleMetastasen() {
+                if (document.getElementById("mz_ct_crlm_lungenherde").value == 3) {
+                    document.getElementById("mz_ct_crlm_lungenherde_desc").style.display = "table-row";
+                    document.getElementById("mz_ct_crlm_lungenherde_targets").style.display = "table-row";
+                } else {
+                    document.getElementById("mz_ct_crlm_lungenherde_desc").style.display = "none";
+                    document.getElementById("mz_ct_crlm_lungenherde_targets").style.display = "none";
+                }
+
+                if (document.getElementById("mz_ct_crlm_lymphknotenthx").value == 3) {
+                    document.getElementById("mz_ct_crlm_lymphknotenthx_desc").style.display = "table-row";
+                    document.getElementById("mz_ct_crlm_lymphknotenthx_targets").style.display = "table-row";
+                } else {
+                    document.getElementById("mz_ct_crlm_lymphknotenthx_desc").style.display = "none";
+                    document.getElementById("mz_ct_crlm_lymphknotenthx_targets").style.display = "none";
+                }
+
+                if (document.getElementById("mz_ct_crlm_leberherde").value == 3) {
+                    document.getElementById("mz_ct_crlm_leberherde_desc").style.display = "table-row";
+                    document.getElementById("mz_ct_crlm_leberherde_targets").style.display = "table-row";
+                } else {
+                    document.getElementById("mz_ct_crlm_leberherde_desc").style.display = "none";
+                    document.getElementById("mz_ct_crlm_leberherde_targets").style.display = "none";
+                }
+
+                if (document.getElementById("mz_ct_crlm_lymphknotenabd").value == 3) {
+                    document.getElementById("mz_ct_crlm_lymphknotenabd_desc").style.display = "table-row";
+                    document.getElementById("mz_ct_crlm_lymphknotenabd_targets").style.display = "table-row";
+                } else {
+                    document.getElementById("mz_ct_crlm_lymphknotenabd_desc").style.display = "none";
+                    document.getElementById("mz_ct_crlm_lymphknotenabd_targets").style.display = "none";
+                }
+
+                if (document.getElementById("mz_ct_crlm_othtargets").value == 0) {
+                    document.getElementById("mz_ct_crlm_othtargets_table").style.display = "none";
+                } else {
+                    document.getElementById("mz_ct_crlm_othtargets_table").style.display = "table";
+                }
+
+                if (document.getElementById("mz_ct_crlm_nontargets").value == 0) {
+                    document.getElementById("mz_ct_crlm_nontargets_table").style.display = "none";
+                } else {
+                    document.getElementById("mz_ct_crlm_nontargets_table").style.display = "table";
+                }
+
+                calcTNM();
+
+            }
+
+            function toggleDarmTumor() {
+                if (document.getElementById("mz_ct_crlm_darmtu").value > 0) {
+                    document.getElementById("mz_ct_crlm_darmtu_table").style.display = "table-row";
+                    if (document.getElementById("mz_ct_crlm_darmtu").value < 5) {
+                        document.getElementById("mz_ct_crlm_darmtu_kolon").style.display = "table-row";
+                        document.getElementById("mz_ct_crlm_darmtu_rektum").style.display = "none";
+                        document.getElementById("mz_ct_crlm_darmtu_rektum_T").value = -1;
+                        document.getElementById("mz_ct_crlm_darmtu_rektum_CRM").value = -1
+                    } else {
+                        document.getElementById("mz_ct_crlm_darmtu_kolon").style.display = "none";
+                        document.getElementById("mz_ct_crlm_darmtu_rektum").style.display = "table-row";
+                        document.getElementById("mz_ct_crlm_darmtu_kolon_T").value = -1;
+                    }
+                } else {
+                    document.getElementById("mz_ct_crlm_darmtu_table").style.display = "none";
+                }
+
+                calcTNM();
+
+            }
+
+            function calcRECIST() {
+
+                var targetSum = document.getElementById("mz_ct_crlm_recistsumtarg").value;
+                var targetBase = document.getElementById("mz_ct_crlm_recistcomptarg").value;
+                var nontargetResponse = document.getElementById("mz_ct_crlm_recistevalnontarg");
+                var newlesions = document.getElementById("mz_ct_crlm_recistnewlesion").value;
+                var targetResponse = document.getElementById("mz_ct_crlm_recistevaltarg");
+                var totalResponse = document.getElementById("mz_ct_crlm_recistevaltotal");
+
+                if (targetSum == '-' || targetBase == '-') {
+                    //do nothing
+                } else if (targetSum == 0 && targetBase > 0) {
+                    targetResponse.value = 0;
+                } else if (targetSum <= targetBase * 0.7) {
+                    targetResponse.value = 1;
+                } else if (targetSum >= targetBase * 1.2) {
+                    targetResponse.value = 3;
+                } else {
+                    targetResponse.value = 2;
+                }
+
+                if (targetSum == '-' && targetBase == '-' && targetResponse.value == -1 && nontargetResponse.value == -1 && newlesions == -1) {
+                    //do nothing
+                } else if (targetResponse.value == 0 && nontargetResponse.value == 0 && newlesions == 0) {
+                    totalResponse.value = 0;
+                } else if (targetResponse.value == 0 && nontargetResponse.value == 2 && newlesions == 0) {
+                    totalResponse.value = 1;
+                } else if (targetResponse.value == 1 && nontargetResponse.value < 3 && newlesions == 0) {
+                    totalResponse.value = 1;
+                } else if (targetResponse.value == 2 && nontargetResponse.value < 3 && newlesions == 0) {
+                    totalResponse.value = 2;
+                } else if (targetResponse.value == 3) {
+                    totalResponse.value = 3;
+                } else if (nontargetResponse.value == 3) {
+                    totalResponse.value = 3;
+                } else if (newlesions == 1) {
+                    totalResponse.value = 3;
+                } else {
+                    totalResponse.value = -1;
+                }
+
+            }
+
+            function calcRECISToverride(caller) {
+                alert("Sie verändern das Ansprechen manuell, automatische Berechnungen werden zurückgesetzt.");
+                if (caller == "target") {
+                    document.getElementById("mz_ct_crlm_recistsumtarg").value = '-';
+                    document.getElementById("mz_ct_crlm_recistcomptarg").value = '-';
+                }
+                if (caller == "total") {
+                    document.getElementById("mz_ct_crlm_recistsumtarg").value = '-';
+                    document.getElementById("mz_ct_crlm_recistcomptarg").value = '-';
+                    document.getElementById("mz_ct_crlm_recistevalnontarg").value = -1;
+                    document.getElementById("mz_ct_crlm_recistevaltarg").value = -1;
+                    document.getElementById("mz_ct_crlm_recistnewlesion").value = -1;
+                }
+                calcRECIST();
+            }
+
+            function sumRECIST() {
+
+                var recistTargetSum = 0;
+                var targetArray = [document.getElementById("mz_ct_crlm_lungenherde_target1dia").value, document.getElementById("mz_ct_crlm_lungenherde_target2dia").value, document.getElementById("mz_ct_crlm_lymphknotenthx_target1dia").value, document.getElementById("mz_ct_crlm_lymphknotenthx_target2dia").value, document.getElementById("mz_ct_crlm_leberherde_target1dia").value, document.getElementById("mz_ct_crlm_leberherde_target2dia").value, document.getElementById("mz_ct_crlm_lymphknotenabd_target1dia").value, document.getElementById("mz_ct_crlm_lymphknotenabd_target2dia").value, document.getElementById("mz_ct_crlm_othertarget1dia").value, document.getElementById("mz_ct_crlm_othertarget2dia").value, document.getElementById("mz_ct_crlm_othertarget3dia").value, document.getElementById("mz_ct_crlm_othertarget4dia").value, document.getElementById("mz_ct_crlm_othertarget5dia").value]
+
+                recistTargetSum = 0;
+                recistTargetCount = 0;
+                for (i = 0; i < targetArray.length; i++) {
+                    if (targetArray[i] != '') {
+                        recistTargetCount++;
+                    }
+                    recistTargetSum = recistTargetSum + Number(targetArray[i]);
+                }
+
+                if (recistTargetCount > 5) {
+                    alert("RECIST 1.1 erlaubt nur fünf Targets für die Berechnung der Summe. Die Berechnung wurde trotzdem durchgeführt. Bitte prüfen Sie die Werte und löschen Sie ggf. überzählige Läsionen.")
+                }
+
+                document.getElementById("mz_ct_crlm_recistsumtarg").value = recistTargetSum;
+
+                calcRECIST();
+            }
+
+            function calcTNM() {
+
+                var tnmField = document.getElementById("mz_ct_crlm_Beurteilung_TNM");
+                var tText = "Tx";
+                var T_stadium = -1;
+                var nText = "N0";
+                var mText = "M0";
+                var crmText = "";
+
+                if (document.getElementById("mz_ct_crlm_lungenherde").value == 3 || document.getElementById("mz_ct_crlm_leberherde").value == 3 || document.getElementById("mz_ct_crlm_peritoneum").value == 1 || document.getElementById("mz_ct_crlm_knochlesions").value == 3) {
+                    mText = "M1"
+                }
+                if (document.getElementById("mz_ct_crlm_lymphknotenthx").value == 3 || document.getElementById("mz_ct_crlm_lymphknotenabd").value == 3) {
+                    nText = "N+"
+                }
+
+                if (document.getElementById("mz_ct_crlm_darmtu_rektum_T").value >= 0) {
+                    T_stadium = document.getElementById("mz_ct_crlm_darmtu_rektum_T").value;
+                    if (document.getElementById("mz_ct_crlm_darmtu_rektum_CRM") == 0) {
+                        crmText = "CRM-"
+                    } else if (document.getElementById("mz_ct_crlm_darmtu_rektum_CRM") == 1) {
+                        crmText = "CRM+"
+                    } else {
+                        crmText = "CRMx"
+                    }
+                }
+                if (document.getElementById("mz_ct_crlm_darmtu_kolon_T").value >= 0) {
+                    T_stadium = document.getElementById("mz_ct_crlm_darmtu_kolon_T").value;
+                    crmText = ""
+                }
+
+                if (T_stadium != -1) {
+                    tText = "T" + T_stadium;
+                } else {
+                    // do nothing
+                }
+
+                var tnmText = tText + " " + nText + " " + mText + " " + crmText;
+
+                tnmField.value = tnmText;
+
+            }
+
+            function enablehelpbutton() {
+                document.getElementById('mz_ct_crlm_recistheader').innerHTML += "&nbsp;&nbsp;&nbsp;<a href=\"http://ctep.cancer.gov/protocolDevelopment/docs/recist_guideline.pdf\" target=\"_blank\"><button type=\"button\">Publikation RECIST</button></a>&nbsp;&nbsp;&nbsp;<a href=\"https://de.wikipedia.org/wiki/Response_Evaluation_Criteria_in_Solid_Tumors#Kriterien_des_Ansprechens\" target=\"_blank\"><button type=\"button\">Wikipedia RECIST</button></a>"
+            }
+
+            if (window.jQuery) {
+                $(document).ready(function () {
+                    disableAll();
+                    le_calculator()
+                });
+            }
+
+        </script>
+
+        <section>
+            <input type="checkbox" name="mz_ct_crlm_lymphknotenthx_ax" id="mz_ct_crlm_lymphknotenthx_ax"> axillär <input type="checkbox" name="mz_ct_crlm_lymphknotenthx_hi" id="mz_ct_crlm_lymphknotenthx_hi"> hilär <input type="checkbox" name="mz_ct_crlm_lymphknotenthx_me" id="mz_ct_crlm_lymphknotenthx_me"> mediastinal <input type="checkbox" name="mz_ct_crlm_lymphknotenthx_so" id="mz_ct_crlm_lymphknotenthx_so"> sonstige 
+        </section>
+
+        <section data-section-name="Clinical information">
+            <header class="level1" data-english="Clinical information">Klinische Angaben</header>
+            <p>
+                <textarea id="mz_ct_crlm_Angaben" name="mz_ct_crlm_Angaben"></textarea>
+            </p>
+        </section>
+
+        <hr>
+
+        <section data-section-name="Clinical question">
+            <header class="level1" data-english="Clinical question">Fragestellung</header>
+            <p>
+                <textarea name="mz_ct_crlm_Fragestellung" id="mz_ct_crlm_Fragestellung"></textarea>
+            </p>
+        </section>
+
+        <hr>
+
+        <section data-section-name="Befunde">
+            <header class="level1" data-english="Findings">Befund</header>
+            <table>
+                <tr>
+                    <td>
+                        <label for="mz_ct_crlm_vergleich">Vergleichsuntersuchung:&nbsp;</label>
+                    </td>
+                    <td>
+                        <select name="mz_ct_crlm_vergleich_select" id="mz_ct_crlm_vergleich_select" onchange="toggleField('mz_ct_crlm_vergleich_select', 'mz_ct_crlm_vergleich')">
+                            <option value="0">keine</option>
+                            <option value="1">vorliegend</option>
+                        </select>
+                        &nbsp;
+                        <input name="mz_ct_crlm_vergleich" id="mz_ct_crlm_vergleich" >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="mz_ct_crlm_Aufklaerung">Aufklärung:&nbsp;</label>
+                    </td>
+                    <td>
+                        <select name="mz_ct_crlm_Aufklaerung" id="mz_ct_crlm_Aufklaerung">
+                            <option value="Patient">Eine Aufklärung über die CT sowie die geplante Kontrastmittelgabe ist erfolgt.</option>
+                            <option value="Standard">Die Untersuchung erfolgte gemäß Standard-Protokoll.</option>
+                            <option value="Angehoeriger">Ein Angehöriger bzw. Betreuer wurde über die CT sowie die geplante Kontrastmittelgabe aufgeklärt.</option>
+                            <option value="Intensiv">Die Untersuchung erfolgte im Rahmen der intensivmedizinischen Betreuung.</option>
+                            <option value="Notfall">Die Untersuchung erfolgte notfallmäßig ohne Aufklärung.</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+
+            <section>
+                <header class="level2" data-english="thorax" style="display: inline">Thorax:</header>
+                <select name="mz_ct_crlm_thxyn" id="mz_ct_crlm_thxyn" onchange="toggelThxAbd()">
+                    <option value="1">untersucht</option>
+                    <option value="0">nicht untersucht</option>
+                </select>
+
+                <table id="mz_ct_crlm_thxtable">
+                    <tr>
+                        <td><label for="mz_ct_crlm_pleura">Pleura:</label></td>
+                        <td><input name="mz_ct_crlm_pleura" id="mz_ct_crlm_pleura" value="unauffällig"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_lungenpar">Lungenparenchym:</label></td>
+                        <td><input name="mz_ct_crlm_lungenpar" id="mz_ct_crlm_lungenpar" value="unauffällig"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_lungenherde">Lungenrundherde:</label></td>
+                        <td>
+                            <select name="mz_ct_crlm_lungenherde" id="mz_ct_crlm_lungenherde" onchange="toggleMetastasen()">
+                                <option value="0">keine</option>
+                                <option value="1">unspezifisch</option>
+                                <option value="2">suspekt</option>
+                                <option value="3">Metastasen</option>
+                            </select>
+                            <input name="mz_ct_crlm_lungenherde_text" id="mz_ct_crlm_lungenherde_text">
+                        </td>
+                    </tr>
+                    <tr id="mz_ct_crlm_lungenherde_desc">
+                        <td>&nbsp;</td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td><label for="mz_ct_crlm_lungenherde_n">Anzahl</label></td>
+                                    <td>
+                                        <select name="mz_ct_crlm_lungenherde_n" id="mz_ct_crlm_lungenherde_n">
+                                            <option value="-1">-</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">&gt;5</option>
+                                            <option value="7">diffus</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>links</td>
+                                    <td><input type="checkbox" name="mz_ct_crlm_lungenherde_liol" id="mz_ct_crlm_lungenherde_liol"> OL <input type="checkbox" name="mz_ct_crlm_lungenherde_liul" id="mz_ct_crlm_lungenherde_liul"> UL </td>
+                                </tr>
+                                <tr>
+                                    <td>rechts</td>
+                                    <td><input type="checkbox" name="mz_ct_crlm_lungenherde_reol" id="mz_ct_crlm_lungenherde_reol"> OL <input type="checkbox" name="mz_ct_crlm_lungenherde_reml" id="mz_ct_crlm_lungenherde_reml"> ML <input type="checkbox" name="mz_ct_crlm_lungenherde_reul" id="mz_ct_crlm_lungenherde_reul"> UL </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr id="mz_ct_crlm_lungenherde_targets">
+                        <td>&nbsp;</td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Target-ID</td>
+                                    <td>Lokalisation</td>
+                                    <td>Tischposition</td>
+                                    <td>Durchmesser</td>
+                                </tr>
+                                <tr>
+                                    <td><input name="mz_ct_crlm_lungenherde_target1id" id="mz_ct_crlm_lungenherde_target1id"></td>
+                                    <td><input name="mz_ct_crlm_lungenherde_target1lok" id="mz_ct_crlm_lungenherde_target1lok"></td>
+                                    <td><input name="mz_ct_crlm_lungenherde_target1tp" id="mz_ct_crlm_lungenherde_target1tp"></td>
+                                    <td><input name="mz_ct_crlm_lungenherde_target1dia" id="mz_ct_crlm_lungenherde_target1dia" onchange="sumRECIST()"></td>
+                                </tr>
+                                <tr>
+                                    <td><input name="mz_ct_crlm_lungenherde_target2id" id="mz_ct_crlm_lungenherde_target2id"></td>
+                                    <td><input name="mz_ct_crlm_lungenherde_target2lok" id="mz_ct_crlm_lungenherde_target2lok"></td>
+                                    <td><input name="mz_ct_crlm_lungenherde_target2tp" id="mz_ct_crlm_lungenherde_target2tp"></td>
+                                    <td><input name="mz_ct_crlm_lungenherde_target2dia" id="mz_ct_crlm_lungenherde_target2dia" onchange="sumRECIST()"></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_lymphknotenthx">Lymphknoten</label></td>
+                        <td>
+                            <select name="mz_ct_crlm_lymphknotenthx" id="mz_ct_crlm_lymphknotenthx" onchange="toggleMetastasen()">
+                                <option value="0">keine</option>
+                                <option value="1">unspezifisch</option>
+                                <option value="2">suspekt</option>
+                                <option value="3">Metastasen</option>
+                            </select>
+                            <input>
+                        </td>
+                    </tr>
+                    <tr id="mz_ct_crlm_lymphknotenthx_desc">
+                        <td>&nbsp;</td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td><label for="mz_ct_crlm_lymphknotenthx_n">Anzahl</label></td>
+                                    <td>
+                                        <select id="mz_ct_crlm_lymphknotenthx_n" name="mz_ct_crlm_lymphknotenthx_n">
+                                            <option value="-1">-</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">&gt;5</option>
+                                            <option value="7">diffus</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Lokalisation</td>
+                                    <td><input type="checkbox" name="mz_ct_crlm_lymphknotenthx_ax" id="mz_ct_crlm_lymphknotenthx_ax"> axillär <input type="checkbox" name="mz_ct_crlm_lymphknotenthx_hi" id="mz_ct_crlm_lymphknotenthx_hi"> hilär <input type="checkbox" name="mz_ct_crlm_lymphknotenthx_me" id="mz_ct_crlm_lymphknotenthx_me"> mediastinal <input type="checkbox" name="mz_ct_crlm_lymphknotenthx_so" id="mz_ct_crlm_lymphknotenthx_so"> sonstige </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr id="mz_ct_crlm_lymphknotenthx_targets">
+                        <td>&nbsp;</td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Target-ID</td>
+                                    <td>Lokalisation</td>
+                                    <td>Tischposition</td>
+                                    <td>Durchmesser</td>
+                                </tr>
+                                <tr>
+                                    <td><input name="mz_ct_crlm_lymphknotenthx_target1id" id="mz_ct_crlm_lymphknotenthx_target1id"></td>
+                                    <td><input name="mz_ct_crlm_lymphknotenthx_target1lok" id="mz_ct_crlm_lymphknotenthx_target1lok"></td>
+                                    <td><input name="mz_ct_crlm_lymphknotenthx_target1tp" id="mz_ct_crlm_lymphknotenthx_target1tp"></td>
+                                    <td><input name="mz_ct_crlm_lymphknotenthx_target1dia" id="mz_ct_crlm_lymphknotenthx_target1dia" onchange="sumRECIST()"></td>
+                                </tr>
+                                <tr>
+                                    <td><input name="mz_ct_crlm_lymphknotenthx_target2id" id="mz_ct_crlm_lymphknotenthx_target2id"></td>
+                                    <td><input name="mz_ct_crlm_lymphknotenthx_target2lok" id="mz_ct_crlm_lymphknotenthx_target2lok"></td>
+                                    <td><input name="mz_ct_crlm_lymphknotenthx_target2tp" id="mz_ct_crlm_lymphknotenthx_target2tp"></td>
+                                    <td><input name="mz_ct_crlm_lymphknotenthx_target2dia" id="mz_ct_crlm_lymphknotenthx_target2dia" onchange="sumRECIST()"></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_herzgef">Herz- und Gefäße</label></td>
+                        <td><input name="mz_ct_crlm_herzgef" id="mz_ct_crlm_herzgef" value="unauffällig"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_thxsonst">sonstiges</label></td>
+                        <td><textarea name="mz_ct_crlm_thxsonst" id="mz_ct_crlm_thxsonst"></textarea></td>
+                    </tr>
+                </table>
+
+                <br/><br />
+
+            </section>
+
+            <section>
+                <header class="level2" data-english="abdomen" style="display: inline">Abdomen:</header>
+                <select name="mz_ct_crlm_abdyn" id="mz_ct_crlm_abdyn" onchange="toggelThxAbd()">
+                    <option value="1">untersucht</option>
+                    <option value="0">nicht untersucht</option>
+                </select>
+
+                <table id="mz_ct_crlm_abdtable">
+                    <tr>
+                        <td><label for="mz_ct_crlm_leberpar">Leberparenchym:</label></td>
+                        <td><input value="unauffällig" name="mz_ct_crlm_leberpar" id="mz_ct_crlm_leberpar"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_leberherde">Leberherde:</label></td>
+                        <td>
+                            <select name="mz_ct_crlm_leberherde" id="mz_ct_crlm_leberherde" onchange="toggleMetastasen()">
+                                <option value="0">keine</option>
+                                <option value="1">unspezifisch</option>
+                                <option value="2">suspekt</option>
+                                <option value="3">Metastasen</option>
+                            </select>
+                            <input>
+                        </td>
+                    </tr>
+                    <tr id="mz_ct_crlm_leberherde_desc">
+                        <td>&nbsp;</td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td><label for="mz_ct_crlm_leberherde_n">Anzahl</label></td>
+                                    <td>
+                                        <select name="mz_ct_crlm_leberherde_n" id="mz_ct_crlm_leberherde_n">
+                                            <option value="-1">-</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">&gt;5</option>
+                                            <option value="7">diffus</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Segmente</td>
+                                    <td><input type="checkbox" name="mz_ct_crlm_leberherde_seg_vii" id="mz_ct_crlm_leberherde_seg_vii"> VII <input type="checkbox" name="mz_ct_crlm_leberherde_seg_viii" id="mz_ct_crlm_leberherde_seg_viii"> VIII <input type="checkbox" name="mz_ct_crlm_leberherde_seg_iva" id="mz_ct_crlm_leberherde_seg_iva"> IVa <input type="checkbox" name="mz_ct_crlm_leberherde_seg_i" id="mz_ct_crlm_leberherde_seg_i"> I <input type="checkbox" name="mz_ct_crlm_leberherde_seg_ii" id="mz_ct_crlm_leberherde_seg_ii"> II <br/>
+                                        <input type="checkbox" name="mz_ct_crlm_leberherde_seg_vi" id="mz_ct_crlm_leberherde_seg_vi"> VI <input type="checkbox" name="mz_ct_crlm_leberherde_seg_v" id="mz_ct_crlm_leberherde_seg_v"> V <input type="checkbox" name="mz_ct_crlm_leberherde_seg_ivb" id="mz_ct_crlm_leberherde_seg_ivb"> IVb <input type="checkbox" name="mz_ct_crlm_leberherde_seg_iii" id="mz_ct_crlm_leberherde_seg_iii"> III </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr id="mz_ct_crlm_leberherde_targets">
+                        <td>&nbsp;</td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Target-ID</td>
+                                    <td>Lokalisation</td>
+                                    <td>Tischposition</td>
+                                    <td>Durchmesser</td>
+                                </tr>
+                                <tr>
+                                    <td><input name="mz_ct_crlm_leberherde_target1id" id="mz_ct_crlm_leberherde_target1id"></td>
+                                    <td><input name="mz_ct_crlm_leberherde_target1lok" id="mz_ct_crlm_leberherde_target1lok"></td>
+                                    <td><input name="mz_ct_crlm_leberherde_target1tp" id="mz_ct_crlm_leberherde_target1tp"></td>
+                                    <td><input name="mz_ct_crlm_leberherde_target1dia" id="mz_ct_crlm_leberherde_target1dia" onchange="sumRECIST()"></td>
+                                </tr>
+                                <tr>
+                                    <td><input name="mz_ct_crlm_leberherde_target2id" id="mz_ct_crlm_leberherde_target2id"></td>
+                                    <td><input name="mz_ct_crlm_leberherde_target2lok" id="mz_ct_crlm_leberherde_target2lok"></td>
+                                    <td><input name="mz_ct_crlm_leberherde_target2tp" id="mz_ct_crlm_leberherde_target2tp"></td>
+                                    <td><input name="mz_ct_crlm_leberherde_target2dia" id="mz_ct_crlm_leberherde_target2dia" onchange="sumRECIST()"></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_lebergef">Lebergefäße:</label></td>
+                        <td><input name="mz_ct_crlm_lebergef" id="mz_ct_crlm_lebergef" value="unauffällig"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_gallenw">Gallenwege:</label></td>
+                        <td><input name="mz_ct_crlm_gallenw" id="mz_ct_crlm_gallenw" value="unauffällig"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_milz">Milz:</label></td>
+                        <td><input name="mz_ct_crlm_milz" id="mz_ct_crlm_milz" value="unauffällig"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_pankreas">Pankreas:</label></td>
+                        <td><input name="mz_ct_crlm_pankreas" id="mz_ct_crlm_pankreas" value="unauffällig"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_nierennebennieren">Nieren und Nebennieren:</label></td>
+                        <td><input name="mz_ct_crlm_nierennebennieren" id="mz_ct_crlm_nierennebennieren" value="unauffällig"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_darmtu">Darm</label></td>
+                        <td>
+                            <select name="mz_ct_crlm_darmtu" id="mz_ct_crlm_darmtu" onchange="toggleDarmTumor()">
+                                <option value="-1">Z.n. Resektion</option>
+                                <option value="0" selected>unauffällig</option>
+                                <option value="1">Zoekumkarzinom</option>
+                                <option value="2">Kolonkarzinom - rechtes Hemikolon</option>
+                                <option value="3">Kolonkarzinom - linkes Hemikolon</option>
+                                <option value="4">Sigmakarzinom</option>
+                                <option value="5">Rektumkarzinom</option>
+                            </select>
+                            <input>
+                        </td>
+                    </tr>
+                    <tr id="mz_ct_crlm_darmtu_table">
+                        <td>&nbsp;</td>
+                        <td>
+                            <table>
+                                <tr id="mz_ct_crlm_darmtu_kolon">
+                                    <td><label for="mz_ct_crlm_darmtu_kolon_T">Kolonkarzinom</label></td>
+                                    <td>
+                                        <select id="mz_ct_crlm_darmtu_kolon_T" name="mz_ct_crlm_darmtu_kolon_T" onchange="calcTNM()">
+                                            <option value="-1">Tx (Tumor nicht beurteilbar)</option>
+                                            <option value="0">T0 (kein Anhalt für Tumor)</option>
+                                            <option value="1">T1 (Infiltration Submukosa)</option>
+                                            <option value="2">T2 (Infiltration Muskularis)</option>
+                                            <option value="3">T3 (Infiltration Subserosa)</option>
+                                            <option value="4">T4 (Infiltration Nachbarstrukturen / -organe)</option>
+                                        </select>
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr id="mz_ct_crlm_darmtu_rektum">
+                                    <td><label for="mz_ct_crlm_darmtu_rektum_T">Rektumkarzinom</label></td>
+                                    <td>
+                                        <select id="mz_ct_crlm_darmtu_rektum_T" name="mz_ct_crlm_darmtu_rektum_T" onchange="calcTNM()">
+                                            <option value="-1">Tx (Tumor nicht beurteilbar)</option>
+                                            <option value="0">T0 (kein Anhalt für Tumor)</option>
+                                            <option value="1">T1 (Infiltration Submukosa)</option>
+                                            <option value="2">T2 (Infiltration Muscularis propria)</option>
+                                            <option value="3">T3 (Infiltration Mesorektum)</option>
+                                            <option value="4">T4 (Infiltration Nachbarstrukturen / -organe)</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id="mz_ct_crlm_darmtu_rektum_CRM" name="mz_ct_crlm_darmtu_rektum_CRM" onchange="calcTNM()">
+                                            <option value="-1">CRMx (Resektionsrand nicht beurteilbar)</option>
+                                            <option value="0">CRM- (&gt; 1mm)</option>
+                                            <option value="1">CRM+ (&le; 1mm)</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <textarea name="mz_ct_crlm_darmtu_desc"></textarea>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_lymphknotenabd">Lymphknoten</label></td>
+                        <td>
+                            <select name="mz_ct_crlm_lymphknotenabd" id="mz_ct_crlm_lymphknotenabd" onchange="toggleMetastasen()">
+                                <option value="0">keine</option>
+                                <option value="1">unspezifisch</option>
+                                <option value="2">suspekt</option>
+                                <option value="3">Metastasen</option>
+                            </select>
+                            <input>
+                        </td>
+                    </tr>
+                    <tr id="mz_ct_crlm_lymphknotenabd_desc">
+                        <td>&nbsp;</td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td><label for="mz_ct_crlm_lymphknotenabd_n">Anzahl</label></td>
+                                    <td>
+                                        <select id="mz_ct_crlm_lymphknotenabd_n" name="mz_ct_crlm_lymphknotenabd_n">
+                                            <option value="-1">-</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">&gt;5</option>
+                                            <option value="7">diffus</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Lokalisation</td>
+                                    <td><input type="checkbox" name="mz_ct_crlm_lymphknotenabd_paraao" id="mz_ct_crlm_lymphknotenabd_paraao"> paraaortal <input type="checkbox" name="mz_ct_crlm_lymphknotenabd_mesent" id="mz_ct_crlm_lymphknotenabd_mesent"> mesenterial <input type="checkbox" name="mz_ct_crlm_lymphknotenabd_parail" id="mz_ct_crlm_lymphknotenabd_parail"> parailiakal <input type="checkbox" name="mz_ct_crlm_lymphknotenabd_sonst" id="mz_ct_crlm_lymphknotenabd_sonst"> sonstige </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr id="mz_ct_crlm_lymphknotenabd_targets">
+                        <td>&nbsp;</td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Target-ID</td>
+                                    <td>Lokalisation</td>
+                                    <td>Tischposition</td>
+                                    <td>Durchmesser</td>
+                                </tr>
+                                <tr>
+                                    <td><input name="mz_ct_crlm_lymphknotenabd_target1id" id="mz_ct_crlm_lymphknotenabd_target1id"></td>
+                                    <td><input name="mz_ct_crlm_lymphknotenabd_target1lok" id="mz_ct_crlm_lymphknotenabd_target1lok"></td>
+                                    <td><input name="mz_ct_crlm_lymphknotenabd_target1tp" id="mz_ct_crlm_lymphknotenabd_target1tp"></td>
+                                    <td><input name="mz_ct_crlm_lymphknotenabd_target1dia" id="mz_ct_crlm_lymphknotenabd_target1dia" onchange="sumRECIST()"></td>
+                                </tr>
+                                <tr>
+                                    <td><input name="mz_ct_crlm_lymphknotenabd_target2id" id="mz_ct_crlm_lymphknotenabd_target2id"></td>
+                                    <td><input name="mz_ct_crlm_lymphknotenabd_target2lok" id="mz_ct_crlm_lymphknotenabd_target2lok"></td>
+                                    <td><input name="mz_ct_crlm_lymphknotenabd_target2tp" id="mz_ct_crlm_lymphknotenabd_target2tp"></td>
+                                    <td><input name="mz_ct_crlm_lymphknotenabd_target2dia" id="mz_ct_crlm_lymphknotenabd_target2dia" onchange="sumRECIST()"></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_peritoneum">Peritoneum:</label></td>
+                        <td>
+                            <select name="mz_ct_crlm_peritoneum" id="mz_ct_crlm_peritoneum" onchange="calcTNM()">
+                                <option value="0">unauffällig</option>
+                                <option value="1">Peritonealkarzinose</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_fflsg">freie Flüssigkeit:</label></td>
+                        <td>
+                            <select name="mz_ct_crlm_fflsg" id="mz_ct_crlm_fflsg">
+                                <option value="0">keine</option>
+                                <option value="1">wenig</option>
+                                <option value="2">mäßig</option>
+                                <option value="3">viel</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_flft">freie Luft:</label></td>
+                        <td>
+                            <select name="mz_ct_crlm_flft" id="mz_ct_crlm_flft">
+                                <option value="0">keine</option>
+                                <option value="1">wenig</option>
+                                <option value="2">mäßig</option>
+                                <option value="3">viel</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_abdsonst">sonstiges:</label></td>
+                        <td><textarea name="mz_ct_crlm_abdsonst" id="mz_ct_crlm_abdsonst"></textarea></td>
+                    </tr>
+                </table>
+
+                <br/><br />
+
+            </section>
+
+            <section>
+                <header class="level2" data-english="skelett" style="display: inline">Skelett:</header>
+                <table>
+                    <tr>
+                        <td><label for="mz_ct_crlm_knochlesions">Knochenläsionen:</label></td>
+                        <td>
+                            <select name="mz_ct_crlm_knochlesions" id="mz_ct_crlm_knochlesions" onchange="toggleMetastasen()">
+                                <option value="0">keine</option>
+                                <option value="1">suspekt</option>
+                                <option value="3">Metastasen</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_knochsonst">sonstiges:</label></td>
+                        <td><textarea name="mz_ct_crlm_knochsonst" id="mz_ct_crlm_knochsonst"></textarea></td>
+                    </tr>
+                </table>
+
+                <br/><br />
+
+            </section>
+
+            <section>
+                <header class="level2" data-english="other targets" style="display: inline">weitere Targets:</header>
+                <select name="mz_ct_crlm_othtargets" id="mz_ct_crlm_othtargets" onchange="toggleMetastasen()">
+                    <option value="0">nein</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <table id="mz_ct_crlm_othtargets_table">
+                    <tr>
+                        <td>Target-ID</td>
+                        <td>Lokalisation</td>
+                        <td>Tischposition</td>
+                        <td>Durchmesser</td>
+                    </tr>
+                    <tr>
+                        <td><input name="mz_ct_crlm_othertarget1id" id="mz_ct_crlm_othertarget1id"></td>
+                        <td><input name="mz_ct_crlm_othertarget1lok" id="mz_ct_crlm_othertarget1lok"></td>
+                        <td><input name="mz_ct_crlm_othertarget1tp" id="mz_ct_crlm_othertarget1tp"></td>
+                        <td><input name="mz_ct_crlm_othertarget1dia" id="mz_ct_crlm_othertarget1dia" onchange="sumRECIST()"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="mz_ct_crlm_othertarget2id" id="mz_ct_crlm_othertarget2id"></td>
+                        <td><input name="mz_ct_crlm_othertarget2lok" id="mz_ct_crlm_othertarget2lok"></td>
+                        <td><input name="mz_ct_crlm_othertarget2tp" id="mz_ct_crlm_othertarget2tp"></td>
+                        <td><input name="mz_ct_crlm_othertarget2dia" id="mz_ct_crlm_othertarget2dia" onchange="sumRECIST()"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="mz_ct_crlm_othertarget3id" id="mz_ct_crlm_othertarget3id"></td>
+                        <td><input name="mz_ct_crlm_othertarget3lok" id="mz_ct_crlm_othertarget3lok"></td>
+                        <td><input name="mz_ct_crlm_othertarget3tp" id="mz_ct_crlm_othertarget3tp"></td>
+                        <td><input name="mz_ct_crlm_othertarget3dia" id="mz_ct_crlm_othertarget3dia" onchange="sumRECIST()"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="mz_ct_crlm_othertarget4id" id="mz_ct_crlm_othertarget4id"></td>
+                        <td><input name="mz_ct_crlm_othertarget4lok" id="mz_ct_crlm_othertarget4lok"></td>
+                        <td><input name="mz_ct_crlm_othertarget4tp" id="mz_ct_crlm_othertarget4tp"></td>
+                        <td><input name="mz_ct_crlm_othertarget4dia" id="mz_ct_crlm_othertarget4dia" onchange="sumRECIST()"></td>
+                    </tr>
+                    <tr>
+                        <td><input name="mz_ct_crlm_othertarget5id" id="mz_ct_crlm_othertarget5id"></td>
+                        <td><input name="mz_ct_crlm_othertarget5lok" id="mz_ct_crlm_othertarget5lok"></td>
+                        <td><input name="mz_ct_crlm_othertarget5tp" id="mz_ct_crlm_othertarget5tp"></td>
+                        <td><input name="mz_ct_crlm_othertarget5dia" id="mz_ct_crlm_othertarget5dia" onchange="sumRECIST()"></td>
+                    </tr>
+                </table>
+
+                <br/><br />
+
+            </section>
+
+            <section>
+                <header class="level2" data-english="non targets" style="display: inline">Non-Targets:</header>
+                <select name="mz_ct_crlm_nontargets" id="mz_ct_crlm_nontargets" onchange="toggleMetastasen()">
+                    <option value="0">nein</option>
+                    <option value="1">ja</option>
+                </select>
+                <table id="mz_ct_crlm_nontargets_table">
+                    <tr>
+                        <td><textarea name="mz_ct_crlm_nontargets_text" id="mz_ct_crlm_nontargets_text"></textarea></td>
+                    </tr>
+                </table>
+
+                <br/><br />
+
+            </section>
+
+        </section>
+
+        <hr>
+
+        <section data-section-name="Beurteilung">
+            <header class="level1" data-english="Impression">Beurteilung</header>
+            <p>
+                <textarea name="mz_ct_crlm_Beurteilung" id="mz_ct_crlm_Beurteilung" data-english-name="Impression" data-field-completion-action="PROHIBIT"></textarea>
+                <br />
+                <label for="mz_ct_crlm_Beurteilung_TNM">TNM:</label> <input id="mz_ct_crlm_Beurteilung_TNM" name="mz_ct_crlm_Beurteilung_TNM">
+            </p>
+            <section>
+                <header class="level2" data-english="RECIST" id="mz_ct_crlm_recistheader">RECIST 1.1</header>
+                <table>
+                    <tr>
+                        <td><label for="mz_ct_crlm_recistsumtarg">Summe Targets:</label></td>
+                        <td><input name="mz_ct_crlm_recistsumtarg" id="mz_ct_crlm_recistsumtarg" onchange="calcRECIST()" value="-"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_recistcomptarg">Vergleich Targets:</label></td>
+                        <td><input name="mz_ct_crlm_recistcomptarg" id="mz_ct_crlm_recistcomptarg" onchange="calcRECIST()" value="-"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_recistevaltarg">Ansprechen Targets:</label></td>
+                        <td>
+                            <select name="mz_ct_crlm_recistevaltarg" id="mz_ct_crlm_recistevaltarg" onchange="calcRECISToverride('target')">
+                                <option value="-1">-</option>
+                                <option value="0">Complete Response</option>
+                                <option value="1">Partial Response</option>
+                                <option value="2">Stable Disease</option>
+                                <option value="3">Progressive Disease</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_recistevalnontarg">Ansprechen Non-Targets:</label></td>
+                        <td>
+                            <select name="mz_ct_crlm_recistevalnontarg" id="mz_ct_crlm_recistevalnontarg" onchange="calcRECIST()">
+                                <option value="-1">-</option>
+                                <option value="0">Complete Response</option>
+                                <option value="2">Stable Disease</option>
+                                <option value="3">Progressive Disease</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_recistnewlesion">Neue Läsionen:</label></td>
+                        <td>
+                            <select name="mz_ct_crlm_recistnewlesion" id="mz_ct_crlm_recistnewlesion" onchange="calcRECIST()">
+                                <option value="-1">-</option>
+                                <option value="0">nein</option>
+                                <option value="1">ja</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td><label for="mz_ct_crlm_recistevaltotal">Gesamtansprechen</label></td>
+                        <td>
+                            <select name="mz_ct_crlm_recistevaltotal" id="mz_ct_crlm_recistevaltotal" onchange="calcRECISToverride('total')">
+                                <option value="-1">-</option>
+                                <option value="0">Complete Response</option>
+                                <option value="1">Partial Response</option>
+                                <option value="2">Stable Disease</option>
+                                <option value="3">Progressive Disease</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </section>
+        </section>
+
+    </body>
+</html>
