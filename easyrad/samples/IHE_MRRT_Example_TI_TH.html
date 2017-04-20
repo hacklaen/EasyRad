@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>CT Brain</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta charset="UTF-8">
         <meta name="dcterms.title" content="CT Brain">
         <meta name="dcterms.identifier" content="1.2.3.4.5">
         <meta name="dcterms.type" content="IMAGE_REPORT_TEMPLATE">
@@ -15,7 +15,7 @@
         <meta name="dcterms.contributor" content="Bozkurt S [coder]">
         <meta name="dcterms.contributor" content="Kahn CE Jr [editor]">
         <meta name="dcterms.contributor" content="American Society of Neuroradiology (ASNR)">
-        <link rel="stylesheet" type="text/css" href="./samples/IHE_Template_Style.css" />
+        <link rel="stylesheet" type="text/css" href="IHE_Template_Style.css" />
         <script type="text/xml">
                 <template_attributes>
                         <top_level_flag>true</top_level_flag>
@@ -316,7 +316,7 @@
                     name="first_sentence" 
                     data-field-type="TEXT"
                     type="text" 
-                    value="The lungs are clear."/> <!-- textarea is not defined in HTML 5 but used in MRRT -->
+                    value="The lungs are clear."/>
             </p>
             <section
                 id="T009"
@@ -358,9 +358,7 @@
                     <option id="T017" value="Severe">Severe</option>
                 </select> <label for="T013">pulmonary edema</label>.
             </p>
-
             <embed src="1.2.3.4.6.html" type="text/html" height="60" />
-
             <br />
             <!-- Table example: -->
             <table>
@@ -397,7 +395,6 @@
                 </tr>
             </table>
         </section>
-
         <section
             id="T018"
             class="level1"
@@ -415,6 +412,7 @@
             </ol>
         </section>
 
+        <!-- Additional section not part of the original IHE file IHE_MRRT_Example_TI.html -->
         <section>
             <header class="level1">Other information:</header>
             <p>
@@ -431,6 +429,7 @@
                 A reference for used codes could be found at  <a href="http://www.radlex.org/">RadLex</a> 
             </p>
             <label>
+                Additional information
                 <input 
                     name="additional  information" 
                     data-field-type="TEXT"
@@ -440,11 +439,10 @@
                     data-field-merge-flag="Y"
                     data-field-merge-identifier="Patient Info"
                     />
-                Additional information
             </label>
             <p>
-                <textarea id="notes">No remarks.</textarea>
                 <label for="notes">Notes</label>
+                <textarea id="notes">No remarks.</textarea>
             </p>
             An <q>ordered</q> list of items
             <ol>
@@ -459,5 +457,6 @@
                 <li>Item 3</li>
             </ul>
         </section>
+
     </body>
 </html>

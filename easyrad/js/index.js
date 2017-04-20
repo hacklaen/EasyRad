@@ -48,7 +48,7 @@ $(document).ready(function () {
     }
 
     // Load sample data
-    loadTemplate('./samples/IHE_MRRT_Example_TI_TH.html');
+    //loadTemplate('./samples/IHE_MRRT_Example_TI_TH.html');
 
     // Build list of favored templates
     setupFavoredTemplates();

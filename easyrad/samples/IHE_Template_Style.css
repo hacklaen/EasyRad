@@ -43,9 +43,9 @@ table, tr, td, th
 	}
  template-head, template_data, template_UI, template_name, exam_characteristics, exam_code, term, code_meaning, code_value, coding_scheme_designator, exam_code, modality, body_site, subspecialty, contrast, gender, indication, patient_life_stage, provider_group, owner, contributors, parent_template, sanctioning_body, language, top_level_flag, creation_date, revision_number, retired_flag
 	{
-	display: none; <!--was list-item-->
+	display: none; /* was list-item */
 	}
 section_data, template_section_name, template_section_required, template_section_interleaved, template_section_level
 	{
-	display: none; <!--was list-item-->
+	display: none; /* was list-item */
 	}

@@ -1,5 +1,6 @@
 /* 
- * Configuration of the list of favored templates
+ * This file is intended to give the user the possibility to configure the list 
+ * of favored templates individally.
  * 
  * - Each template is defined in one subarray
  * - The first element contains the name of the template displayed in the list
@@ -11,15 +12,15 @@
  */
 
 var favoredTemplates = [
-    // The TOP 5 templates provided by RSNA
-    ["Chest Xray", "./templates/Chest_Xray_RSNA.html"],
-    ["Chest Xray - 2 Views", "./templates/Chest_Xray_2_Views_RSNA.html"],
-    ["US Abdomen", "./templates/US_Abdomen_RSNA.html"],
-    ["CT Brain", "./templates/CT_Brain_RSNA.html"],
-    ["MR Brain", "./templates/MR_Brain_RSNA.html"],
+    // The TOP 5 templates provided by RSNA (2017-04-20)
+    ["Chest Xray (en)", "./templates/Chest_Xray_RSNA.html"],
+    ["Chest Xray - 2 Views (en)", "./templates/Chest_Xray_2_Views_RSNA.html"],
+    ["US Abdomen (en)", "./templates/US_Abdomen_RSNA.html"],
+    ["CT Brain (en)", "./templates/CT_Brain_RSNA.html"],
+    ["MR Brain (en)", "./templates/MR_Brain_RSNA.html"],
     
     // Sample template
-    ["Demo", "./samples/IHE_MRRT_Example_TI_TH.html"],
+    ["IHE Sample (en)", "./samples/IHE_MRRT_Example_TI_TH.html"],
 ];
 
 

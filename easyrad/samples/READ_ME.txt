@@ -6,6 +6,6 @@ Das Beispiel übernimmt das IHE Beispiel
 
 vollständig.
 
-Ab Zeile 418 wird eine SECTION ergänzt, in der MRRT Elemente verwendet werden, 
+Ab Zeile 415 wird eine SECTION ergänzt, in der MRRT Elemente verwendet werden, 
 die IHE Beispiel noch nicht enthalten sind.
 

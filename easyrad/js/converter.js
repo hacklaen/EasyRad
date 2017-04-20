@@ -135,11 +135,11 @@ function walk(node, text) {
 
                     case "LABEL":
                         // Ignore label nodes. They are handeled in preProcessElement and postProcessElement
-                        var inputChild = $(childNode).find("input");
-                        if (inputChild.length != 0) {
-                            text = preProcessElement(inputChild[0], text);
+                        var inputOrTextareaElements = $(childNode).find("input, textarea");
+                        if (inputOrTextareaElements.length != 0) {
+                            text = preProcessElement(inputOrTextareaElements[0], text);
                             // Ignore the child TEXT node: It is already value of the element
-                            text = postProcessElement(inputChild[0], text);
+                            text = postProcessElement(inputOrTextareaElements[0], text);
                         }
                         continue;
 
@@ -182,8 +182,9 @@ function walk(node, text) {
 }
 
 /**
+ * Tries to find a label linked to the given element.
  * 
- * @param {type} elm
+ * @param elm The element to which the label should be searched
  * @returns {window.$|$}
  */
 function getLabelText(elm) {
@@ -197,7 +198,7 @@ function getLabelText(elm) {
     switch (parentElm.nodeName) {
 
         case "LABEL":
-            labelText = parentElm.innerText;
+            labelText = parentElm.innerText.trim();
             break;
 
         default:
@@ -480,6 +481,9 @@ function postProcessElement(elm, text) {
             /* ==== Elements not supported by MRRT but found in DRG templates ==== */
 
         case "TEXTAREA":
+            if (labelText != null) {
+                text += labelText + ": ";
+            }
             text += elm.value;
             // Finish the line
             text += "\n";
@@ -557,8 +561,4 @@ function processTextNode(textNode, text) {
     }
 
     return text;
-}
-
-function endsWith(str, char) {
-    return str.indexOf(char, str.length - 1) != -1;
 }

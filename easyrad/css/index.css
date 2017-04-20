@@ -76,3 +76,14 @@ html, body {
     cursor: inherit;
     display: block;
 }
+
+/* Format the table in the info modal dialog */
+#info-table,
+#info-table tr,
+#info-table td,
+#info-table th {
+    background-color: white;
+    border: 1px solid #808080;
+    border-collapse: collapse;
+    padding: 5px; 
+}
