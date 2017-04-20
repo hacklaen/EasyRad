@@ -1,0 +1,11 @@
+/*
+ * This file can be used to override styles defined by EasyRad.
+ * Technically this CSS file is loaded by index.html after all other style sheets
+ * are loaded.
+ * Note that a template may override styles defined in this file because they
+ * are loaded AFTER initializing index.html.
+ */
+
+textarea {
+    font-weight: 400;
+}
