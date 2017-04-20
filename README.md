@@ -1,5 +1,11 @@
 # EasyRad
-This browser application allows to fill out MRRT templates and to copy the result into the clipboard.
+EasyRad is a browser application that allows you to fill out radiology report templates and to copy the result into the clipboard for further processing. The templates must comply with the IHE Radiology Technical Framework Supplement Management of Radiology Report Templates (MRRT).
+
+## Implemented standard
+EasyRad implements the technical specification given in Volume 3 “Content Modules” of the standard in the version of September 9, 2016. The text could be downloaded here: [http://ihe.net/Technical_Frameworks/]( http://ihe.net/Technical_Frameworks/) 
+** Not supported features **
+
+** Additional features **
 
 ## Synopsis
 
@@ -23,13 +29,15 @@ Depending on the size of the project, if it is small and simple enough the refer
 
 ## Tests
 
-Describe and show how to run the tests with code examples.
+No tests are implemented yet.
+In the `samples` directory a test template `IHE_MRRT_Example_TI_TH.html ` is available, which is based on the original IHE sample template. It is extended by tags allowed by the standard, but not included in the IHE sample file.
+In addition the `<textarea>` tag is include in the file although this tag is not allowed by the MRRT standard 
 
 ## Contributors
 
-Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
+Contributions welcome!
 
 ## License
 
-A short snippet describing the license (MIT, Apache, etc.)
+EasyRad can be used according to the GNU Affero General Public License (AGPL) 3.0. The GNU Affero General Public License is a modified version of the ordinary GNU GPL version 3. It has one added requirement: if you run a modified program on a server and let other users communicate with it there, your server must also allow them to download the source code corresponding to the modified version running there.
 
