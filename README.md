@@ -1,11 +1,15 @@
 # EasyRad
 EasyRad is a browser application that allows you to fill out radiology report templates and to copy the result into the clipboard for further processing. The templates must comply with the IHE Radiology Technical Framework Supplement Management of Radiology Report Templates (MRRT).
 
+**[HOMEPAGE](http://iftm.de/index.php/radiologie/easyrad)**
+
+
 ## Implemented standard
 EasyRad implements the technical specification given in Volume 3 “Content Modules” of the standard in the version of September 9, 2016. The text could be downloaded here: [http://ihe.net/Technical_Frameworks/]( http://ihe.net/Technical_Frameworks/) 
-** Not supported features **
 
-** Additional features **
+**Not supported features**
+
+**Additional features**
 
 ## Synopsis
 
