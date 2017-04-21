@@ -33,7 +33,7 @@ var translations = {
         files_button_text: 'Select Template',
         get_info_btn: '?',
         to_clipboard_btn: 'Copy',
-        template_title: 'Template title',
+        template_title: 'Template title: ',
         template_publisher: 'Publisher: ',
         modal_title_text: 'Template Info',
     },
@@ -43,7 +43,7 @@ var translations = {
         files_button_text: 'Vorlage auswählen',
         get_info_btn: '?',
         to_clipboard_btn: 'Kopieren',
-        template_title: 'Titel der Befundvorlage',
+        template_title: 'Titel der Befundvorlage: ',
         template_publisher: 'Herausgeber: ',
         modal_title_text: 'Infos über Befundvorlage',
     }
