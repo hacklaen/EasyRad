@@ -117,5 +117,6 @@ Contributions welcome!
 ## License
 
 EasyRad can be used according to the GNU Affero General Public License (AGPL) 3.0. The GNU Affero General Public License is a modified version of the ordinary GNU GPL version 3. It has one added requirement: if you run a modified program on a server and let other users communicate with it there, your server must also allow them to download the source code corresponding to the modified version running there.
+
 © IFTM Institut für Telematik in der Medizin GmbH
 
