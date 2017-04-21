@@ -7,7 +7,7 @@ EasyRad is a browser application that allows you to fill out radiology report te
 ## Implemented standard
 EasyRad implements the technical specification given in Volume 3 “Content Modules” of the standard in the version of September 9, 2016. The text could be downloaded here: [http://ihe.net/Technical_Frameworks/]( http://ihe.net/Technical_Frameworks/) 
 
-#### Limitations
+### Limitations
 
 Due to limitations of used libraries (clipboard.js) the following browsers are supported:
 - Chrome 42+
@@ -17,7 +17,7 @@ Due to limitations of used libraries (clipboard.js) the following browsers are s
 - IE 9+
 - Opera 29+
 
-#### Additional features
+### Additional features
 
 ## Synopsis
 
@@ -28,7 +28,7 @@ At the top of the file there should be a short introduction and/ or overview tha
 |Element | Praefix | Content | Postfix |
 |---|---|---|---|
 |     |     |     |     |
-| Special cases: |     |     |     |
+| **Special cases:** |     |     |     |
 | Text between elements | --- | text (white spaces at the beginning and end are removed) | space |
 |     |     |     |     |
 | LABEL | if label text is defined for an element, the following is inserted for the referenced element: label text + ":". If the referenced element is a "INPUT/checkbox" and the element is not checked, nothing is inserted. | --- | --- | --- |
@@ -36,40 +36,41 @@ At the top of the file there should be a short introduction and/ or overview tha
 | Elements with attribute "disabled" or "hidden" set are ignored |     |     |     |
 | Elements with a CSS property "display: none" or "visibility: hidden" are ignored |     |     |     |
 |     |     |     |     |
-| The root element: |     |     |     |
+| **The root element:** |     |     |     |
 | HTML | --- | --- | --- |
 |     |     |     |     |
-| Document metadata: |     |     |     |
+| **Document metadata:** |     |     |     |
 | HEAD | --- |     | --- |
 | META | --- |     | --- |
 | STYLE | --- | --- | --- |
 | TITLE | --- |     | --- |
 | LINK | --- | --- | --- |
 |     |     |     |     |
-| Scripting: |     |     |     |
+| **Scripting:** |     |     |     |
 | SCRIPT | --- | --- | --- |
 |     |     |     |     |
-| Embedded content: |     |     |     |
+| **Embedded content:** |     |     |     |
 | EMBED | --- | --- | --- |
 | IMG | --- | --- | "[" + elm.src + ", " + elm.alt + "] " |
-| Sections: |     |     |     |
+|     |     |     |     |
+| **Sections:** |     |     |     |
 | BODY | --- | --- | --- |
 | SECTION | "\n\n" | --- | --- |
 | HEADER | --- | --- | "\n\n" |
 |     |     |     |     |
-| Grouping content: |     |     |     |
+| **Grouping content:** |     |     |     |
 | LI | If the parent element is "UL": "- ". If the parent element is "OL": "x " | --- | "\n" |
 | OL | "\n" | --- | --- |
 | P | --- | --- | "\n\n" |
 | UL | "\n" | --- | --- |
 |     |     |     |     |
-| Tables: |     |     |     |
+| **Tables:** |     |     |     |
 | TABLE | "\n\n" | --- | "\n\n" |
 | TD | --- | --- | --- |
 | TH | --- | --- | --- |
 | TR | --- | --- | "\n" |
 |     |     |     |     |
-| Forms: |     |     |     |
+| **Forms:** |     |     |     |
 | INPUT type = text, number, date, time | --- | elm.value | space |
 | INPUT type = checkbox | --- | If the element is "checked": elm.value | If the element is "checked": space |
 | INPUT type = textarea | (---) | (elm.value) | (space) |
@@ -77,7 +78,7 @@ At the top of the file there should be a short introduction and/ or overview tha
 | OPTION | --- | --- | --- |
 | SELECT | --- | --- | --- |
 |     |     |     |     |
-| Text-level semantics: |     |     |     |
+| **Text-level semantics:** |     |     |     |
 | A | --- | --- | "[" + elm.href + "] " |
 | BR | --- | --- | "\n" |
 | EM | --- | --- | --- |
