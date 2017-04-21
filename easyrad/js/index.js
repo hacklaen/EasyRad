@@ -50,6 +50,12 @@ $(document).ready(function () {
         $("#files").prop("disabled", true);
     }
 
+    if (!Clipboard.isSupported()) {
+        alert('The Clipboard APIis not supported in this browser.');
+        // Diabale copy to clipboard button
+        $("#to-clipboard-btn").prop("disabled", true);
+    }
+
     // Localize the text of the user interface
     localize();
 

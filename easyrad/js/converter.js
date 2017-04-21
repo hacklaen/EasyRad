@@ -193,7 +193,10 @@ function getLabelText(elm) {
     var labelElms;
 
     // Get the parent element
-    parentElm = elm.parentElement;
+    // On some browsers, the parentElement property is only defined on nodes that are themselves an Element.
+    // In particular, it is not defined on text nodes.
+    // var parentElm = elm.parentElement;
+    parentElm = elm.parentNode;
 
     switch (parentElm.nodeName) {
 
@@ -205,7 +208,7 @@ function getLabelText(elm) {
             // Find label            
             labelElms = $(document).find("label[for='" + elm.id + "']");
             if (labelElms.length > 0) {
-                labelText = labelElms.text();
+                labelText = labelElms.text().trim();
             }
     }
 
@@ -223,11 +226,24 @@ function preProcessElement(elm, text) {
     var labelText;
 
     //console.log(elm.nodeName);
-
+    //
     // Get the parent element
-    parentElm = elm.parentElement;
-    // Get optional Labe text
+    // On some browsers, the parentElement property is only defined on nodes that are themselves an Element.
+    // In particular, it is not defined on text nodes.
+    // var parentElm = elm.parentElement;
+    parentElm = elm.parentNode;
+
+    // Set optional label text
     labelText = getLabelText(elm);
+    if (labelText != null) {
+        if ((elm.nodeName == "INPUT") && (elm.type == "checkbox")) {
+            if (elm.checked) {
+                text += labelText + ": ";
+            }
+        } else {
+            text += labelText + ": ";
+        }
+    }
 
     switch (elm.nodeName) {
 
@@ -342,14 +358,14 @@ function preProcessElement(elm, text) {
  */
 function postProcessElement(elm, text) {
     var parentElm;
-    var labelText;
 
     //console.log(elm.nodeName);
-
+    //
     // Get the parent element
-    parentElm = elm.parentElement;
-    // Get optional Labe text
-    labelText = getLabelText(elm);
+    // On some browsers, the parentElement property is only defined on nodes that are themselves an Element.
+    // In particular, it is not defined on text nodes.
+    // var parentElm = elm.parentElement;
+    parentElm = elm.parentNode;
 
     switch (elm.nodeName) {
 
@@ -398,18 +414,11 @@ function postProcessElement(elm, text) {
                 case 'number':
                 case 'date':
                 case 'time':
-                    if (labelText != null) {
-                        text += labelText + ": ";
-                    }
                     text += elm.value + " ";
                     break;
 
                 case 'checkbox':
                     if (elm.checked) {
-                        if (labelText != null) {
-                            // Remove optional ending white spaces
-                            text += labelText + ": ";
-                        }
                         text += elm.value + " ";
                     }
                     break;
@@ -481,9 +490,6 @@ function postProcessElement(elm, text) {
             /* ==== Elements not supported by MRRT but found in DRG templates ==== */
 
         case "TEXTAREA":
-            if (labelText != null) {
-                text += labelText + ": ";
-            }
             text += elm.value;
             // Finish the line
             text += "\n";
@@ -519,9 +525,14 @@ function processTextNode(textNode, text) {
     nodeText = nodeText.trim();
 
     // Get the parent element
-    var parentElm = textNode.parentElement;
+    // On some browsers, the parentElement property is only defined on nodes that are themselves an Element.
+    // In particular, it is not defined on text nodes.
+    // var parentElm = textNode.parentElement;
+    var parentElm = textNode.parentNode;
+
     if (parentElm == null) {
         text += "\n" + "[Error: Text node has no parent element: " + nodeText + "]" + "\n";
+        return text;
     }
 
     switch (parentElm.nodeName) {
