@@ -21,6 +21,69 @@ Show what the library does as concisely as possible, developers should be able t
 
 ## Motivation
 
+| Elment |  | EasyRad repraesentation |  |  |
+| ------ | ------ | ------| ------ | ------  |
+ |  | Element Typ | Praefix | Content | Postfix |
+Special cases |  |  |  |  |  |
+ | Text between elements |  | --- | text |
+(white spaces at the beginning end end are removed) | space |
+ |  |  |  |  |  |
+ | LABEL |  | if label text is defined for an element, the following is inserted for the referenced element: |
+label text + ": " |
+If the referenced element is a "INPUT/checkbox" and the element is not checked, nothing is inserted. | --- | --- |
+ |  |  |  |  |  |
+ | Elements with attribute "disabled" or "hidden" set are ignored |  |  |  |  |
+ | Elements with a CSS property "display: none" or "visibility: hidden" are ignored |  |  |  |  |
+ |  |  |  |  |  |
+The root element  |  |  |  |  |  |
+ | HTML |  | --- | --- | --- |
+Document metadata  |  |  |  |  |  |
+ | HEAD |  | --- |  | --- |
+ | META |  | --- |  | --- |
+ | STYLE |  | --- | --- | --- |
+ | TITLE |  | --- |  | --- |
+ | LINK |  | --- | --- | --- |
+Scripting  |  |  |  |  |  |
+ | SCRIPT |  | --- | --- | --- |
+Embedded content  |  |  |  |  |  |
+ | EMBED |  | --- | --- | --- |
+ | IMG |  | --- | --- | "[" + elm.src + ", " + elm.alt + "] " |
+Sections  |  |  |  |  |  |
+ | BODY |  | --- | --- | --- |
+ | SECTION |  | "\n\n" | --- | --- |
+ | HEADER |  | --- | --- | "\n\n" |
+Grouping content  |  |  |  |  |  |
+ | LI |  | if the parent element is "UL": "-" |
+if the parent element is "OL": "x " | --- | "\n" |
+ | OL |  | "\n" | --- | --- |
+ | P |  | --- | --- | "\n\n" |
+ | UL |  | "\n" | --- | --- |
+Tables  |  |  |  |  |  |
+ | TABLE |  | "\n\n" | --- | "\n\n" |
+ | TD |  | --- | --- | --- |
+ | TH |  | --- | --- | --- |
+ | TR |  | --- | --- | "\n" |
+Forms |  |  |  |  |  |
+ | INPUT |  |  |  |  |
+ |  | text, number, date, time | --- | elm.value | space |
+ |  | checkbox | --- | if the element is "checked": |
+elm.value | if the element is "checked": |
+space |
+ |  | textarea | (---) | (elm.value) | (space) |
+ | TEXTAREA |  | --- | elm.value | "\n" |
+ | OPTION |  | --- | --- | --- |
+ | SELECT |  | --- | --- | --- |
+Text-level semantics |  |  |  |  |  |
+ | A |  | --- | --- | "[" + elm.href + "] " |
+ | BR |  | --- | --- | "\n" |
+ | EM |  | --- | --- | --- |
+ | Q |  | quote character | --- | quote character |
+ | SPAN |  | --- | --- | --- |
+ | STRONG |  | --- | --- | --- |
+ | SUB |  | --- | --- | --- |
+ | SUP |  | --- | --- | --- |
+ | U |  | --- | --- | ---  |
+
 A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
 
 ## Installation

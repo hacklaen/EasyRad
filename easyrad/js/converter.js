@@ -307,15 +307,18 @@ function preProcessElement(elm, text) {
             text += "\n\n";
             break;
 
+        case "OL":	// Ordered list
+        case "UL":	// Unordered list
+            text += "\n";
+            break;
+
         case "A":	// Hyperlink
         case "BR":	// Line break
         case "IMG":	// Image
-        case "OL":	// Ordered list
         case "P":	// Paragraph
         case "TD":	// Table cell
         case "TH":	// Header cell in a table
         case "TR":	// Table row
-        case "UL":	// Unordered list
             // Nothing to do
             break;
 
@@ -452,7 +455,7 @@ function postProcessElement(elm, text) {
 
         case "OL":	// Ordered list
         case "UL":	// Unordered list
-            text += "\n\n";
+            // Nothing to do
             break;
 
         case "LI":	// List item
