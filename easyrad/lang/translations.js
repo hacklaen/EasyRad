@@ -21,24 +21,30 @@
  *
  * @version 1.0
  * @author T. Hacklaender
- * @date 2017-04-20
+ * @date 2017-04-21
  */
 
-/*
- * var userLang = navigator.language || navigator.userLanguage; 
- * alert ("The language is: " + userLang);
- * 
- * Usage: text = translations[lang].color;
- * where lang = 'en-US' etc
- * Link: http://stackoverflow.com/questions/8923644/localizing-strings-in-javascript
- */
 var translations = {
-    en-US: {
-        color:'color',
-        cell:'cell phone'
+    
+    // For language selection use ISO 639-1 two-letter code
+    
+    en: {
+        favored_templates_btn: 'Favored Templates <span class="caret">',
+        files_button_text: 'Select Template',
+        get_info_btn: '?',
+        to_clipboard_btn: 'Copy',
+        template_title: 'Template title',
+        template_publisher: 'Publisher: ',
+        modal_title_text: 'Template Info',
     },
-    en-GB: {
-        color: 'colour',
-        cell: 'mobile phone'
+    
+    de: {
+        favored_templates_btn: 'Bevorzugte Vorlagen <span class="caret">',
+        files_button_text: 'Vorlage auswählen',
+        get_info_btn: '?',
+        to_clipboard_btn: 'Kopieren',
+        template_title: 'Titel der Befundvorlage',
+        template_publisher: 'Herausgeber: ',
+        modal_title_text: 'Infos über Befundvorlage',
     }
 };

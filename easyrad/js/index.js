@@ -19,6 +19,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
+ * @version 1.0
+ * @author T. Hacklaender
+ * @date 2017-04-21
+ */
+
+/*
  * Chrome Browsers do not allow cross origin requests for local files. If you load
  * this file in Chrome, the following exception is thrown:
  * "Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https.
@@ -26,10 +32,6 @@
  * See: http://stackoverflow.com/questions/20041656/xmlhttprequest-cannot-load-file-cross-origin-requests-are-only-supported-for-ht
  * The recommended local server as a Chrome extension "Web Server for Chrome" is an open source (MIT) HTTP server for Chrome:
  * Link: https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb?hl=en
- *
- * @version 1.0
- * @author T. Hacklaender
- * @date 2017-04-19
  */
 
 var clipboard;
@@ -39,6 +41,7 @@ var clipboard;
  */
 $(document).ready(function () {
 
+    // Test whether all requiered APIs are available in the browser
     if (window.File && window.FileReader && window.FileList && window.Blob) {
         // Great success! All the File APIs are supported.
     } else {
@@ -47,13 +50,18 @@ $(document).ready(function () {
         $("#files").prop("disabled", true);
     }
 
-    // Load sample data
-    //loadTemplate('./samples/IHE_MRRT_Example_TI_TH.html');
+    // Localize the text of the user interface
+    localize();
 
     // Build list of favored templates
     setupFavoredTemplates();
 
-    // Create a new clipboard object
+    // Load sample data
+    //loadTemplate('./samples/IHE_MRRT_Example_TI_TH.html');
+
+    /*
+     *  Create a Clipboard object.
+     */
     clipboard = new Clipboard('#to-clipboard-btn', {
         text: function (trigger) {
             // Convert the HTML content to formatted TEXT
@@ -65,19 +73,24 @@ $(document).ready(function () {
         }
     });
 
+
     /*
-     * Handler for the 'success' event of the clipboard
+     * Callback handler of the Clipboard object:
+     * Handles the 'success' event of the clipboard
      */
     clipboard.on('success', function (e) {
         // console.info('Action:', e.action);
         // console.info('Text:', e.text);
         // console.info('Trigger:', e.trigger);
 
+        // Clear the selection
         e.clearSelection();
     });
 
+
     /**
-     * Nothing to do in the moment
+     * Callback handler of the Clipboard object:
+     * Handles the 'error' event of the clipboard
      */
     clipboard.on('error', function (e) {
         // Nothing to do in the moment
@@ -85,9 +98,11 @@ $(document).ready(function () {
         // console.error('Trigger:', e.trigger);
     });
 
+
     /*
-     * Lesen von Dateien in JavaScript mit den File APIs
-     * See: https://www.html5rocks.com/de/tutorials/file/dndfiles/
+     * Loads a new template from the local filesystem.
+     * The function presents the user a standard file select dialog to select 
+     * the template.
      */
     $('#files').on("change", function handleFileSelect(evt) {
         var files;
@@ -106,6 +121,8 @@ $(document).ready(function () {
             return;
         }
 
+        // Lesen von Dateien in JavaScript mit den File APIs
+        // See: https://www.html5rocks.com/de/tutorials/file/dndfiles/
         fileReader = new FileReader();
 
         // Closure to capture the file information.
@@ -122,7 +139,8 @@ $(document).ready(function () {
 
 
     /**
-     * Handles the selection of the load menu-button in each row.
+     * Handles the selection of the load menu-button in each row of the favored 
+     * templates drop down.
      * 
      * @param e the event
      */
@@ -131,10 +149,34 @@ $(document).ready(function () {
         loadTemplate(url);
     })
 
+
+
     /**
+     * Handles the click of the [?] button.
      * 
-     * @param {type} url
-     * @returns {undefined}
+     * @param e the event
+     */
+    $('#get-info-btn').on('click', function () {
+        setupInfoTable();
+        // The header-tag has a z-index = 5003 in the default theme
+        // Move the modal dialog before the header
+        $('#template-info-modal-dialog').css('z-index', '10000');
+        $('#template-info-modal-dialog').modal('show');
+    });
+
+
+    /**
+     * Closes the info modal dialog when pressing the X in the dialogs header.
+     */
+    $('#modal-close-btn-x').on('click', function () {
+        $('#template-info-modal-dialog').modal('hide');
+    });
+
+
+    /**
+     * Loads a template file from a given URL.
+     * 
+     * @param url The URL of the template
      */
     function loadTemplate(url) {
         var title;
@@ -173,43 +215,17 @@ $(document).ready(function () {
             // Get the title of the template
             title = $('#template-html').find("title").text();
             // Display the title of the template
-            $('#template-title').text("Template: " + title)
+            $('#template-title').text(i18n('template_title'));
+            $('#template-title-value').text(title);
 
             dcterms = getDcterms();
             // Display the publisher of the template
-            $('#template-publisher').text("Publisher: " + dcterms['publisher']);
-
+            $('#template-publisher').text(i18n('template_publisher'));
+            $('#template-publisher-value').text(dcterms['publisher']);
         });
     }
-
-
-    /**
-     * Handles the click of the [Details] menu-button in each row of the file list.
-     * 
-     * @param e the event
-     */
-    $('#get-details-btn').on('click', function () {
-        setupInfoTable();
-        // The header-tag has a z-index = 5003 in the default theme
-        // Move the modal dialog before the header
-        $('#template-info-modal-dialog').css('z-index', '10000');
-        $('#template-info-modal-dialog').modal('show');
-    });
-
-    /**
-     * Closes the details-modal dialog when pressing the X in the dialogs header.
-     */
-    $('#modal-close-btn-x').on('click', function () {
-        $('#template-info-modal-dialog').modal('hide');
-    });
-
-    /**
-     * Closes the details-modal dialog when pressing the close button in the dialogs footer.
-     */
-    $('#modal-close-btn').on('click', function () {
-        $('#template-info-modal-dialog').modal('hide');
-    });
 });
+
 
 /**
  * Gets the dcterms defined in the meta tags of the template.
@@ -230,6 +246,34 @@ function getDcterms() {
     }
 
     return dcterms;
+}
+
+
+/**
+ * Sets up the drop down list of favored templates.
+ */
+function setupFavoredTemplates() {
+    var fileDesc;
+    var content = "";
+
+    if (typeof favoredTemplates === 'undefined') {
+        $("#favored-templates-btn").attr("disabled", "true");
+        return;
+    } else {
+        $("#favored-templates-btn").removeAttr("disabled");
+    }
+
+    for (var i = 0, len = favoredTemplates.length; i < len; i++) {
+        fileDesc = favoredTemplates[i];
+        content += "<li data-url='" + fileDesc[1] + "'>";
+        content += '<a class="btn btn-default load-btn" ' + 'data-url="' + fileDesc[1] + '">';
+        content += fileDesc[0];
+        content += "</a>";
+        content += "</li>";
+    }
+
+    $('#favored-templates-list').empty();
+    $('#favored-templates-list').append(content);
 }
 
 
@@ -265,30 +309,61 @@ function setupInfoTable() {
     $('#info-table').append(content);
 }
 
+
 /**
- * 
- * @returns {undefined}
+ * Localizes the text of the user interface to the language used by the browser.
  */
-function setupFavoredTemplates() {
-    var fileDesc;
-    var content = "";
+function localize() {
+    $("#favored-templates-btn").html(i18n('favored_templates_btn'));
+    $("#files").filestyle('buttonText', i18n('files_button_text'));
+    $("#get-info-btn").html(i18n('get_info_btn'));
+    $("#to-clipboard-btn").html(i18n('to_clipboard_btn'));
 
-    if (typeof favoredTemplates === 'undefined') {
-        $("#favored-templates-btn").attr("disabled", "true");
-        return;
+    // Set in function loadTemplate(url) for each template loaded
+    // $("#template-title").html(i18n('template_title'));
+    // $("#template-publisher").html(i18n('template_publisher'));
+
+    $("#modal-title-text").text(i18n('modal_title_text'));
+}
+
+
+/**
+ * Get the localized string corresponing to a given key.
+ * The localization is given in the language, which is preselected in the used
+ * browser.
+ * 
+ * @param key The key to search the localization for
+ * @returns The localized string. If no translation is found for the requested
+ *          language, English is used as a fallback. If no translation could be
+ *          found, the key is returned as a last fallback.
+ */
+function i18n(key) {
+    var t;
+    var iso = navigator.language || navigator.userLanguage;
+
+    // If no translations available return the given keying as fallback
+    if (typeof translations === 'undefined') {
+        return key;
+    }
+    // Will evaluate to true if value is not: null, undefined, NaN, empty keying (""), 0 or false
+    // Return english translation as a fallback
+    if (!iso) {
+        iso = "en";
+    }
+    if (iso.length < 2) {
+        iso = "en";
+    }
+
+    // Get the ISO 639-1 two-letter code
+    iso = iso.substr(0, 2);
+
+    // Get the translation
+    t = translations[iso][key];
+
+    if (t) {
+        return t;
     } else {
-        $("#favored-templates-btn").removeAttr("disabled");
+        // If no translations available return the given keying as fallback
+        return key;
     }
-
-    for (var i = 0, len = favoredTemplates.length; i < len; i++) {
-        fileDesc = favoredTemplates[i];
-        content += "<li data-url='" + fileDesc[1] + "'>";
-        content += '<a class="btn btn-default load-btn" ' + 'data-url="' + fileDesc[1] + '">';
-        content += fileDesc[0];
-        content += "</a>";
-        content += "</li>";
-    }
-
-    $('#favored-templates-list').empty();
-    $('#favored-templates-list').append(content);
 }
