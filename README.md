@@ -31,7 +31,7 @@ At the top of the file there should be a short introduction and/ or overview tha
 | Special cases: |     |     |     |
 | Text between elements | --- | text (white spaces at the beginning and end are removed) | space |
 |     |     |     |     |
-| LABEL | if label text is defined for an element, the following is inserted for the referenced element: label text + ":". If the referenced element is a ""INPUT/checkbox"" and the element is not checked, nothing is inserted. | --- | --- | --- |
+| LABEL | if label text is defined for an element, the following is inserted for the referenced element: label text + ":". If the referenced element is a "INPUT/checkbox" and the element is not checked, nothing is inserted. | --- | --- | --- |
 |     |     |     |     |
 | Elements with attribute "disabled" or "hidden" set are ignored |     |     |     |
 | Elements with a CSS property "display: none" or "visibility: hidden" are ignored |     |     |     |
