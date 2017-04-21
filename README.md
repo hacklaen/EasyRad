@@ -40,7 +40,7 @@ At the top of the file there should be a short introduction and/ or overview tha
 | HTML | --- | --- | --- |
 |     |     |     |     |
 | **Document metadata:** |     |     |     |
-| HEAD | --- |     | --- |
+| HEAD | --- | --- | --- |
 | META | --- |     | --- |
 | STYLE | --- | --- | --- |
 | TITLE | --- |     | --- |
@@ -82,7 +82,7 @@ At the top of the file there should be a short introduction and/ or overview tha
 | A | --- | --- | "[" + elm.href + "]" + space |
 | BR | --- | --- | newline |
 | EM | --- | --- | --- |
-| Q | quote character | --- | quote character |
+| Q | quote | --- | quote |
 | SPAN | --- | --- | --- |
 | STRONG | --- | --- | --- |
 | SUB | --- | --- | --- |
