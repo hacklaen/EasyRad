@@ -51,36 +51,36 @@ At the top of the file there should be a short introduction and/ or overview tha
 |     |     |     |     |
 | **Embedded content:** |     |     |     |
 | EMBED | --- | --- | --- |
-| IMG | --- | --- | "[" + elm.src + ", " + elm.alt + "] " |
+| IMG | --- | --- | "[" + elm.src + ", " + elm.alt + "]" + space |
 |     |     |     |     |
 | **Sections:** |     |     |     |
 | BODY | --- | --- | --- |
-| SECTION | "\n\n" | --- | --- |
-| HEADER | --- | --- | "\n\n" |
+| SECTION | newline newline | --- | --- |
+| HEADER | --- | --- | newline newline |
 |     |     |     |     |
 | **Grouping content:** |     |     |     |
-| LI | If the parent element is "UL": "- ". If the parent element is "OL": "x " | --- | "\n" |
-| OL | "\n" | --- | --- |
-| P | --- | --- | "\n\n" |
-| UL | "\n" | --- | --- |
+| LI | If the parent element is "UL": "-" + space. If the parent element is "OL": "x" + space | --- | newline |
+| OL | newline | --- | --- |
+| P | --- | --- | newline newline |
+| UL | newline | --- | --- |
 |     |     |     |     |
 | **Tables:** |     |     |     |
-| TABLE | "\n\n" | --- | "\n\n" |
+| TABLE | newline newline | --- | newline newline |
 | TD | --- | --- | --- |
 | TH | --- | --- | --- |
-| TR | --- | --- | "\n" |
+| TR | --- | --- | newline |
 |     |     |     |     |
 | **Forms:** |     |     |     |
 | INPUT type = text, number, date, time | --- | elm.value | space |
 | INPUT type = checkbox | --- | If the element is "checked": elm.value | If the element is "checked": space |
 | INPUT type = textarea | (---) | (elm.value) | (space) |
-| TEXTAREA | --- | elm.value | "\n" |
+| TEXTAREA | --- | elm.value | newline |
 | OPTION | --- | --- | --- |
 | SELECT | --- | --- | --- |
 |     |     |     |     |
 | **Text-level semantics:** |     |     |     |
-| A | --- | --- | "[" + elm.href + "] " |
-| BR | --- | --- | "\n" |
+| A | --- | --- | "[" + elm.href + "]" + space |
+| BR | --- | --- | newline |
 | EM | --- | --- | --- |
 | Q | quote character | --- | quote character |
 | SPAN | --- | --- | --- |
