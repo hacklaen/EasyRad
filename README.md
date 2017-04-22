@@ -57,7 +57,7 @@ Due to limitations of the used clipboard.js library the following browsers are s
 - IE 9+
 - Opera 29+
 
-## Rendering of template
+### Rendering of templates
 The MRRT templates are first rendered as HTML5 content. Because HTML5 does not support the `<INPUT type="textarea">` element defined in MRRT, this element is replaced by a `<textarea>` element.
 When pressing the `COPY` button, the HTML5 content is rendered as pure text. For that the following rules applay:
 
