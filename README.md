@@ -5,21 +5,6 @@ EasyRad is a browser application that allows you to fill out radiology report te
 
 
 
-## Synopsis
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
-
-[The user interface](easyrad/img/docs/ui-no-template.png)
-
-[The user interface with loaded template](easyrad/img/docs/ui-template.png)
-
-[Information about the actual template](easyrad/img/docs/ui-template.png)
-
-[The user interface with loaded template](easyrad/img/docs/ui-info.png)
-
-[Final text copied to the clipboard](easyrad/img/docs/copy-clipboard.png)
-
-
-
 ## Installation
 Download the `easyrad` directory of this project to either a local directory or a server directory.
 
@@ -32,6 +17,20 @@ THAT's ALL!
 
 ## Configuration
 Provide code examples and explanations of how to get the project.
+
+
+
+## Usage
+
+[The user interface](easyrad/img/docs/ui-no-template.png)
+
+[The user interface with loaded template](easyrad/img/docs/ui-template.png)
+
+[Information about the actual template](easyrad/img/docs/ui-template.png)
+
+[The user interface with loaded template](easyrad/img/docs/ui-info.png)
+
+[Final text copied to the clipboard](easyrad/img/docs/copy-clipboard.png)
 
 
 
