@@ -125,6 +125,8 @@ When pressing the `COPY` button, the HTML5 content is rendered as pure text. For
 | SUP | --- | --- | --- |
 | U | --- | --- | --- |
 
+If the rendering results in two or more consecutive empty lines, they are replaced by one empty line before putting into the clipboard.
+
 
 
 ## Tests
