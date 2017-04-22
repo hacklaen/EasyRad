@@ -130,6 +130,7 @@ When pressing the `COPY` button, the HTML5 content is rendered as pure text. For
 ## Tests
 
 No tests are implemented yet.
+
 In the `samples` directory a test template `IHE_MRRT_Example_TI_TH.html` is available, which is based on the original IHE sample template. It is extended by tags allowed by the standard, but not included in the IHE sample file.
 In addition the `<textarea>` tag is include in the file although this tag is not allowed by the MRRT standard 
 
