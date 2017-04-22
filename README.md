@@ -57,12 +57,12 @@ When pressing the button a standard file dialog is presented, which allows to se
 
 ### [?]
 
-When pressing this button optional information about the actual loaded template are displayed in a modal dialog box.
+When pressing this button optional information about the actual loaded template is displayed in a modal dialog box.
 
 [Information about the actual template](easyrad/img/docs/ui-info.png)
 
 
-## Copy
+### Copy
 
 When pressing this button the HTML content including the modifications of the input elements done by the user are rendered to plain text and copied to the system clipboard.
 
