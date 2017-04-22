@@ -4,12 +4,43 @@ EasyRad is a browser application that allows you to fill out radiology report te
 **[HOMEPAGE](http://iftm.de/index.php/radiologie/easyrad)**
 
 
-## Implemented standard
+
+## Synopsis
+At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
+[The user interface](img/docs/ui-no-template.png)
+[The user interface with loaded template](img/docs/ui-template.png)
+[Information about the actual template](img/docs/ui-template.png)
+[The user interface with loaded template](img/docs/ui-info.png)
+[Final text copied to the clipboard](img/docs/copy-clipboard.png)
+
+
+
+## Installation
+Provide code examples and explanations of how to get the project.
+
+
+
+## Configuration
+Provide code examples and explanations of how to get the project.
+
+
+
+## Implementation details
+
+### Implemented standard
 EasyRad implements the technical specification given in Volume 3 “Content Modules” of the standard in the version of September 9, 2016. The text could be downloaded here: [http://ihe.net/Technical_Frameworks/]( http://ihe.net/Technical_Frameworks/) 
 
-### Limitations
+#### Additional features
+The application renders the '<textarea>' tag although it is not allowed by MRRT.
+'<label>' tags may be applied to all tags although MRRT restricts them to template fields, i.e. '<select>' and '<input>' tags.
 
-Due to limitations of used libraries (clipboard.js) the following browsers are supported:
+#### Limitations
+The actual version does not support referenced content inside template.
+This limitation causes, that 
+1.	referenced images are not displayed in the user interface,
+2.	The <embed> tag is ignored.
+
+Due to limitations of the used clipboard.js library the following browsers are supported:
 - Chrome 42+
 - Firefox 41+
 - Safari 10+
@@ -17,13 +48,9 @@ Due to limitations of used libraries (clipboard.js) the following browsers are s
 - IE 9+
 - Opera 29+
 
-### Additional features
-
-## Synopsis
-
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
-
-## Code Example
+## Rendering of template
+The MRRT templates are first rendered as HTML5 content. Because HTML5 does not support the '<INPUT type="textarea"> element defined in MRRT, this element is replaced by a '<textarea>' element.
+When pressing the 'COPY' button, the HTML5 content is rendered as pure text. For that the following rules applay:
 
 |Element | Praefix | Content | Postfix |
 |---|---|---|---|
@@ -89,30 +116,23 @@ At the top of the file there should be a short introduction and/ or overview tha
 | SUP | --- | --- | --- |
 | U | --- | --- | --- |
 
-
 Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
 
-## Motivation
 
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
-
-## Installation
-
-Provide code examples and explanations of how to get the project.
-
-## API Reference
-
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
 
 ## Tests
 
 No tests are implemented yet.
-In the `samples` directory a test template `IHE_MRRT_Example_TI_TH.html ` is available, which is based on the original IHE sample template. It is extended by tags allowed by the standard, but not included in the IHE sample file.
-In addition the `<textarea>` tag is include in the file although this tag is not allowed by the MRRT standard 
+In the 'samples' directory a test template 'IHE_MRRT_Example_TI_TH.html' is available, which is based on the original IHE sample template. It is extended by tags allowed by the standard, but not included in the IHE sample file.
+In addition the '<textarea>' tag is include in the file although this tag is not allowed by the MRRT standard 
+
+
 
 ## Contributors
 
 Contributions welcome!
+
+
 
 ## License
 
