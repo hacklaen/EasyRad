@@ -35,14 +35,38 @@ By editing the file `lang/translations.js` additional languages could be easyly 
 
 
 ## Usage
+The applications presents a simple user interface devided into three sections:
 
-[The user interface](easyrad/img/docs/ui-no-template.png)
+[The user interface withou a template](easyrad/img/docs/ui-no-template.png)
+
+
+The top sections contains several buttons to control the application. The middle section presents the template file rendered as HTML5. The bottom sections contains the copyright notice and license information.
+
+
+### Favored templates
+This drop-down menue allows to load one of predefined templates by selecting its name. The list of templates is configurable (see: Configuration >> List of favored templates).
 
 [The user interface with loaded template](easyrad/img/docs/ui-template.png)
 
-[Information about the actual template](easyrad/img/docs/ui-template.png)
 
-[The user interface with loaded template](easyrad/img/docs/ui-info.png)
+### Select template
+When pressing the button a standard file dialog is presented, which allows to select a local template file. After selecting an appropriate file its name is displayed left to the button and its content is rendered in the middle section of the user interface.
+
+[The user interface with loaded template](easyrad/img/docs/ui-template.png)
+
+
+### [?]
+
+When pressing this button optional information about the actual loaded template are displayed in a modal dialog box.
+
+[Information about the actual template](easyrad/img/docs/ui-info.png)
+
+
+## Copy
+
+When pressing this button the HTML content including the modifications of the input elements done by the user are rendered to plain text and copied to the system clipboard.
+
+Use the clipboard content to transfer the text to your RIS or HIS system or to put it into a wordprocessor.
 
 [Final text copied to the clipboard](easyrad/img/docs/copy-clipboard.png)
 
