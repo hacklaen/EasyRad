@@ -18,6 +18,8 @@ THAT's ALL!
 ## Configuration
 
 ### List of favored templates
+The user interface provides a drop-down menu for selecting favored templates. The selectable list of template files is user-configurable: The file  `easyrad/config/favored-templates.js` defines the array `favoredTemplates` which describes the menu as name - URL - pairs. To modify the list follow the istructions given in the file. After saving the file and reloading `easyrad/index.html` the new menu is available.
+
 
 ### Style adaption
 The style of the application can be overloaded by adding appropriate CSS rules to the file `easyrad/config/user.css`. If neccessary scripts could be added also in the file  `easyrad/config/user.js`.
@@ -25,12 +27,11 @@ The style of the application can be overloaded by adding appropriate CSS rules t
 Please note that these files are loaded after the applications files and override the defaut style. But, when loading a template, its optional style and script files may override the user files again.
 
 
-
 ### Translation of user interface
 
 The texts of the user interface are displayed in the preferred language selected in the browser. If the language is not available in the translations of the application English is used as the fall-back language.
 
-By editing the file `lang/translations.js` additional languages could be easyly provided: For a new language the block `en: {}` should be copied and labeled with the ISO 639-1 two-letter code of the new language instead of `en`. After that the english texts must be replaced with their translations. After saving the file and reloading of the `easyrad/index.html` file the new language is available.
+By editing the file `lang/translations.js` additional languages could be easyly provided: For a new language the block `en: {}` should be copied and labeled with the ISO 639-1 two-letter code of the new language instead of `en`. After that the english texts must be replaced with their translations. After saving the file and reloading `easyrad/index.html` the new language is available.
 
 
 ## Usage
