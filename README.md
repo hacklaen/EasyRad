@@ -43,26 +43,26 @@ The applications presents a simple user interface devided into three sections:
 The top sections contains several buttons to control the application. The middle section presents the template file rendered as HTML. The bottom sections contains the copyright notice and license information.
 
 
-### `Favored templates`
+#### `Favored templates`
 This drop-down menu allows to load one of predefined templates by selecting its name. The list of templates is configurable (see: Configuration >> List of favored templates).
 
 [The user interface with loaded template](easyrad/img/docs/ui-template.png)
 
 
-### `Select template`
+#### `Select template`
 When pressing the button a standard file dialog is presented, which allows to select a local template file. After selecting an appropriate file its name is displayed left to the button and its content is rendered in the middle section of the user interface.
 
 [The user interface with loaded template](easyrad/img/docs/ui-template.png)
 
 
-### ` ? `
+#### ` ? `
 
 When pressing this button optional information about the actual loaded template is displayed in a modal dialog box.
 
 [Information about the actual template](easyrad/img/docs/ui-info.png)
 
 
-### `Copy`
+#### `Copy`
 
 When pressing this button the HTML content including is rendered to plain text and copied to the system clipboard. The modifications of the input elements done by the user are respected.
 
