@@ -37,7 +37,7 @@ By editing the file `lang/translations.js` additional languages could be easyly 
 ## Usage
 The applications presents a simple user interface devided into three sections:
 
-[The user interface withou a template](easyrad/img/docs/ui-no-template.png)
+[The user interface without a template](easyrad/img/docs/ui-no-template.png)
 
 
 The top sections contains several buttons to control the application. The middle section presents the template file rendered as HTML. The bottom sections contains the copyright notice and license information.
