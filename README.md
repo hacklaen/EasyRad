@@ -40,11 +40,11 @@ The applications presents a simple user interface devided into three sections:
 [The user interface withou a template](easyrad/img/docs/ui-no-template.png)
 
 
-The top sections contains several buttons to control the application. The middle section presents the template file rendered as HTML5. The bottom sections contains the copyright notice and license information.
+The top sections contains several buttons to control the application. The middle section presents the template file rendered as HTML. The bottom sections contains the copyright notice and license information.
 
 
 ### Favored templates
-This drop-down menue allows to load one of predefined templates by selecting its name. The list of templates is configurable (see: Configuration >> List of favored templates).
+This drop-down menu allows to load one of predefined templates by selecting its name. The list of templates is configurable (see: Configuration >> List of favored templates).
 
 [The user interface with loaded template](easyrad/img/docs/ui-template.png)
 
