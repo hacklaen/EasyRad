@@ -1,5 +1,5 @@
 # EasyRad
-EasyRad is a browser application that allows you to fill out radiology report templates and to copy the result into the clipboard for further processing. The templates must comply with the IHE Radiology Technical Framework Supplement Management of Radiology Report Templates (MRRT).
+EasyRad is a browser application that allows you to fill out radiology report templates and to copy the result as plain text into the clipboard for further processing. The templates must comply with the IHE Radiology Technical Framework Supplement Management of Radiology Report Templates (MRRT).
 
 **[HOMEPAGE](http://iftm.de/index.php/radiologie/easyrad)**
 
@@ -21,7 +21,12 @@ At the top of the file there should be a short introduction and/ or overview tha
 
 
 ## Installation
-Provide code examples and explanations of how to get the project.
+Download the `easyrad` directory of this project to either a local directory or a server directory.
+
+Start a web browser and enter the link to the downloaded directory followed by `/index.html`.
+Sample: If you have downloaded the files to your local computer at `C:/tmp/easyrad/` enter the following link in browser: `file:///C:/tmp/easyrad/index.html`. When using the software on a server the `index.html` may be ommitted.
+
+THAT's ALL!
 
 
 
@@ -33,7 +38,7 @@ Provide code examples and explanations of how to get the project.
 ## Implementation details
 
 ### Implemented standard
-EasyRad implements the technical specification given in Volume 3 “Content Modules” of the standard in the version of September 9, 2016. The text could be downloaded here: [http://ihe.net/Technical_Frameworks/]( http://ihe.net/Technical_Frameworks/) 
+EasyRad renders report templates which fulfill the technical specification given in Volume 3 "Content Modules" of the MRRT standard in the version of September 9, 2016. The text could be downloaded here: [http://ihe.net/Technical_Frameworks/]( http://ihe.net/Technical_Frameworks/) 
 
 #### Additional features
 The application renders the `<textarea>` tag although it is not allowed by MRRT.
