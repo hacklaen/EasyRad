@@ -167,9 +167,13 @@ If the rendering results in two or more consecutive empty lines, they are replac
 
 
 
+### Used libraries
+
+
+
 ## Create/Edit templates
 
-A good starting point for creation or editing of templates is the online version of the report template editor T-Rex [T-Rex](http://report.karoshealth.com:8888/trex/).
+A good starting point for creation or editing of templates is the online version of the report template editor [T-Rex](http://report.karoshealth.com:8888/trex/).
 
 
 
