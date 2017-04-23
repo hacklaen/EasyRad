@@ -129,17 +129,17 @@ When pressing the `COPY` button, the HTML5 content is rendered as pure text. For
 |     |     |     |     |
 | **Sections:** |     |     |     |
 | BODY | --- | --- | --- |
-| SECTION | newline newline | --- | --- |
-| HEADER | --- | --- | newline newline |
+| SECTION | newline + newline | --- | --- |
+| HEADER | --- | --- | newline + newline |
 |     |     |     |     |
 | **Grouping content:** |     |     |     |
 | LI | If the parent element is "UL": "-" + space. If the parent element is "OL": "x" + space | --- | newline |
 | OL | newline | --- | --- |
-| P | --- | --- | newline newline |
+| P | --- | --- | newline + newline |
 | UL | newline | --- | --- |
 |     |     |     |     |
 | **Tables:** |     |     |     |
-| TABLE | newline newline | --- | newline newline |
+| TABLE | newline + newline | --- | newline + newline |
 | TD | --- | --- | --- |
 | TH | --- | --- | --- |
 | TR | --- | --- | newline |
