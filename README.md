@@ -107,7 +107,7 @@ When pressing the `COPY` button, the HTML5 content is rendered as pure text. For
 | **Special cases:** |     |     |     |
 | Text between elements | --- | text (white spaces at the beginning and end are removed) | space |
 |     |     |     |     |
-| LABEL | if label text is defined for an element, the following is inserted for the referenced element: label text + ":". If the referenced element is a "INPUT/checkbox" and the element is not checked, nothing is inserted. | --- | --- | --- |
+| LABEL The following is inserted as a praefix of the referenced element. If the referenced element is a "INPUT/checkbox" and the element is not checked, nothing is inserted. | --- | label.text | ":" + space |
 |     |     |     |     |
 | Elements with attribute "disabled" or "hidden" set are ignored |     |     |     |
 | Elements with a CSS property "display: none" or "visibility: hidden" are ignored |     |     |     |
