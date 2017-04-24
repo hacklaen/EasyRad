@@ -85,7 +85,9 @@ The application renders the `<textarea>` tag although it is not allowed by MRRT.
 The actual version does not support referenced content inside template.
 This limitation causes, that 
 1.	referenced images are not displayed in the user interface,
-2.	The `<embed>` tag is ignored.
+2.	the `<embed>` tag is ignored.
+
+Templates may import stylsheets with the `<link>` tag, but the URL in tag must be specified relative to the `easyrad/index.html` file.
 
 Due to limitations of the used clipboard.js library the following browsers are supported:
 - Chrome 42+
