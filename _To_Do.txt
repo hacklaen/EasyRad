@@ -1,4 +1,22 @@
 
+============ 2017-04-26 ============
+
+Additional attributes of the templates may be stored in the <script> tag
+(MRRT: Table 8.1.1-2: Other Metadata Elements for Report Templates). 
+
+<script>
+    <template_attributes>
+        <top-level-flag>true</top-level-flag>
+        <status>ACTIVE</status>
+        <user-list>Doe,Mustermann</user-list>
+        <provider-group-list>Radiologist,Students</provider-group-list>
+    </template_attributes>
+</script>
+
+=> These attributes should be displayed in the info dialog as well.
+
+
+
 ============ 2017-04-23 ============
 
 W3C states that URLs of stylesheets must ALWAYS be relativ to the file they referre to.
