@@ -20,7 +20,7 @@
  * 
  * @version 0.1 alpha
  * @author T. Hacklaender
- * @date 2017-05-03
+ * @date 2017-05-05
  */
 
 
@@ -33,7 +33,6 @@ function newTemplate() {
 
     // Create a new HTML document
     var doc = document.implementation.createHTMLDocument('');
-//    addEmptyHead(doc);
 
     setTemplateDoc(doc);
 }
@@ -52,7 +51,6 @@ function newDicom20() {
 
     // Create a new HTML document
     var doc = document.implementation.createHTMLDocument('');
-//    addEmptyHead(doc);
 
     sectionElm = doc.createElement('SECTION');
     sectionElm.setAttribute('class', 'level1');
@@ -136,7 +134,6 @@ function newDin25300() {
 
     // Create a new HTML document
     var doc = document.implementation.createHTMLDocument('');
-//    addEmptyHead(doc);
 
     sectionElm = doc.createElement('SECTION');
     sectionElm.setAttribute('class', 'level1');
@@ -207,96 +204,6 @@ function newDin25300() {
     setTemplateDoc(doc);
 }
 
-/**
- * Adds template attributes to the document.
- * See: 8.1.1 Template Attributes in MRRT documentation.
- * 
- * @param doc The documnet to add to.
- */
-function addEmptyHead(doc) {
-    var metaElm;
-    var scriptElm;
-    var template_attributes_Elm;
-    var top_level_flag_Elm;
-
-    metaElm = doc.createElement('META');
-    metaElm.setAttribute('charset', 'UTF-8');
-    doc.getElementsByTagName('head')[0].appendChild(metaElm);
-
-    metaElm = doc.createElement('META');
-    metaElm.setAttribute('name', 'dcterms.title');
-    metaElm.setAttribute('content', '');
-    doc.getElementsByTagName('head')[0].appendChild(metaElm);
-
-    metaElm = doc.createElement('META');
-    metaElm.setAttribute('name', 'dcterms.identifier');
-    metaElm.setAttribute('content', '');
-    doc.getElementsByTagName('head')[0].appendChild(metaElm);
-
-    metaElm = doc.createElement('META');
-    metaElm.setAttribute('name', 'dcterms.type');
-    metaElm.setAttribute('content', '');
-    doc.getElementsByTagName('head')[0].appendChild(metaElm);
-
-    metaElm = doc.createElement('META');
-    metaElm.setAttribute('name', 'dcterms.language');
-    metaElm.setAttribute('content', '');
-    doc.getElementsByTagName('head')[0].appendChild(metaElm);
-
-    metaElm = doc.createElement('META');
-    metaElm.setAttribute('name', 'dcterms.publisher');
-    metaElm.setAttribute('content', '');
-    doc.getElementsByTagName('head')[0].appendChild(metaElm);
-
-    metaElm = doc.createElement('META');
-    metaElm.setAttribute('name', 'dcterms.rights');
-    metaElm.setAttribute('content', '');
-    doc.getElementsByTagName('head')[0].appendChild(metaElm);
-
-    metaElm = doc.createElement('META');
-    metaElm.setAttribute('name', 'dcterms.license');
-    metaElm.setAttribute('content', '');
-    doc.getElementsByTagName('head')[0].appendChild(metaElm);
-
-    metaElm = doc.createElement('META');
-    metaElm.setAttribute('name', 'dcterms.date');
-    metaElm.setAttribute('content', '');
-    doc.getElementsByTagName('head')[0].appendChild(metaElm);
-
-    metaElm = doc.createElement('META');
-    metaElm.setAttribute('name', 'dcterms.creator');
-    metaElm.setAttribute('content', '');
-    doc.getElementsByTagName('head')[0].appendChild(metaElm);
-
-    metaElm = doc.createElement('META');
-    metaElm.setAttribute('name', 'dcterms.contributor');
-    metaElm.setAttribute('content', '');
-    doc.getElementsByTagName('head')[0].appendChild(metaElm);
-
-    // Add additional XML attributes
-
-    scriptElm = doc.createElement('SCRIPT');
-    doc.getElementsByTagName('head')[0].appendChild(scriptElm);
-
-    template_attributes_Elm = doc.createElement('template_attributes');
-    scriptElm.appendChild(template_attributes_Elm);
-
-    top_level_flag_Elm = doc.createElement('top_level_flag');
-    top_level_flag_Elm.textContent = 'true';
-    template_attributes_Elm.appendChild(top_level_flag_Elm);
-
-    top_level_flag_Elm = doc.createElement('status');
-    top_level_flag_Elm.textContent = 'ACTIVE';
-    template_attributes_Elm.appendChild(top_level_flag_Elm);
-
-    top_level_flag_Elm = doc.createElement('user-list');
-    top_level_flag_Elm.textContent = '';
-    template_attributes_Elm.appendChild(top_level_flag_Elm);
-
-    top_level_flag_Elm = doc.createElement('provider-group-list');
-    top_level_flag_Elm.textContent = '';
-    template_attributes_Elm.appendChild(top_level_flag_Elm);
-}
 
 /**
  * Appends a HTML <textarea> element, not the MRRT <input type="textarea"> element.

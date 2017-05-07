@@ -18,9 +18,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @version 1.0
+ * @version 1.1
  * @author T. Hacklaender
- * @date 2017-04-19
+ * @date 2017-05-07
  */
 
 
@@ -41,6 +41,12 @@ function convert(htmlElm) {
 
     // Allow max 1 blank line between text
     text = text.replace(/\n{3,}/g, '\n\n');
+
+    // Allow 1 space between text
+    text = text.replace(/ {1,}/g, ' ');
+
+    // Replace space followed by period by period only
+    text = text.replace(/ \./g, '.');
 
     return text;
 }
@@ -71,8 +77,6 @@ function jQueryHtml2text(htmlElm) {
  * @returns {String}
  */
 function mrrt2text(htmlElm) {
-    var text;
-
     // Get the native DOM element from the JQuery element
     var domElement = htmlElm[0];
 
@@ -88,7 +92,6 @@ function mrrt2text(htmlElm) {
  */
 function walk(node, text) {
     var i;
-    var str;
     var childNodes;
     var childNode;
 
@@ -107,47 +110,7 @@ function walk(node, text) {
 
         switch (childNode.nodeType) {
             case Node.ELEMENT_NODE:
-                // Do not process 'disabled' or 'hidden' elements and their chidren
-                if (childNode.hasAttribute("disabled") || childNode.hasAttribute("hidden")) {
-                    continue;
-                }
-
-                // Should not be used: CSS hiding of elements
-                if (childNode.style.display === 'none') {
-                    continue;
-                }
-                if (childNode.style.visibility === 'hidden') {
-                    continue;
-                }
-
-                switch (childNode.nodeName) {
-                    case "SCRIPT":
-                    case "STYLE":
-                    case "LINK":
-                        // Ignore SCRIPT, STYLE and LINK tags and teire children
-                        continue;
-
-                    case "TEXTAREA":
-                        text = preProcessElement(childNode, text);
-                        // Ignore the child TEXT node: It is already value of the element
-                        text = postProcessElement(childNode, text);
-                        break;
-
-                    case "LABEL":
-                        // Ignore label nodes. They are handeled in preProcessElement and postProcessElement
-                        var inputOrTextareaElements = $(childNode).find("input, textarea");
-                        if (inputOrTextareaElements.length != 0) {
-                            text = preProcessElement(inputOrTextareaElements[0], text);
-                            // Ignore the child TEXT node: It is already value of the element
-                            text = postProcessElement(inputOrTextareaElements[0], text);
-                        }
-                        continue;
-
-                    default:
-                        text = preProcessElement(childNode, text);
-                        text = walk(childNode, text);
-                        text = postProcessElement(childNode, text);
-                }
+                text = processElementNode(childNode, text);
                 break;
 
             case Node.TEXT_NODE:
@@ -176,94 +139,61 @@ function walk(node, text) {
                 text += "\n" + "[Error: Unknown node type = " + childNode.nodeType + "]" + "\n";
                 text = walk(childNode, text);
         }
-
     }
     return text;
 }
 
-/**
- * Tries to find a label linked to the given element.
- * 
- * @param elm The element to which the label should be searched
- * @returns {window.$|$}
- */
-function getLabelText(elm) {
-    var labelText = null;
-    var parentElm;
-    var labelElms;
-
-    // Get the parent element
-    // On some browsers, the parentElement property is only defined on nodes that are themselves an Element.
-    // In particular, it is not defined on text nodes.
-    // var parentElm = elm.parentElement;
-    parentElm = elm.parentNode;
-
-    switch (parentElm.nodeName) {
-
-        case "LABEL":
-            labelText = parentElm.innerText.trim();
-            break;
-
-        default:
-            // Find label            
-            labelElms = $(document).find("label[for='" + elm.id + "']");
-            if (labelElms.length > 0) {
-                labelText = labelElms.text().trim();
-            }
-    }
-
-    return labelText;
-}
 
 /**
  * 
- * @param {type} elm
- * @param {type} text
- * @returns {unresolved}
+ * @param Element elm
  */
-function preProcessElement(elm, text) {
+function processElementNode(elm, text) {
     var parentElm;
     var labelText;
+    var elmValue;
 
-    //console.log(elm.nodeName);
-    //
+    // Do not process 'disabled' or 'hidden' elements and their chidren
+    if (elm.hasAttribute("disabled") || elm.hasAttribute("hidden")) {
+        return text;
+    }
+
+    // Should not be used: CSS hiding of elements
+    if (elm.style.display === 'none') {
+        return text;
+    }
+    if (elm.style.visibility === 'hidden') {
+        return text;
+    }
+
     // Get the parent element
     // On some browsers, the parentElement property is only defined on nodes that are themselves an Element.
     // In particular, it is not defined on text nodes.
     // var parentElm = elm.parentElement;
     parentElm = elm.parentNode;
 
-    // Set optional label text
-    labelText = getLabelText(elm);
-    if (labelText != null) {
-        if ((elm.nodeName == "INPUT") && (elm.type == "checkbox")) {
-            if (elm.checked) {
-                text += labelText + ": ";
-            }
-        } else {
-            text += labelText + ": ";
-        }
-    }
+    // Get the optional label text
+    labelText = getElmLabelText(elm);
+
+    // Get the value of the element
+    elmValue = getElmValue(elm);
 
     switch (elm.nodeName) {
 
         /* ==== General HTML structural tags ==== */
 
-        case "HTML":
-        case "HEAD":
-        case "BODY":
         case "META":
         case "SCRIPT":
         case "STYLE":
         case "LINK":
-            // Nothing to do
+            // Ignore elements and teire children
             break;
 
             /* ==== MRRT specific structural tags ==== */
 
         case "TITLE":
         case "EMBED":
-            // Nothing to do
+            text = walk(elm, text);
             break;
 
             /* ==== 8.1.3. Report template fields ==== */
@@ -271,17 +201,91 @@ function preProcessElement(elm, text) {
         case "SECTION": // 8.1 Report Template Structure
             // Finish previous line and append a blank line
             text += "\n\n";
+            text = walk(elm, text);
             break;
 
         case "HEADER":  // SECTION header
-        case "INPUT":   // Attribute type = text, textarea, number, date, time, checkbox
+            text = walk(elm, text);
+            // Finish previous line and append blank line
+            text += "\n\n";
+            break;
+
         case "SELECT":  // A form to collect user input
+            if (elmValue.length > 0) {
+                if (labelText.length > 0) {
+                    text += labelText + " ";
+                }
+                text += elmValue + " ";
+            }
+            text = walk(elm, text);
+            break;
+
         case "OPTION":  // 8.1.3.5.1 Selection Items
+            // OPTIONS are evaluated in getElmValue() for SELECT element
+            break;
+
         case "LABEL":   // 8.1.3.2 Linkage Between Template Text and Template Fields
-            // Nothing to do
+            text = walk(elm, text);
+            break;
+
+        case "INPUT":   // Attribute type = text, textarea, number, date, time, checkbox
+            text = walk(elm, text);
+            switch (elm.type) {
+                case 'text':
+                case 'number':
+                case 'date':
+                case 'time':
+                    if (elm.value.length > 0) {
+                        if (labelText.length > 0) {
+                            text += labelText + " ";
+                        }
+                        text += getElmValue(elm) + " ";
+                    }
+                    break;
+
+                case 'checkbox':
+                    if (elm.checked) {
+                        if (labelText.length > 0) {
+                            text += labelText + " ";
+                        }
+                        text += getElmValue(elm) + " ";
+                    }
+                    break;
+
+                case 'textarea':
+                    if (elm.value.length > 0) {
+                        if (labelText.length > 0) {
+                            text += labelText + " ";
+                        }
+                        text += getElmValue(elm);
+                        // Finish the line
+                        text += "\n";
+                    }
+                    break;
+
+                default:
+                    text += "\n" + "[Error: Attribute not supported in INPUT: " + elm.type + "]" + "\n";
+            }
             break;
 
             /* ==== 8.1.5 Permitted HTML5 Formatting Tags ==== */
+
+        case "A":	// Hyperlink
+            text += "[" + elm.href + "] ";
+            text = walk(elm, text);
+            text += " ";
+            break;
+
+        case "BR":	// Line break
+            text = walk(elm, text);
+            text += "\n";
+            break;
+
+        case "IMG":	// Image
+            text += "[" + elm.src + ", " + elm.alt + "] ";
+            text = walk(elm, text);
+            text += " ";
+            break;
 
         case "LI":	// List item
             switch (parentElm.nodeName) {
@@ -296,30 +300,43 @@ function preProcessElement(elm, text) {
                 default:
                     text += "? ";
             }
-            break;
-
-        case "Q":	// Short quotation
-            text += '"';
-            break;
-
-        case "TABLE":	// Defines a table
-            // Finish previous line and append a blank line
-            text += "\n\n";
+            text = walk(elm, text);
+            text += "\n";
             break;
 
         case "OL":	// Ordered list
         case "UL":	// Unordered list
             text += "\n";
+            text = walk(elm, text);
             break;
 
-        case "A":	// Hyperlink
-        case "BR":	// Line break
-        case "IMG":	// Image
         case "P":	// Paragraph
+            text = walk(elm, text);
+            text += "\n\n";
+            break;
+
+        case "Q":	// Short quotation
+            text += '"';
+            text = walk(elm, text);
+            text += '" ';
+            break;
+
+        case "TABLE":	// Defines a table
+            // Finish previous line and append a blank line
+            text += "\n\n";
+            text = walk(elm, text);
+            text += "\n\n";
+            break;
+
         case "TD":	// Table cell
         case "TH":	// Header cell in a table
+            text = walk(elm, text);
+            text += "\t";
+            break;
+
         case "TR":	// Table row
-            // Nothing to do
+            text = walk(elm, text);
+            text += "\n";
             break;
 
             /* ==== General HTML formatting tags ==== */
@@ -330,13 +347,13 @@ function preProcessElement(elm, text) {
         case "SUB":	// Subscripted text
         case "SUP":	// Superscripted text
         case "U":	// Stylistically different text, often underlined
-            // Nothing to do
+            text = walk(elm, text);
             break;
 
             /* ==== Elements optional generated by browser ==== */
 
         case "TBODY":
-            // Nothing to do
+            text = walk(elm, text);
             break;
 
             /* ==== Elements not supported by MRRT ==== */
@@ -344,166 +361,19 @@ function preProcessElement(elm, text) {
         case "TEXTAREA":
             // Finish previous line
             text += "\n";
-            break;
-
-        default:
-            text += "\n" + "[Error: HTML element not allowed (preprocess): " + elm.nodeName + "]" + "\n";
-    }
-
-    return text;
-}
-
-/**
- * 
- * @param {type} elm
- * @param {type} text
- * @returns {unresolved}
- */
-function postProcessElement(elm, text) {
-    var parentElm;
-
-    //console.log(elm.nodeName);
-    //
-    // Get the parent element
-    // On some browsers, the parentElement property is only defined on nodes that are themselves an Element.
-    // In particular, it is not defined on text nodes.
-    // var parentElm = elm.parentElement;
-    parentElm = elm.parentNode;
-
-    switch (elm.nodeName) {
-
-        /* ==== General HTML structural tags ==== */
-
-        case "HTML":
-        case "HEAD":
-        case "BODY":
-        case "META":
-        case "SCRIPT":
-        case "STYLE":
-        case "LINK":
-            // Nothing to do
-            break;
-
-            /* ==== MRRT specific structural tags ==== */
-
-        case "TITLE":
-        case "EMBED":
-            // Nothing to do
-            break;
-
-            /* ==== 8.1.3. Report template fields ==== */
-
-        case "SECTION": // 8.1 Report Template Structure
-            // Nothing to do
-            break;
-
-        case "HEADER":  // SECTION header
-            // Finish previous line and append blank line
-            text += "\n\n";
-            break;
-
-        case "SELECT":  // A form to collect user input
-            // Nothing to do
-            break;
-
-        case "OPTION":  // 8.1.3.5.1 Selection Items
-            // Text node decides whether the text must be appended (depending on 'selected' property)
-            break;
-
-        case "INPUT":   // Attribute type = text, textarea, number, date, time, checkbox
-            switch (elm.type) {
-                case 'text':
-                case 'textarea':
-                case 'number':
-                case 'date':
-                case 'time':
-                    text += elm.value + " ";
-                    break;
-
-                case 'checkbox':
-                    if (elm.checked) {
-                        text += elm.value + " ";
-                    }
-                    break;
-
-                default:
-                    text += "\n" + "[Error: Attribute not supported in INPUT: " + elm.type + "]" + "\n";
+            // Ignore the child TEXT node: It is already value of the element
+            if (elm.value.length > 0) {
+                if (labelText.length > 0) {
+                    text += labelText + " ";
+                }
+                text += getElmValue(elm);
+                // Finish the line
+                text += "\n";
             }
             break;
 
-        case "LABEL":   // 8.1.3.2 Linkage Between Template Text and Template Fields
-            // Handling of ':' is done in text node processing
-            break;
-
-            /* ==== 8.1.5 Permitted HTML5 Formatting Tags ==== */
-
-        case "BR":	// Line break
-            text += "\n";
-            break;
-
-        case "P":	// Paragraph
-            text += "\n\n";
-            break;
-
-        case "A":	// Hyperlink
-            text += "[" + elm.href + "] ";
-            break;
-
-        case "IMG":	// Image
-            text += "[" + elm.src + ", " + elm.alt + "] ";
-            break;
-
-        case "OL":	// Ordered list
-        case "UL":	// Unordered list
-            // Nothing to do
-            break;
-
-        case "LI":	// List item
-            text += "\n";
-            break;
-
-        case "Q":	// Short quotation
-            text += '" ';
-            break;
-
-        case "TABLE":	// Defines a table
-            text += "\n\n";
-            break;
-
-        case "TR":	// Table row
-            text += "\n";
-            break;
-
-        case "TD":	// Table cell
-        case "TH":	// Header cell in a table
-            // Nothing to do
-            break;
-
-            /* ==== General HTML formatting tags ==== */
-
-        case "EM":	// Emphasized text, often in italics
-        case "SPAN":	// Groups inline text and other elements
-        case "STRONG":	// Important text, often bold
-        case "SUB":	// Subscripted text
-        case "SUP":	// Superscripted text
-        case "U":	// Stylistically different text, often underlined
-            // Nothing to do
-            break;
-
-            /* ==== Elements not supported by MRRT but found in DRG templates ==== */
-
-        case "TEXTAREA":
-            text += elm.value;
-            // Finish the line
-            text += "\n";
-            break;
-
-        case "TBODY":
-            // Nothing to do
-            break;
-
         default:
-            text += "\n" + "[Error: HTML element not allowed (postprocess): " + elm.nodeName + "]" + "\n";
+            text += "\n" + "[Error: Element not allowed in MRRT: " + elm.nodeName + "]" + "\n";
     }
 
     return text;
@@ -540,33 +410,19 @@ function processTextNode(textNode, text) {
 
     switch (parentElm.nodeName) {
         case "LABEL":   // 8.1.3.2 Linkage Between Template Text and Template Fields
-            // Labels should with ':'
-            if (nodeText.indexOf(':', nodeText.length - 1) == -1) {
-                nodeText += ":";
-            }
-            // Postfix with space.
-            text += nodeText + " ";
+            // LABEL text is evaluated in getElmLabelText()
             break;
 
         case "OPTION":  // 8.1.3.5.1 Selection Items
-            // 'selected' is a property
-            if (parentElm.selected) {
-                // Append text of selected options only. Postfix with space.
-                text += nodeText + " ";
-            }
+            // OPTIONs are evaluated in getElmValue() for SELECT element
             break;
 
         case "INPUT":   // Attribute type = text, textarea, number, date, time, checkbox
-            switch (parentElm.type) {
-                case 'checkbox':
-                    break;
-            }
+            // Text of INPUTs is evaluated in getElmValue()
             break;
 
-        case "TD":	// Table cell
-        case "TH":	// Header cell in a table
-            // Postfix with tab.
-            text += nodeText + "\t";
+        case "TEXTAREA":
+            // Text of TEXTAREAs is evaluated in getElmValue()
             break;
 
         default:
@@ -575,4 +431,198 @@ function processTextNode(textNode, text) {
     }
 
     return text;
+}
+
+
+/**
+ * Gets the value of the element as a String.
+ * 
+ * @param Element elm The element to analyse
+ * @returns String The value of the element. An empty string is returned, if no value
+ *                 is specified.
+ */
+function getElmValue(elm) {
+    var elmValue;
+    var childElms;
+
+    // By default the value is empty
+    elmValue = '';
+
+    switch (elm.nodeName) {
+
+        /* ==== General HTML structural tags ==== */
+
+        case "HTML":
+        case "HEAD":
+        case "BODY":
+        case "META":
+        case "SCRIPT":
+        case "STYLE":
+        case "LINK":
+            // No value
+            break;
+
+            /* ==== MRRT specific structural tags ==== */
+
+        case "TITLE":
+        case "EMBED":
+            // No value
+            break;
+
+            /* ==== 8.1.3. Report template fields ==== */
+
+        case "SECTION": // 8.1 Report Template Structure
+        case "HEADER":  // SECTION header
+        case "LABEL":   // 8.1.3.2 Linkage Between Template Text and Template Fields
+            // No value
+            break;
+
+        case "SELECT":  // A form to collect user input
+            //  The value of the SELECT element is the text of the selected option(s)
+            // Get all child elements (not nodes)
+            childElms = elm.children;
+            for (var i = 0; i < childElms.length; i++) {
+                if (childElms[i].nodeName === "OPTION") {
+                    if (childElms[i].selected) {
+                        if (elmValue.length > 0) {
+                            elmValue += OPTIONS_DELIMITER;
+                        }
+                        // MRRT specifies in 8.1.3.5.1 Selection Items, that the value of an OPTION is its value attribute, not the displayed text
+                        // Text and content of value attribute must be the same according to MRRT!
+                        elmValue += childElms[i].getAttribute("value");
+                    }
+                }
+            }
+            break;
+
+        case "OPTION":  // 8.1.3.5.1 Selection Items
+            // OPTIONS are evaluated by the "SELECT" element
+            break;
+
+        case "INPUT":   // Attribute type = text, textarea, number, date, time, checkbox
+            switch (elm.type) {
+                case 'text':
+                case 'textarea':
+                case 'number':
+                case 'date':
+                case 'time':
+                    elmValue = elm.value;
+                    break;
+
+                case 'checkbox':
+                    if (elm.checked) {
+                        elmValue = elm.value;
+                    }
+                    break;
+
+                default:
+                    elmValue = "\n" + "[Error: Attribute not supported in INPUT: " + elm.type + "]" + "\n";
+            }
+            break;
+
+            /* ==== 8.1.5 Permitted HTML5 Formatting Tags ==== */
+
+        case "BR":	// Line break
+        case "LI":	// List item
+        case "OL":	// Ordered list
+        case "P":	// Paragraph
+        case "Q":	// Short quotation
+        case "TABLE":	// Defines a table
+        case "TR":	// Table row
+        case "TD":	// Table cell
+        case "TH":	// Header cell in a table
+        case "UL":	// Unordered list
+            // No value
+            break;
+
+        case "A":	// Hyperlink
+            elmValue = "[" + elm.href + "]";
+            break;
+
+        case "IMG":	// Image
+            elmValue = "[" + elm.src + ", " + elm.alt + "]";
+            break;
+
+            /* ==== General HTML formatting tags ==== */
+
+        case "EM":	// Emphasized text, often in italics
+        case "SPAN":	// Groups inline text and other elements
+        case "STRONG":	// Important text, often bold
+        case "SUB":	// Subscripted text
+        case "SUP":	// Superscripted text
+        case "U":	// Stylistically different text, often underlined
+            // No value
+            break;
+
+            /* ==== Elements optional generated by browser ==== */
+
+        case "TBODY":
+            // No value
+            break;
+
+            /* ==== Elements not supported by MRRT but found in DRG templates ==== */
+
+        case "TEXTAREA":
+            elmValue = elm.value;
+            break;
+
+        default:
+            elmValue = "\n" + "[Error: Element not allowed in MRRT: " + elm.nodeName + "]" + "\n";
+    }
+
+    return elmValue;
+}
+
+
+/**
+ * Gets the text of the <label> associated with an element.
+ * 
+ * NOTE: To allow processing of templates which are not strict conform to MRRT,
+ * inline labels are processed here also.
+ * For the strict rule see MRRT: 8.1.3.2 Linkage Between Template Text and Template Fields
+ * 
+ * @param Element elm The element to which the label should be searched
+ * @returns String The text of the label. An empty string is returned, if no label
+ *                 is specified.
+ */
+function getElmLabelText(elm) {
+    var labelText;
+    var parentElm;
+    var labelElms;
+
+    // By default the value is empty
+    labelText = "";
+
+    if (typeof elm === 'undefined') {
+        return labelText;
+    }
+
+    // Get the parent element
+    // On some browsers, the parentElement property is only defined on nodes that are themselves an Element.
+    // In particular, it is not defined on text nodes.
+    // var parentElm = elm.parentElement;
+    parentElm = elm.parentNode;
+
+    switch (parentElm.nodeName) {
+
+        case "LABEL":
+            // Inline labels are not specified in MRRT: 8.1.3.2 Linkage Between Template Text and Template Fields
+            labelText += "[WARNING: Inline labels are not supported by MRRT] ";
+            labelText += parentElm.textContent.trim();
+            break;
+
+        default:
+            // Find label            
+            labelElms = $(document).find("label[for='" + elm.id + "']");
+            if (labelElms.length > 0) {
+                labelText += labelElms.text().trim();
+            }
+    }
+
+    // End the label with suffix
+    if (!labelText.endsWith(LABEL_SUFFIX)) {
+        labelText = labelText + LABEL_SUFFIX;
+    }
+
+    return labelText;
 }

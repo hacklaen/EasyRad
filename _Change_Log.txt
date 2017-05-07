@@ -1,4 +1,18 @@
 
 ============ 2017-04-23 ============
 
+Release Version 1.1
+
+x Modification of /samples/IHE_MRRT_Example_TI_TH.html
+x Design modification of the "Get Info" button.
+
++ New implemented parameter: easyrad_param_template
++ New implemented parameter: asyrad_param_hide_selection
++ Template Attributes specified in the templated now included in the info dilaog
+
++ Experimental alpha release of a template editor in /edit/index.html
+
+
+============ 2017-04-23 ============
+
 Release Version 1.0

@@ -14,3 +14,5 @@ die IHE Beispiel noch nicht enthalten sind.
 
 Die Bezeichnung des definierte Template Attributes "<top_level_flag>" (Zeile 21) ist nicht korrekt.
 Nach dem MRRT Standard muss sie lauten: <top-level-flag>
+
+Die folgenden Template Attribute wurden ergänzt (Zeile 22ff): <status>, <user-list>, <provider-group-list>

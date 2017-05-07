@@ -21,7 +21,7 @@
  * 
  * @version 1.0
  * @author T. Hacklaender
- * @date 2017-04-21
+ * @date 2017-05-05
  */
 
 /*
@@ -33,6 +33,22 @@
  * The recommended local server as a Chrome extension "Web Server for Chrome" is an open source (MIT) HTTP server for Chrome:
  * Link: https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb?hl=en
  */
+
+
+/*=============================================
+ *====      Configuration parameters       ====
+ *===========================================*/
+
+/* EasyRad parameter: The URL of the template display when opening the report creator */
+//var easyrad_param_template = '';
+//var easyrad_param_template = './samples/IHE_MRRT_Example_TI_TH.html';
+var easyrad_param_template = './samples/content-only.html';
+
+/* EasyRad parameter: If true, the UI elements to select a new teplate are hidden. */
+//var easyrad_param_hide_selection = false;
+
+/* ========================================= */
+
 
 var clipboard;
 
@@ -62,8 +78,16 @@ $(document).ready(function () {
     // Build list of favored templates
     setupFavoredTemplates();
 
+    // Setup user interface
+    if ((typeof easyrad_param_hide_selection !== "undefined") && (easyrad_param_hide_selection.length > 0)) {
+        $("#favored-templates-btn").hide();
+        $("#files-div").hide();
+    }
+
     // Load sample data
-    //loadTemplate('./samples/IHE_MRRT_Example_TI_TH.html');
+    if ((typeof easyrad_param_template !== "undefined") && (easyrad_param_template.length > 0)) {
+        loadTemplate(easyrad_param_template);
+    }
 
     /*
      *  Create a Clipboard object.
@@ -234,7 +258,7 @@ $(document).ready(function () {
 
 
 /**
- * Gets the dcterms defined in the meta tags of the template.
+ * Gets the dcterms defined in the meta tags of the included template.
  * 
  * @returns Object containing the dcterms as properties (keys) and their content as values.
  */
@@ -252,6 +276,41 @@ function getDcterms() {
     }
 
     return dcterms;
+}
+
+
+/**
+ * Gets the template attributes defined in the <script type="text/xml"> tag of the included template.
+ * 
+ * @returns Object containing the template attributes (keys) and their content as values.
+ */
+function getTemplateAttributes() {
+    var xmlScriptElm;
+    var xmlDoc;
+    var templateAttrElms;
+    var key;
+
+    var templateAttrs = new Array();
+
+    // Get the <script> element containg XML content
+    xmlScriptElm = getXmlScriptElm(document);
+    if (xmlScriptElm !== null) {
+        // Convert the XML <script> element into a XML document.
+        xmlDoc = xmlScriptToXmlDoc(xmlScriptElm);
+
+        // Extract the template attribute information from the XML document
+        for (var i = 0; i < templateAttributes.length; i++) {
+            templateAttrElms = xmlDoc.getElementsByTagName(templateAttributes[i]);
+            if (templateAttrElms.length > 0) {
+                key = templateAttributes[i];
+                // Replace '-' in name with space
+                key = key.replace('-', ' ');
+                templateAttrs[key] = templateAttrElms[0].textContent;
+            }
+        }
+    }
+
+    return templateAttrs;
 }
 
 
@@ -290,7 +349,12 @@ function setupFavoredTemplates() {
 function setupInfoTable() {
     var content;
     var upper;
-    var dcterms = getDcterms();
+    var dcterms;
+    var templateAttrs;
+
+    /* Setup the Dublin Core Metadata Elements */
+
+    dcterms = getDcterms();
 
     // JavaScript does not know associative arrays. Instead properties of an object are used.
     // See: http://stackoverflow.com/questions/8312459/iterate-through-object-properties
@@ -307,6 +371,27 @@ function setupInfoTable() {
         content += "</td>";
         content += "<td>";
         content += dcterms[key];
+        content += "</td>";
+        content += "</tr>";
+    });
+
+    /* Setup the template attributes */
+
+    templateAttrs = getTemplateAttributes();
+
+    Object.keys(templateAttrs).forEach(function (key, index) {
+        // key: the name of the object key
+        // index: the ordinal position of the key within the object 
+        content += "<tr>";
+        content += "<td>";
+        // Capitalize first character
+        upper = key.toLowerCase().replace(/\b[a-z]/g, function (letter) {
+            return letter.toUpperCase();
+        });
+        content += upper;
+        content += "</td>";
+        content += "<td>";
+        content += templateAttrs[key];
         content += "</td>";
         content += "</tr>";
     });

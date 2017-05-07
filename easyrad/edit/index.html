@@ -21,7 +21,7 @@
  *
  * @version 0.1 alpha
  * @author T. Hacklaender
- * @date 2017-05-03
+ * @date 2017-05-05
 -->
 <html>
 
@@ -32,14 +32,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <!-- External libraries -->    
-        <script src="../js/jquery-3.2.0.js"></script> 
-        <script src="../js/bootstrap.min.js"></script> 
-        <script src="../js/clipboard.min.js"></script> 
-        <script src="../js/bootstrap-filestyle.min.js"></script>
-        <script src="./js/tinymce.min.js"></script>
+        <script src="../libs/jquery-3.2.0.js"></script> 
+        <script src="../libs/bootstrap.min.js"></script> 
+        <script src="../libs/clipboard.min.js"></script> 
+        <script src="../libs/bootstrap-filestyle.min.js"></script>
+
+        <script src="./libs/tinymce.min.js"></script>
 
         <!-- Project includes -->    
-        <script src="./js/main.js"></script> 
+        <script src="../config/config.js"></script> 
+        <script src="../js/main.js"></script> 
         <script src="./lang/edit-translations.js"></script> 
         <script src="./js/empty-templates.js"></script> 
         <script src="./js/index.js"></script> 
@@ -163,112 +165,112 @@
                             <div class="row  col-md-12">
 
                                 <form class="form-horizontal">
-                                    
+
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="email">Title:</label>
                                         <div class="col-sm-5">
                                             <input id="dcterms-title" type="text" class="form-control">
                                         </div>
                                     </div>
-                                    
+
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="pwd">Identifier:</label>
                                         <div class="col-sm-5">
                                             <input id="dcterms-identifier" type="text" class="form-control">
                                         </div>
                                     </div>
-                                    
+
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="pwd">Type:</label>
                                         <div class="col-sm-5">
                                             <input id="dcterms-type" type="text" class="form-control">
                                         </div>
                                     </div>
-                                    
+
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="pwd">Publisher:</label>
                                         <div class="col-sm-5">
                                             <input id="dcterms-publisher" type="text" class="form-control">
                                         </div>
                                     </div>
-                                    
+
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="pwd">Rights:</label>
                                         <div class="col-sm-5">
                                             <input id="dcterms-rights" type="text" class="form-control">
                                         </div>
                                     </div>
-                                    
+
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="pwd">License:</label>
                                         <div class="col-sm-5">
                                             <input id="dcterms-license" type="text" class="form-control">
                                         </div>
                                     </div>
-                                    
+
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="pwd">Date:</label>
                                         <div class="col-sm-5">
                                             <input id="dcterms-date" type="text" class="form-control">
                                         </div>
                                     </div>
-                                    
+
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="pwd">Creator:</label>
                                         <div class="col-sm-5">
                                             <input id="dcterms-creator" type="text" class="form-control">
                                         </div>
                                     </div>
-                                     
+
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="pwd">Contributor:</label>
                                         <div class="col-sm-5">
                                             <input id="dcterms-contributor" type="text" class="form-control">
                                         </div>
                                     </div>
-                                     
+
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="pwd">Relation:</label>
                                         <div class="col-sm-5">
                                             <input id="dcterms-relation" type="text" class="form-control">
                                         </div>
                                     </div>
-                                     
+
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="pwd">Language:</label>
                                         <div class="col-sm-5">
                                             <input id="dcterms-language" type="text" class="form-control">
                                         </div>
                                     </div>
-                                     
+
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="pwd">Top level flag:</label>
                                         <div class="col-sm-5">
                                             <input id="top-level-flag" type="text" class="form-control">
                                         </div>
                                     </div>
-                                     
+
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="pwd">Status:</label>
                                         <div class="col-sm-5">
                                             <input id="status" type="text" class="form-control">
                                         </div>
                                     </div>
-                                     
+
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="pwd">User list:</label>
                                         <div class="col-sm-5">
                                             <input id="user-list" type="text" class="form-control">
                                         </div>
                                     </div>
-                                     
+
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="pwd">Provider group list:</label>
                                         <div class="col-sm-5">
                                             <input id="provider-group-list" type="text" class="form-control">
                                         </div>
                                     </div>
-                                      
+
                                 </form>
 
                             </div> <!-- row -->

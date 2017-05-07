@@ -20,54 +20,27 @@
  * 
  * @version 0.1 alpha
  * @author T. Hacklaender
- * @date 2017-05-02
+ * @date 2017-05-05
  */
 
-/*
- * Chrome Browsers do not allow cross origin requests for local files. If you load
- * this file in Chrome, the following exception is thrown:
- * "Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https.
- * Besides using another browser, like Firefox, using a lokal server would be work around:
- * See: http://stackoverflow.com/questions/20041656/xmlhttprequest-cannot-load-file-cross-origin-requests-are-only-supported-for-ht
- * The recommended local server as a Chrome extension "Web Server for Chrome" is an open source (MIT) HTTP server for Chrome:
- * Link: https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb?hl=en
- */
+/*=============================================
+ *====      Configuration parameters       ====
+ *===========================================*/
 
-/* EasyRad parameter: The URL of the teplate to edit */
+/* EasyRad Editor parameter: The URL of the template to edit when opening the editor */
 var easyrad_param_template_to_edit = '../samples/IHE_MRRT_Example_TI_TH.html';
 //var easyrad_param_template_to_edit = 'file:///C:/Users/Tom/Desktop/EasyRad/EasyRadEdit_Project/GitHub/EasyRad/easyrad/samples/IHE_MRRT_Example_TI_TH.html';
 
+/* ========================================= */
 
-/* Dublin Core Metadata defined in MRRT table 8.1.1-1: Dublin Core Metadata Elements for Report Templates.
- * MRRT specifies the metadata in the format 'dcterms:title' wheras RSNA templates and the IHE sample file
- * use the notation 'dcterms.title' */
-var dcTerms = [
-    'dcterms.title',
-    'dcterms.identifier',
-    'dcterms.type',
-    'dcterms.publisher',
-    'dcterms.rights',
-    'dcterms.license',
-    'dcterms.date',
-    'dcterms.creator',
-    'dcterms.contributor',
-    'dcterms.relation',
-    'dcterms.language',
-];
 
-/* Template attributes defined in MRRT table 8.1.1-2: Other Metadata Elements for Report Templates */
-var templateAttributes = [
-    'top-level-flag',
-    'status',
-    'user-list',
-    'provider-group-list',
-];
-
-/* The template in the editor as a Documnet object (set before editing starts). */
+/* The template in the editor as a HTML Document object (set before editing starts). */
 var templateDoc;
 
-/* The name of the templates file (set if loaded from fileystem). */
+
+/* The name of the templates file (set if template was loaded from fileystem). */
 var templateFilename;
+
 
 /*
  * Defer the JQuery scripts until the DOM has been completely parsed.
@@ -270,18 +243,17 @@ $(document).ready(function () {
 
 
 /**
+ * Set the template in the editor.
  * 
- * @param Document doc
+ * @param Document doc the template as a HTML document.
  */
 function setTemplateDoc(doc) {
     var bodyHtml;
     var metaElms;
     var name;
-    var scriptElms;
-    var parser;
-    var xml;
     var xmlDoc;
     var templateAttrElms;
+    var xmlScriptElm;
     var dcTermName;
     var dcTermId;
     var attrName;
@@ -333,19 +305,11 @@ function setTemplateDoc(doc) {
         $('#' + name).val(metaElms[i].getAttribute('content'));
     }
 
-    // Get template attributes
-    scriptElms = templateDoc.getElementsByTagName('script');
-    for (var i = 0; i < scriptElms.length; i++) {
-        if (scriptElms[i].getAttribute('type') !== 'text/xml') {
-            continue;
-        }
-
-        // Convert the content of the <script> element into an XML document
-        xml = scriptElms[i].textContent;
-        // Create a valid XML structure
-        xml = '<?xml version="1.0" encoding="UTF-8"?> <root> ' + xml + ' </root>';
-        parser = new DOMParser();
-        xmlDoc = parser.parseFromString(xml, "text/xml");
+    // Get the <script> element containg XML content
+    xmlScriptElm = getXmlScriptElm(templateDoc);
+    if (xmlScriptElm !== null) {
+        // Convert the XML <script> element into a XML document.
+        xmlDoc = xmlScriptToXmlDoc(xmlScriptElm);
 
         // Extract the template attribute information from the XML document
         for (var k = 0; k < templateAttributes.length; k++) {
@@ -359,12 +323,23 @@ function setTemplateDoc(doc) {
 
 
 /**
- * Updates the document to reflect the edited changes in the content editor and the info dialog.
+ * Updates the template HTML document to reflect the edited changes in the content 
+ * editor and the info dialog.
  */
 function updateTemplateDoc() {
     var dcTermName;
     var dcTermId;
     var dcTermVal;
+    var xmlScriptElm;
+    var xmlDoc;
+    var templateAttributesElms;
+    var templateAttributesElm;
+    var attrElms;
+    var attrElm;
+    var attrVal;
+    var serializer;
+    var xml;
+    var rootChildElms;
 
     /* Update changes by the content editor */
 
@@ -382,9 +357,55 @@ function updateTemplateDoc() {
         updateDcTerm(dcTermName, dcTermVal);
     }
 
-    for (var i = 0; i < templateAttributes.length; i++) {
+    // Get/create a XML script element
+    xmlScriptElm = getXmlScriptElm(templateDoc);
+    if (xmlScriptElm === null) {
+        xmlScriptElm = templateDoc.createElement('SCRIPT');
+        xmlScriptElm.setAttribute('type', 'text/xml');
+        templateDoc.head.appendChild(xmlScriptElm);
 
     }
+    // Convert the script elements content to a XML document
+    xmlDoc = xmlScriptToXmlDoc(xmlScriptElm);
+
+    // Get/create <template_attributes> element
+    templateAttributesElms = xmlDoc.getElementsByTagName('template_attributes');
+    if (templateAttributesElms.length === 0) {
+        templateAttributesElm = xmlDoc.createElement('template_attributes');
+        xmlDoc.documentElement.appendChild(templateAttributesElm);
+    } else {
+        templateAttributesElm = templateAttributesElms[0];
+    }
+
+    // Process all template attributes
+    for (var i = 0; i < templateAttributes.length; i++) {
+        // Get the edited value
+        attrVal = $('#' + templateAttributes[i]).val();
+
+        attrElms = xmlDoc.getElementsByTagName(templateAttributes[i]);
+        if (attrElms.length === 0) {
+            // Not defined, crete new element
+            attrElm = xmlDoc.createElement(templateAttributes[i]);
+            attrElm.textContent = attrVal;
+            templateAttributesElm.appendChild(attrElm);
+        } else {
+            // Update (first) existing element
+            attrElms[0].textContent = attrVal;
+        }
+    }
+
+    // Get the XML text
+    serializer = new XMLSerializer();
+    rootChildElms = xmlDoc.documentElement.children;
+    xml = '';
+
+    for (var i = 0; i < rootChildElms.length; i++) {
+        xml = xml + serializer.serializeToString(rootChildElms[i]) + '\n';
+    }
+    xml = xml.trim();
+
+    // Update the XML script content
+    xmlScriptElm.textContent = xml;
 
     /* Modification of the documents DOM could be done here */
 
@@ -393,10 +414,10 @@ function updateTemplateDoc() {
 
 
 /**
+ * Updates a single Dublin Core Metadata Element in the templates HTML document.
  * 
- * @param {type} dcTermName
- * @param {type} dcTermVal
- * @returns {undefined}
+ * @param String dcTermName The name of the Dublin Core Metadata Element
+ * @param String dcTermVal The value of the Dublin Core Metadata Element
  */
 function updateDcTerm(dcTermName, dcTermVal) {
     var metaElms;
@@ -431,6 +452,8 @@ function updateDcTerm(dcTermName, dcTermVal) {
 
 /**
  * Loads a template file from a given URL.
+ * The function calls setTemplateDoc(doc) as a call back when loading has 
+ * finished (asynchrone).
  * 
  * @param url The URL of the template
  */
@@ -524,10 +547,12 @@ function i18n(key) {
 
 
 /**
+ * Hack to save a text as a file in the local filesystem.
+ * 
  * Link: https://thiscouldbebetter.wordpress.com/2012/12/18/loading-editing-and-saving-a-text-file-in-html5-using-javascrip/
  * 
- * @param {type} textToSave
- * @param {type} fileNameToSaveAs
+ * @param String textToSave The text to save.
+ * @param String fileNameToSaveAs The name (not the path!) of the file to save.
  */
 function saveTextAsFile(textToSave, fileNameToSaveAs) {
     var textToSaveAsBlob = new Blob([textToSave], {type: "text/plain"});
@@ -545,7 +570,7 @@ function saveTextAsFile(textToSave, fileNameToSaveAs) {
 }
 
 /**
- * 
+ * Call back of function saveTextAsFile() called after saving the file.
  * @param {type} event
  */
 function destroyClickedElement(event) {
