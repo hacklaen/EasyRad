@@ -17,11 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * @author T. Hacklaender
- * @date 2017-05-06
+ * @date 2017-05-08
  */
 
 // For Text in Clipboard: Delimiter between to options in one select element
 OPTIONS_DELIMITER = ", ";
 
-// For Text in Clipboard: The suffix to append to a label if not already present
+// For Text in Clipboard: The suffix to append to a label if not already present. May be an empty string.
 LABEL_SUFFIX = ":";
+
+// For Text in Clipboard: If true, a warning is displayed if an element not supported by MRRT is found.
+//                        If false, the element and its children are ignored.
+NOT_PERMITTED_WARNING = false;

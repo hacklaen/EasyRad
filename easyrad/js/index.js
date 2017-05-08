@@ -42,7 +42,7 @@
 /* EasyRad parameter: The URL of the template display when opening the report creator */
 //var easyrad_param_template = '';
 //var easyrad_param_template = './samples/IHE_MRRT_Example_TI_TH.html';
-var easyrad_param_template = './samples/content-only.html';
+var easyrad_param_template = './samples/IHE_MRRT_Example_TI_TH_content_only.html';
 
 /* EasyRad parameter: If true, the UI elements to select a new teplate are hidden. */
 //var easyrad_param_hide_selection = false;

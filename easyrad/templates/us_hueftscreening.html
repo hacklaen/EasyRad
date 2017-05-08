@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ultraschall Hüftscreening</title>
+    <meta charset="UTF-8">
+    <!--Dublin Core metadata elements here-->
+    <meta name="dcterms.title" content="Ultraschall Hüftscreening">
+    <meta name="dcterms.description" content="Befundungstemplate für Screening der Hüften (L1, Version 1, inkl. Javascript)">
+    <meta name="dcterms.identifier" content="DRG.us.hueftscreening">
+    <meta name="dcterms.type" content="IMAGE_REPORT_TEMPLATE">
+    <meta name="dcterms.language" content="de">
+    <meta name="dcterms.rights" content="May be used freely, subject to license agreement">
+    <meta name="dcterms.license" content="http://www.radreport.org/license.pdf">
+    <meta name="dcterms.date" content="2016-04-24">
+    <meta name="dcterms.creator" content="Pinto dos Santos D">
+    <meta name="dcterms.contributor" content="Mildenberger P, Staatz G, Schulte J, Arnhold G">
+    <meta name="dcterms.publisher" content="Deutsche Röntgengesellschaft (DRG)">
+    <!--Link to Stylesheet-->
+    <script type="text/xml">
+        <!--
+        <template_attributes>
+        <top-level-flag>0</top-level-flag>
+        <status>ACTIVE</status>
+        </template_attributes>
+		-->
+    </script>
+    <!--Link to Stylesheet-->
+    <style type="text/css">
+        textarea { width:500px; height: 50px; }
+        td { padding-right: 15px; vertical-align: top; }
+    </style>
+</head>
+<body>
+    
+    <script type="text/javascript">
+        
+        function calculatehiptype (side) {
+            
+            if ( side === 'rechts' ) {
+                var alpha = Number(document.getElementById('us_hueftscreening_alphare').value);
+                var beta = Number(document.getElementById('us_hueftscreening_betare').value);
+                var hiptypeid = 'us_hueftscreening_hiptype_re';
+            } else if ( side === 'links' ) {
+                var alpha = Number(document.getElementById('us_hueftscreening_alphali').value);
+                var beta = Number(document.getElementById('us_hueftscreening_betali').value);
+                var hiptypeid = 'us_hueftscreening_hiptype_li';
+            }
+            
+            if ( alpha == 0 || beta == 0 ) {
+                return false;
+            }
+            else if ( alpha <= 43 && beta > 77 ) {
+                document.getElementById(hiptypeid).value = 6;
+                document.getElementById(hiptypeid).options[0].disabled = false;
+                document.getElementById(hiptypeid).options[1].disabled = true;
+                document.getElementById(hiptypeid).options[2].disabled = true;
+                document.getElementById(hiptypeid).options[3].disabled = true;
+                document.getElementById(hiptypeid).options[4].disabled = true;
+                document.getElementById(hiptypeid).options[5].disabled = true;
+                document.getElementById(hiptypeid).options[6].disabled = true;
+                document.getElementById(hiptypeid).options[7].disabled = false;
+                document.getElementById(hiptypeid).options[8].disabled = false;
+                document.getElementById(hiptypeid).options[8].disabled = false;
+            }
+            else if ( alpha <= 50 && beta > 77 ) {
+                document.getElementById(hiptypeid).value = 5;
+                document.getElementById(hiptypeid).options[0].disabled = false;
+                document.getElementById(hiptypeid).options[1].disabled = true;
+                document.getElementById(hiptypeid).options[2].disabled = true;
+                document.getElementById(hiptypeid).options[3].disabled = true;
+                document.getElementById(hiptypeid).options[4].disabled = true;
+                document.getElementById(hiptypeid).options[5].disabled = true;
+                document.getElementById(hiptypeid).options[6].disabled = false;
+                document.getElementById(hiptypeid).options[7].disabled = true;
+                document.getElementById(hiptypeid).options[8].disabled = true;
+                document.getElementById(hiptypeid).options[9].disabled = false;
+            }
+            else if ( alpha <= 50 && beta <= 77 ) {
+                document.getElementById(hiptypeid).value = 4;
+                document.getElementById(hiptypeid).options[0].disabled = false;
+                document.getElementById(hiptypeid).options[1].disabled = true;
+                document.getElementById(hiptypeid).options[2].disabled = true;
+                document.getElementById(hiptypeid).options[3].disabled = true;
+                document.getElementById(hiptypeid).options[4].disabled = true;
+                document.getElementById(hiptypeid).options[5].disabled = false;
+                document.getElementById(hiptypeid).options[6].disabled = true;
+                document.getElementById(hiptypeid).options[7].disabled = true;
+                document.getElementById(hiptypeid).options[8].disabled = true;
+                document.getElementById(hiptypeid).options[9].disabled = false;
+            }
+            else if ( alpha > 50 && alpha < 60 && beta >= 55 && beta <= 77 ) {
+                document.getElementById(hiptypeid).value = 2;
+                document.getElementById(hiptypeid).options[0].disabled = false;
+                document.getElementById(hiptypeid).options[1].disabled = true;
+                document.getElementById(hiptypeid).options[2].disabled = true;
+                document.getElementById(hiptypeid).options[3].disabled = false;
+                document.getElementById(hiptypeid).options[4].disabled = false;
+                document.getElementById(hiptypeid).options[5].disabled = true;
+                document.getElementById(hiptypeid).options[6].disabled = true;
+                document.getElementById(hiptypeid).options[7].disabled = true;
+                document.getElementById(hiptypeid).options[8].disabled = true;
+                document.getElementById(hiptypeid).options[9].disabled = false;
+            }
+            else if ( alpha >= 60 && beta >= 55 ) {
+                document.getElementById(hiptypeid).value = 1;
+                document.getElementById(hiptypeid).options[0].disabled = false;
+                document.getElementById(hiptypeid).options[1].disabled = true;
+                document.getElementById(hiptypeid).options[2].disabled = false;
+                document.getElementById(hiptypeid).options[3].disabled = true;
+                document.getElementById(hiptypeid).options[4].disabled = true;
+                document.getElementById(hiptypeid).options[5].disabled = true;
+                document.getElementById(hiptypeid).options[6].disabled = true;
+                document.getElementById(hiptypeid).options[7].disabled = true;
+                document.getElementById(hiptypeid).options[8].disabled = true;
+                document.getElementById(hiptypeid).options[9].disabled = false;
+            }
+            else if ( alpha >= 60 && beta < 55 ) {
+                document.getElementById(hiptypeid).value = 0;
+                document.getElementById(hiptypeid).options[0].disabled = false;
+                document.getElementById(hiptypeid).options[1].disabled = false;
+                document.getElementById(hiptypeid).options[2].disabled = true;
+                document.getElementById(hiptypeid).options[3].disabled = true;
+                document.getElementById(hiptypeid).options[4].disabled = true;
+                document.getElementById(hiptypeid).options[5].disabled = true;
+                document.getElementById(hiptypeid).options[6].disabled = true;
+                document.getElementById(hiptypeid).options[7].disabled = true;
+                document.getElementById(hiptypeid).options[8].disabled = true;
+                document.getElementById(hiptypeid).options[9].disabled = false;
+            }
+            else {
+                alert ( "Fehler in automatischer Berechnung " + side + ": alpha = " + alpha + " - beta = " + beta + " Bitte Rückmeldung an daniel.pinto-dos-santos@uk-koeln.de. Danke!" )
+            }
+            
+        }
+        
+    </script>
+    
+    <hr>
+
+    <section data-section-name="Clinical information">
+        <header class="level2" data-english="Clinical information">Klinische Angaben</header>
+        <p>
+            <textarea name="us_hueftscreening_Angaben" id="us_hueftscreening_Angaben"></textarea>
+        </p>
+    </section>
+    
+    <hr>
+    
+    <section data-section-name="Clinical question">
+        <header class="level1" data-english="Clinical question">Fragestellung</header>
+        <p>
+            <textarea name="us_hueftscreening_Fragestellung" id="us_hueftscreening_Fragestellung"></textarea>
+        </p>
+    </section>
+    
+    <hr>
+    
+    <section data-section-name="Befunde">
+        <header class="level1" data-english="Findings">Befund</header>
+        <table>
+            <tr>
+                <td>rechte Hüfte</td>
+                <td>&alpha;-Winkel <input  name="us_hueftscreening_alphare" id="us_hueftscreening_alphare" onchange="calculatehiptype('rechts')">°</td>
+                <td>&beta;-Winkel <input name="us_hueftscreening_betare" id="us_hueftscreening_betare" onchange="calculatehiptype('rechts')">°</td>
+            </tr>
+            <tr>
+                <td>linke Hüfte</td>
+                <td>&alpha;-Winkel <input  name="us_hueftscreening_alphali" id="us_hueftscreening_alphali" onchange="calculatehiptype('links')">°</td>
+                <td>&beta;-Winkel <input name="us_hueftscreening_betali" id="us_hueftscreening_betali" onchange="calculatehiptype('links')">°</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><label for="us_hueftscreening_hiptype_re">Hüfttyp rechts</label></td>
+                <td>
+                    <select name="us_hueftscreening_hiptype_re" id="us_hueftscreening_hiptype_re">
+                        <option value="-1">-</option>
+                        <option value="0">Typ Ia - knöcherne Formgebung gut, knöcherner Erker eckig, knorpliger Erker spitz, kopfübergreifend, echoleer, Hüftkopf zentriert</option>
+                        <option value="1">Typ Ib - knöcherne Formgebung gut, knöcherner Erker eckig, knorpliger Erker spitz, kopfübergreifend, echoleer, Hüftkopf zentriert</option>
+                        <option value="2">Typ IIa - Kind jünger 3 Monate, knöcherne Formgebung ausreichend, knöcherner Erker abgerundet, knorpliger Erker verbreitert, kopfübergreifend, echoleer, Hüftkopf zentriert</option>
+                        <option value="3">Typ IIb - Kind älter 3 Monate, knöcherne Formgebung ausreichend, knöcherner Erker abgerundet, knorpliger Erker verbreitert, kopfübergreifend, echoleer, Hüftkopf zentriert</option>
+                        <option value="4">Typ IIg - knöcherner Erker abgerundet, knorpliger Erker verbreitert, kopfübergreifend, echoleer, Hüftkopf zentriert</option>
+                        <option value="5">Typ IId - knöcherne Formgebung hochgradig mangelhaft, knorpliger Erker verdrängt</option>
+                        <option value="6">Typ IIIa - knöcherner Erker abgeflacht, knorpliger Erker verbreitert, nach kranial verdrängt, echoleer, Hüftkopf dezentriert</option>
+                        <option value="7">Typ IIIb - knöcherner Erker abgeflacht, knorpliger Erker verbreitert, nach kranial verdrängt, echodicht, Hüftkopf dezentriert</option>
+                        <option value="8">Typ IV - knöcherner Erker flach, knorpliger Erker aufgebraucht, Hüftkopf luxiert</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="us_hueftscreening_hiptype_li">Hüfttyp links</label></td>
+                <td>
+                    <select name="us_hueftscreening_hiptype_li" id="us_hueftscreening_hiptype_li">
+                        <option value="-1">-</option>
+                        <option value="0">Typ Ia - knöcherne Formgebung gut, knöcherner Erker eckig, knorpliger Erker spitz, kopfübergreifend, echoleer, Hüftkopf zentriert</option>
+                        <option value="1">Typ Ib - knöcherne Formgebung gut, knöcherner Erker eckig, knorpliger Erker spitz, kopfübergreifend, echoleer, Hüftkopf zentriert</option>
+                        <option value="2">Typ IIa - Kind jünger 3 Monate, knöcherne Formgebung ausreichend, knöcherner Erker abgerundet, knorpliger Erker verbreitert, kopfübergreifend, echoleer, Hüftkopf zentriert</option>
+                        <option value="3">Typ IIb - Kind älter 3 Monate, knöcherne Formgebung ausreichend, knöcherner Erker abgerundet, knorpliger Erker verbreitert, kopfübergreifend, echoleer, Hüftkopf zentriert</option>
+                        <option value="4">Typ IIg - knöcherner Erker abgerundet, knorpliger Erker verbreitert, kopfübergreifend, echoleer, Hüftkopf zentriert</option>
+                        <option value="5">Typ IId - knöcherne Formgebung hochgradig mangelhaft, knorpliger Erker verdrängt</option>
+                        <option value="6">Typ IIIa - knöcherner Erker abgeflacht, knorpliger Erker verbreitert, nach kranial verdrängt, echoleer, Hüftkopf dezentriert</option>
+                        <option value="7">Typ IIIb - knöcherner Erker abgeflacht, knorpliger Erker verbreitert, nach kranial verdrängt, echodicht, Hüftkopf dezentriert</option>
+                        <option value="8">Typ IV - knöcherner Erker flach, knorpliger Erker aufgebraucht, Hüftkopf luxiert</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        
+    </section>
+    
+    <hr>
+    
+    <section data-section-name="Beurteilung">
+        <header class="level1" data-english="Impression">Beurteilung</header>
+        <table>
+            <tr>
+                <td>Zusammenfassung</td>
+                <td>
+                    <select id="us_hueftscreening_Beurteilung_Zusammenfassung" name="us_hueftscreening_Beurteilung_Zusammenfassung">
+                        <option value="-1">-</option>
+                        <option value="0">normale Hüften</option>
+                        <option value="1">kontrollbedürftige Verknöcherungsverzögerung</option>
+                        <option value="2">therapiebedürftige Verknöcherungsverzögerung</option>
+                        <option value="3">Subluxation ohne Knorpelumbau</option>
+                        <option value="4">Subluxation mit Knorpelumbau</option>
+                        <option value="5">Luxation</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Ergänzendes Röntgen</td>
+                <td>
+                    <select id="us_hueftscreening_Beurteilung_ErgRx" name="us_hueftscreening_Beurteilung_ErgRx">
+                        <option value="-1">-</option>
+                        <option value="0">nicht erforderlich</option>
+                        <option value="1">erforderlich</option>
+                        <option value="2">bereits erfolgt</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Wiedervorstellung</td>
+                <td><input id="us_hueftscreening_Beurteilung_WV" name="us_hueftscreening_Beurteilung_WV" value="-"></td>
+            </tr>
+            <tr>
+                <td>Therapievorschlag</td>
+                <td><input id="us_hueftscreening_Beurteilung_Thera" name="us_hueftscreening_Beurteilung_Thera" value="-"></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea name="us_hueftscreening_Beurteilung" id="us_hueftscreening_Beurteilung" data-english-name="Impression" data-field-completion-action="ALERT"></textarea>
+                </td>
+            </tr>
+        </table>
+    </section>
+    
+</body>
+</html>

@@ -373,7 +373,10 @@ function processElementNode(elm, text) {
             break;
 
         default:
-            text += "\n" + "[Error: Element not allowed in MRRT: " + elm.nodeName + "]" + "\n";
+            // MRRT permitts other elements, but they shoul be ignored: 8.1.5 Permitted HTML5 Formatting Tags
+            if (NOT_PERMITTED_WARNING) {
+                text += "[Element ignored by MRRT: " + elm.nodeName + "] ";
+            }
     }
 
     return text;
@@ -620,7 +623,7 @@ function getElmLabelText(elm) {
     }
 
     // End the label with suffix
-    if (!labelText.endsWith(LABEL_SUFFIX)) {
+    if ((labelText.length > 0) && (!labelText.endsWith(LABEL_SUFFIX))) {
         labelText = labelText + LABEL_SUFFIX;
     }
 
