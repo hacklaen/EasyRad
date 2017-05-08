@@ -28,6 +28,7 @@
  *===========================================*/
 
 /* EasyRad Editor parameter: The URL of the template to edit when opening the editor */
+//var easyrad_param_template_to_edit = '../samples/dicom20.html';
 var easyrad_param_template_to_edit = '../samples/IHE_MRRT_Example_TI_TH.html';
 //var easyrad_param_template_to_edit = 'file:///C:/Users/Tom/Desktop/EasyRad/EasyRadEdit_Project/GitHub/EasyRad/easyrad/samples/IHE_MRRT_Example_TI_TH.html';
 
@@ -248,6 +249,8 @@ $(document).ready(function () {
  * @param Document doc the template as a HTML document.
  */
 function setTemplateDoc(doc) {
+    var inputElms;
+    var tryToFindNext;
     var bodyHtml;
     var metaElms;
     var name;
@@ -258,12 +261,28 @@ function setTemplateDoc(doc) {
     var dcTermId;
     var attrName;
 
-    /* Modification of the documents DOM could be done here before putting into the editor */
-
-    // E.g. replacement of <input type="textarea"> elements by <textarea>
-
     // Store the object in global variable
     templateDoc = doc;
+
+    /* Modification of the documents DOM could be done here before putting into the editor */
+
+    // Replace of <input type="textarea"> elements with <textarea>
+    // A for loop could not be used because the DOM is modified
+    do {
+        inputElms = templateDoc.getElementsByTagName('input');
+        // By default stop the loop again
+        tryToFindNext = false;
+        // Test all INPUT elements
+        for (var i = 0; i < inputElms.length; i++) {
+            if (inputElms[i].getAttribute('type') === 'textarea') {
+                // Found a type="textarea" element. Process it
+                replaceInputWithTextarea(inputElms[i]);
+                // Try to find next
+                tryToFindNext = true;
+            }
+        }
+        // No more INPUT type="textarea" elements found
+    } while (tryToFindNext);
 
     /* Setup the content editor */
 
@@ -340,6 +359,7 @@ function updateTemplateDoc() {
     var serializer;
     var xml;
     var rootChildElms;
+    var textareaElms;
 
     /* Update changes by the content editor */
 
@@ -409,7 +429,11 @@ function updateTemplateDoc() {
 
     /* Modification of the documents DOM could be done here */
 
-    // E.g. replacement of <textarea> elements by <input type="textarea">
+    // Replace <textarea> elements with <input type="textarea">
+    // for loop could not be used because the DOM is modified
+    while (templateDoc.getElementsByTagName('textarea').length > 0) {
+        replaceTextareaWithInput(templateDoc.getElementsByTagName('textarea')[0]);
+    }
 }
 
 
@@ -484,6 +508,7 @@ function loadTemplateDoc(url) {
 }
 
 
+
 /**
  * Localizes the text of the user interface to the language used by the browser.
  */
@@ -501,78 +526,4 @@ function localize() {
     // $("#template-publisher").html(i18n('template_publisher'));
 
     $("#modal-title-text").text(i18n('modal_title_text'));
-}
-
-
-/**
- * Get the localized string corresponing to a given key.
- * The localization is given in the language, which is preselected in the used
- * browser.
- * 
- * @param key The key to search the localization for
- * @returns The localized string. If no translation is found for the requested
- *          language, English is used as a fallback. If no translation could be
- *          found, the key is returned as a last fallback.
- */
-function i18n(key) {
-    var t;
-    var iso = navigator.language || navigator.userLanguage;
-
-    // If no translations available return the given keying as fallback
-    if (typeof translations === 'undefined') {
-        return key;
-    }
-    // Will evaluate to true if value is not: null, undefined, NaN, empty keying (""), 0 or false
-    // Return english translation as a fallback
-    if (!iso) {
-        iso = "en";
-    }
-    if (iso.length < 2) {
-        iso = "en";
-    }
-
-    // Get the ISO 639-1 two-letter code
-    iso = iso.substr(0, 2);
-
-    // Get the translation
-    t = translations[iso][key];
-
-    if (t) {
-        return t;
-    } else {
-        // If no translations available return the given keying as fallback
-        return key;
-    }
-}
-
-
-/**
- * Hack to save a text as a file in the local filesystem.
- * 
- * Link: https://thiscouldbebetter.wordpress.com/2012/12/18/loading-editing-and-saving-a-text-file-in-html5-using-javascrip/
- * 
- * @param String textToSave The text to save.
- * @param String fileNameToSaveAs The name (not the path!) of the file to save.
- */
-function saveTextAsFile(textToSave, fileNameToSaveAs) {
-    var textToSaveAsBlob = new Blob([textToSave], {type: "text/plain"});
-    var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
-
-    var downloadLink = document.createElement("a");
-    downloadLink.download = fileNameToSaveAs;
-    downloadLink.innerHTML = "Download File";
-    downloadLink.href = textToSaveAsURL;
-    downloadLink.onclick = destroyClickedElement;
-    downloadLink.style.display = "none";
-    document.body.appendChild(downloadLink);
-
-    downloadLink.click();
-}
-
-/**
- * Call back of function saveTextAsFile() called after saving the file.
- * @param {type} event
- */
-function destroyClickedElement(event) {
-    document.body.removeChild(event.target);
 }

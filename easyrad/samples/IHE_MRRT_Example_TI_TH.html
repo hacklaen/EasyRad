@@ -431,21 +431,25 @@
             <p>
                 A reference for used codes could be found at  <a href="http://www.radlex.org/">RadLex</a> 
             </p>
-            <label>
-                Additional information
+            <p>
+                <label for="add-info">Additional information</label>
                 <input 
+                    id="add-info"
                     name="additional  information" 
                     data-field-type="TEXT"
                     type="textarea" 
                     value="None"  
-                    title="Additional inforamtion"
+                    title="Additional information"
                     data-field-merge-flag="Y"
                     data-field-merge-identifier="Patient Info"
                     />
-            </label>
+            </p>
             <p>
                 <label for="notes">Notes:</label>
-                <textarea id="notes">No remarks.</textarea>
+                 <textarea
+                    id="notes"
+                    data-field-type="TEXT"
+                    >No remarks.</textarea>
             </p>
             An <q>ordered</q> list of items
             <ol>

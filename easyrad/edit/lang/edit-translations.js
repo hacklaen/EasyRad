@@ -35,6 +35,7 @@ var translations = {
         get_info_btn: '?',
         save_btn: 'Save',
         modal_title_text: 'Template Info',
+        new_template_section_name: 'Impression',
     },
     
     de: {
@@ -45,5 +46,6 @@ var translations = {
         get_info_btn: '?',
         save_btn: 'Speichern',
         modal_title_text: 'Infos zu Befundvorlage',
+        new_template_section_name: 'Beurteilung',
     }
 };

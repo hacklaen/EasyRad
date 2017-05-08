@@ -20,19 +20,40 @@
  * 
  * @version 0.1 alpha
  * @author T. Hacklaender
- * @date 2017-05-05
+ * @date 2017-05-08
  */
 
 
 /**
  * Sets a new template with no sections in the content.
+ * 
+ * See MRRT: 8.1 Report Template Structure
  */
 function newTemplate() {
+    var sectionElm;
+    var headerElm;
+    var pElm;
+    var sectionName;
+
     // Not a loaded file
     templateFilename = '';
 
     // Create a new HTML document
     var doc = document.implementation.createHTMLDocument('');
+
+    sectionName = i18n('new_template_section_name');
+    sectionElm = doc.createElement('SECTION');
+    sectionElm.setAttribute('data-section-name', sectionName);
+    sectionElm.setAttribute('data-section-required', 'false');
+    sectionElm.setAttribute('id', 'T001');
+    doc.getElementsByTagName('body')[0].appendChild(sectionElm);
+    headerElm = doc.createElement('HEADER');
+    headerElm.setAttribute('class', 'level1');
+    headerElm.textContent = sectionName;
+    sectionElm.appendChild(headerElm);
+    pElm = doc.createElement('P');
+    sectionElm.appendChild(pElm);
+    appendTextareaChild(pElm, '', 'T101');
 
     setTemplateDoc(doc);
 }
@@ -45,6 +66,8 @@ function newTemplate() {
 function newDicom20() {
     var sectionElm;
     var headerElm;
+    var pElm;
+    var sectionName;
 
     // Not a loaded file
     templateFilename = '';
@@ -52,71 +75,89 @@ function newDicom20() {
     // Create a new HTML document
     var doc = document.implementation.createHTMLDocument('');
 
+    sectionName = 'Clinical Information';
     sectionElm = doc.createElement('SECTION');
-    sectionElm.setAttribute('class', 'level1');
-    sectionElm.setAttribute('data-section-name', 'Clinical Information');
+    sectionElm.setAttribute('data-section-name', sectionName);
     sectionElm.setAttribute('data-section-required', 'false');
+    sectionElm.setAttribute('id', 'T001');
     doc.getElementsByTagName('body')[0].appendChild(sectionElm);
     headerElm = doc.createElement('HEADER');
     headerElm.setAttribute('class', 'level1');
-    headerElm.textContent = 'Clinical Information';
+    headerElm.textContent = sectionName;
     sectionElm.appendChild(headerElm);
-    appendTextareaChild(sectionElm, '', 'T01');
+    pElm = doc.createElement('P');
+    sectionElm.appendChild(pElm);
+    appendTextareaChild(pElm, '', 'T101');
 
+    sectionName = 'Imaging Procedure Description';
     sectionElm = doc.createElement('SECTION');
-    sectionElm.setAttribute('class', 'level1');
-    sectionElm.setAttribute('data-section-name', 'Imaging Procedure Description');
+    sectionElm.setAttribute('data-section-name', sectionName);
     sectionElm.setAttribute('data-section-required', 'false');
+    sectionElm.setAttribute('id', 'T002');
     doc.getElementsByTagName('body')[0].appendChild(sectionElm);
     headerElm = doc.createElement('HEADER');
     headerElm.setAttribute('class', 'level1');
-    headerElm.textContent = 'Imaging Procedure Description';
+    headerElm.textContent = sectionName;
     sectionElm.appendChild(headerElm);
-    appendTextareaChild(sectionElm, '', 'T02');
+    pElm = doc.createElement('P');
+    sectionElm.appendChild(pElm);
+    appendTextareaChild(pElm, '', 'T102');
 
+    sectionName = 'Comparison Study';
     sectionElm = doc.createElement('SECTION');
-    sectionElm.setAttribute('class', 'level1');
-    sectionElm.setAttribute('data-section-name', 'Comparison Study');
+    sectionElm.setAttribute('data-section-name', sectionName);
     sectionElm.setAttribute('data-section-required', 'false');
+    sectionElm.setAttribute('id', 'T003');
     doc.getElementsByTagName('body')[0].appendChild(sectionElm);
     headerElm = doc.createElement('HEADER');
     headerElm.setAttribute('class', 'level1');
-    headerElm.textContent = 'Comparison Study';
+    headerElm.textContent = sectionName;
     sectionElm.appendChild(headerElm);
-    appendTextareaChild(sectionElm, '', 'T03');
+    pElm = doc.createElement('P');
+    sectionElm.appendChild(pElm);
+    appendTextareaChild(pElm, '', 'T103');
 
+    sectionName = 'Findings';
     sectionElm = doc.createElement('SECTION');
-    sectionElm.setAttribute('class', 'level1');
-    sectionElm.setAttribute('data-section-name', 'Findings');
+    sectionElm.setAttribute('data-section-name', sectionName);
     sectionElm.setAttribute('data-section-required', 'false');
+    sectionElm.setAttribute('id', 'T004');
     doc.getElementsByTagName('body')[0].appendChild(sectionElm);
     headerElm = doc.createElement('HEADER');
     headerElm.setAttribute('class', 'level1');
-    headerElm.textContent = 'Findings';
+    headerElm.textContent = sectionName;
     sectionElm.appendChild(headerElm);
-    appendTextareaChild(sectionElm, '', 'T04');
+    pElm = doc.createElement('P');
+    sectionElm.appendChild(pElm);
+    appendTextareaChild(pElm, '', 'T104');
 
+    sectionName = 'Impression';
     sectionElm = doc.createElement('SECTION');
-    sectionElm.setAttribute('class', 'level1');
-    sectionElm.setAttribute('data-section-name', 'Impression');
-    sectionElm.setAttribute('data-section-required', 'false');
+    sectionElm.setAttribute('data-section-name', sectionName);
+    sectionElm.setAttribute('data-section-required', 'true');
+    sectionElm.setAttribute('id', 'T005');
     doc.getElementsByTagName('body')[0].appendChild(sectionElm);
     headerElm = doc.createElement('HEADER');
     headerElm.setAttribute('class', 'level1');
-    headerElm.textContent = 'Impression';
+    headerElm.textContent = sectionName;
     sectionElm.appendChild(headerElm);
-    appendTextareaChild(sectionElm, '', 'T05');
+    pElm = doc.createElement('P');
+    sectionElm.appendChild(pElm);
+    appendTextareaChild(pElm, '', 'T105');
 
+    sectionName = 'Addendum';
     sectionElm = doc.createElement('SECTION');
-    sectionElm.setAttribute('class', 'level1');
-    sectionElm.setAttribute('data-section-name', 'Addendum');
+    sectionElm.setAttribute('data-section-name', sectionName);
     sectionElm.setAttribute('data-section-required', 'false');
+    sectionElm.setAttribute('id', 'T006');
     doc.getElementsByTagName('body')[0].appendChild(sectionElm);
     headerElm = doc.createElement('HEADER');
     headerElm.setAttribute('class', 'level1');
-    headerElm.textContent = 'Addendum';
+    headerElm.textContent = sectionName;
     sectionElm.appendChild(headerElm);
-    appendTextareaChild(sectionElm, '', 'T06');
+    pElm = doc.createElement('P');
+    sectionElm.appendChild(pElm);
+    appendTextareaChild(pElm, '', 'T106');
 
     setTemplateDoc(doc);
 }
@@ -128,6 +169,8 @@ function newDicom20() {
 function newDin25300() {
     var sectionElm;
     var headerElm;
+    var pElm;
+    var sectionName;
 
     // Not a loaded file
     templateFilename = '';
@@ -135,71 +178,89 @@ function newDin25300() {
     // Create a new HTML document
     var doc = document.implementation.createHTMLDocument('');
 
+    sectionName = 'Klinische Angaben';
     sectionElm = doc.createElement('SECTION');
-    sectionElm.setAttribute('class', 'level1');
-    sectionElm.setAttribute('data-section-name', 'Klinische Angaben');
+    sectionElm.setAttribute('data-section-name', sectionName);
     sectionElm.setAttribute('data-section-required', 'true');
+    sectionElm.setAttribute('id', 'T001');
     doc.getElementsByTagName('body')[0].appendChild(sectionElm);
     headerElm = doc.createElement('HEADER');
     headerElm.setAttribute('class', 'level1');
-    headerElm.textContent = 'Klinische Angaben';
+    headerElm.textContent = sectionName;
     sectionElm.appendChild(headerElm);
-    appendTextareaChild(sectionElm, '', 'T01');
+    pElm = doc.createElement('P');
+    sectionElm.appendChild(pElm);
+    appendTextareaChild(pElm, '', 'T101');
 
+    sectionName = 'Medizinische Fragestellung';
     sectionElm = doc.createElement('SECTION');
-    sectionElm.setAttribute('class', 'level1');
-    sectionElm.setAttribute('data-section-name', 'Medizinische Fragestellung');
+    sectionElm.setAttribute('data-section-name', sectionName);
     sectionElm.setAttribute('data-section-required', 'false');
+    sectionElm.setAttribute('id', 'T002');
     doc.getElementsByTagName('body')[0].appendChild(sectionElm);
     headerElm = doc.createElement('HEADER');
     headerElm.setAttribute('class', 'level1');
-    headerElm.textContent = 'Medizinische Fragestellung';
+    headerElm.textContent = sectionName;
     sectionElm.appendChild(headerElm);
-    appendTextareaChild(sectionElm, '', 'T02');
+    pElm = doc.createElement('P');
+    sectionElm.appendChild(pElm);
+    appendTextareaChild(pElm, '', 'T102');
 
+    sectionName = 'Befundungs Fragestellung';
     sectionElm = doc.createElement('SECTION');
-    sectionElm.setAttribute('class', 'level1');
-    sectionElm.setAttribute('data-section-name', 'Befundungs Fragestellung');
+    sectionElm.setAttribute('data-section-name', sectionName);
+    sectionElm.setAttribute('data-section-required', 'false');
+    sectionElm.setAttribute('id', 'T003');
+    doc.getElementsByTagName('body')[0].appendChild(sectionElm);
+    headerElm = doc.createElement('HEADER');
+    headerElm.setAttribute('class', 'level1');
+    headerElm.textContent = sectionName;
+    sectionElm.appendChild(headerElm);
+    pElm = doc.createElement('P');
+    sectionElm.appendChild(pElm);
+    appendTextareaChild(pElm, '', 'T103');
+
+    sectionName = 'Beschreibung';
+    sectionElm = doc.createElement('SECTION');
+    sectionElm.setAttribute('data-section-name', sectionName);
+    sectionElm.setAttribute('data-section-required', 'false');
+    sectionElm.setAttribute('id', 'T004');
+    doc.getElementsByTagName('body')[0].appendChild(sectionElm);
+    headerElm = doc.createElement('HEADER');
+    headerElm.setAttribute('class', 'level1');
+    headerElm.textContent = sectionName;
+    sectionElm.appendChild(headerElm);
+    pElm = doc.createElement('P');
+    sectionElm.appendChild(pElm);
+    appendTextareaChild(pElm, '', 'T104');
+
+    sectionName = 'Beurteilung';
+    sectionElm = doc.createElement('SECTION');
+    sectionElm.setAttribute('data-section-name', sectionName);
     sectionElm.setAttribute('data-section-required', 'true');
+    sectionElm.setAttribute('id', 'T005');
     doc.getElementsByTagName('body')[0].appendChild(sectionElm);
     headerElm = doc.createElement('HEADER');
     headerElm.setAttribute('class', 'level1');
-    headerElm.textContent = 'Befundungs Fragestellung';
+    headerElm.textContent = sectionName;
     sectionElm.appendChild(headerElm);
-    appendTextareaChild(sectionElm, '', 'T03');
+    pElm = doc.createElement('P');
+    sectionElm.appendChild(pElm);
+    appendTextareaChild(pElm, '', 'T105');
 
+    sectionName = 'Empfehlung';
     sectionElm = doc.createElement('SECTION');
-    sectionElm.setAttribute('class', 'level1');
-    sectionElm.setAttribute('data-section-name', 'Beschreibung');
+    sectionElm.setAttribute('data-section-name', sectionName);
     sectionElm.setAttribute('data-section-required', 'false');
+    sectionElm.setAttribute('id', 'T006');
     doc.getElementsByTagName('body')[0].appendChild(sectionElm);
     headerElm = doc.createElement('HEADER');
     headerElm.setAttribute('class', 'level1');
-    headerElm.textContent = 'Beschreibung';
+    headerElm.textContent = sectionName;
     sectionElm.appendChild(headerElm);
-    appendTextareaChild(sectionElm, '', 'T04');
-
-    sectionElm = doc.createElement('SECTION');
-    sectionElm.setAttribute('class', 'level1');
-    sectionElm.setAttribute('data-section-name', 'Beurteilung');
-    sectionElm.setAttribute('data-section-required', 'true');
-    doc.getElementsByTagName('body')[0].appendChild(sectionElm);
-    headerElm = doc.createElement('HEADER');
-    headerElm.setAttribute('class', 'level1');
-    headerElm.textContent = 'Beurteilung';
-    sectionElm.appendChild(headerElm);
-    appendTextareaChild(sectionElm, '', 'T05');
-
-    sectionElm = doc.createElement('SECTION');
-    sectionElm.setAttribute('class', 'level1');
-    sectionElm.setAttribute('data-section-name', 'Empfehlung');
-    sectionElm.setAttribute('data-section-required', 'false');
-    doc.getElementsByTagName('body')[0].appendChild(sectionElm);
-    headerElm = doc.createElement('HEADER');
-    headerElm.setAttribute('class', 'level1');
-    headerElm.textContent = 'Empfehlung';
-    sectionElm.appendChild(headerElm);
-    appendTextareaChild(sectionElm, '', 'T06');
+    pElm = doc.createElement('P');
+    sectionElm.appendChild(pElm);
+    appendTextareaChild(pElm, '', 'T106');
 
     setTemplateDoc(doc);
 }
@@ -218,6 +279,11 @@ function appendTextareaChild(parentElm, labelText, id) {
     teaxtareaElm.setAttribute('id', id);
     teaxtareaElm.setAttribute('name', labelText);
     teaxtareaElm.setAttribute('data-field-type', 'TEXT');
+    teaxtareaElm.setAttribute('data-field-merge-flag', 'false');
+    teaxtareaElm.setAttribute('data-field-verbal-trigger', '');
+    teaxtareaElm.setAttribute('Value', '');
+    teaxtareaElm.setAttribute('data-field-completion-action', 'NONE');
+    teaxtareaElm.setAttribute('Title', '');
 
     var labelElm = parentElm.ownerDocument.createElement('label');
     labelElm.setAttribute('for', id);

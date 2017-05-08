@@ -18,7 +18,7 @@
  * 
  * @version 0.1 alpha
  * @author T. Hacklaender
- * @date 2017-05-05
+ * @date 2017-05-08
  */
 
 
@@ -58,7 +58,7 @@ var templateAttributes = [
  */
 function getXmlScriptElm(doc) {
     var scriptElms;
- 
+
     // Get template attributes
     scriptElms = doc.getElementsByTagName('script');
     for (var i = 0; i < scriptElms.length; i++) {
@@ -92,11 +92,134 @@ function xmlScriptToXmlDoc(xmlScriptElm) {
     return xmlDoc;
 }
 
+
+/**
+ * Replaces a <input type="textarea"> element with a <textarea> element.
+ * All attributes besides the 'type' attribute are copied to the new element.
+ * 
+ * @param {Element} elm the INPUT element to replace
+ */
+function replaceInputWithTextarea(elm) {
+    var textareaElm;
+
+    textareaElm = elm.ownerDocument.createElement('textarea');
+
+    // Copy all attributes
+    for (var i = 0; i < elm.attributes.length; i++) {
+        var attr = elm.attributes.item(i);
+        // Skip the type attribute
+        if (attr.nodeName !== 'type') {
+            textareaElm.setAttribute(attr.nodeName, attr.nodeValue);
+        }
+    }
+
+    // Replace
+    elm.parentNode.replaceChild(textareaElm, elm);
+}
+
+
+/**
+ * Replaces a <textarea> element with a <input type="textarea"> element.
+ * All attributes besides the 'type' attribute are copied to the new element.
+ * 
+ * @param {Element} elm the TEXTAREA element to replace
+ */
+function replaceTextareaWithInput(elm) {
+    var inputElm;
+
+    inputElm = elm.ownerDocument.createElement('input');
+    inputElm.setAttribute('type', 'textarea');
+
+    // Copy all attributes
+    for (var i = 0; i < elm.attributes.length; i++) {
+        var attr = elm.attributes.item(i);
+        inputElm.setAttribute(attr.nodeName, attr.nodeValue);
+    }
+
+    // Replace
+    elm.parentNode.replaceChild(inputElm, elm);
+}
+
+
 /**
  * Tests if a string ends with a suffix string
  * @param {String} suffix The suffix to test
  * @returns {Boolean} True, if the suffix matches the end of the string
  */
-String.prototype.endsWith = function(suffix) {
+String.prototype.endsWith = function (suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
+
+
+/**
+ * Hack to save a text as a file in the local filesystem.
+ * 
+ * Link: https://thiscouldbebetter.wordpress.com/2012/12/18/loading-editing-and-saving-a-text-file-in-html5-using-javascrip/
+ * 
+ * @param String textToSave The text to save.
+ * @param String fileNameToSaveAs The name (not the path!) of the file to save.
+ */
+function saveTextAsFile(textToSave, fileNameToSaveAs) {
+    var textToSaveAsBlob = new Blob([textToSave], {type: "text/plain"});
+    var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+
+    var downloadLink = document.createElement("a");
+    downloadLink.download = fileNameToSaveAs;
+    downloadLink.innerHTML = "Download File";
+    downloadLink.href = textToSaveAsURL;
+    downloadLink.onclick = destroyClickedElement;
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+
+    downloadLink.click();
+}
+
+/**
+ * Call back of function saveTextAsFile() called after saving the file.
+ * @param {type} event
+ */
+function destroyClickedElement(event) {
+    document.body.removeChild(event.target);
+}
+
+
+/**
+ * Get the localized string corresponing to a given key.
+ * The localization is given in the language, which is preselected in the used
+ * browser.
+ * 
+ * @param key The key to search the localization for
+ * @returns The localized string. If no translation is found for the requested
+ *          language, English is used as a fallback. If no translation could be
+ *          found, the key is returned as a last fallback.
+ */
+function i18n(key) {
+    var t;
+    var iso = navigator.language || navigator.userLanguage;
+
+    // If no translations available return the given keying as fallback
+    if (typeof translations === 'undefined') {
+        return key;
+    }
+    // Will evaluate to true if value is not: null, undefined, NaN, empty keying (""), 0 or false
+    // Return english translation as a fallback
+    if (!iso) {
+        iso = "en";
+    }
+    if (iso.length < 2) {
+        iso = "en";
+    }
+
+    // Get the ISO 639-1 two-letter code
+    iso = iso.substr(0, 2);
+
+    // Get the translation
+    t = translations[iso][key];
+
+    if (t) {
+        return t;
+    } else {
+        // If no translations available return the given keying as fallback
+        return key;
+    }
+}

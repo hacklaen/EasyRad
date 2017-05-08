@@ -42,14 +42,14 @@
 /* EasyRad parameter: The URL of the template display when opening the report creator */
 //var easyrad_param_template = '';
 //var easyrad_param_template = './samples/IHE_MRRT_Example_TI_TH.html';
-var easyrad_param_template = './samples/IHE_MRRT_Example_TI_TH_content_only.html';
+//var easyrad_param_template = './samples/IHE_MRRT_Example_TI_TH_content_only.html';
 
 /* EasyRad parameter: If true, the UI elements to select a new teplate are hidden. */
 //var easyrad_param_hide_selection = false;
 
 /* ========================================= */
 
-
+/* The clipboard object */
 var clipboard;
 
 /*
@@ -415,46 +415,4 @@ function localize() {
     // $("#template-publisher").html(i18n('template_publisher'));
 
     $("#modal-title-text").text(i18n('modal_title_text'));
-}
-
-
-/**
- * Get the localized string corresponing to a given key.
- * The localization is given in the language, which is preselected in the used
- * browser.
- * 
- * @param key The key to search the localization for
- * @returns The localized string. If no translation is found for the requested
- *          language, English is used as a fallback. If no translation could be
- *          found, the key is returned as a last fallback.
- */
-function i18n(key) {
-    var t;
-    var iso = navigator.language || navigator.userLanguage;
-
-    // If no translations available return the given keying as fallback
-    if (typeof translations === 'undefined') {
-        return key;
-    }
-    // Will evaluate to true if value is not: null, undefined, NaN, empty keying (""), 0 or false
-    // Return english translation as a fallback
-    if (!iso) {
-        iso = "en";
-    }
-    if (iso.length < 2) {
-        iso = "en";
-    }
-
-    // Get the ISO 639-1 two-letter code
-    iso = iso.substr(0, 2);
-
-    // Get the translation
-    t = translations[iso][key];
-
-    if (t) {
-        return t;
-    } else {
-        // If no translations available return the given keying as fallback
-        return key;
-    }
 }
