@@ -115,59 +115,59 @@ When pressing the `COPY` button, the HTML5 content is rendered as pure text. For
 
 |Element | Prefix | Content | Postfix |Evaluate children |
 |---|---|---|---| --- |
-|     |     |     |     | |
-| **Special cases:** |     |     |     | |
-| Text between elements | --- | text (white spaces at the beginning and end are removed) | space | |
-|     |     |     |     | |
-| LABEL The following is inserted as a prefix of the referenced element. If the referenced element is a "INPUT/checkbox" and the element is not checked, nothing is inserted. | --- | label.text | ":" + space | |
-|     |     |     |     | |
-| Elements with attribute "disabled" or "hidden" set are ignored |     |     |     | |
-| Elements with a CSS property "display: none" or "visibility: hidden" are ignored |     |     |     | |
-|     |     |     |     | |
-| **The root element:** |     |     |     | |
-| HTML | --- | --- | --- | |
-|     |     |     |     | |
-| **Document metadata:** |     |     |     | |
-| HEAD | --- | --- | --- | |
-| META | --- |     | --- | |
-| STYLE | --- | --- | --- | |
-| TITLE | --- |     | --- | |
-| LINK | --- | --- | --- | |
-|     |     |     |     | |
-| **Scripting:** |     |     |     | |
-| SCRIPT | --- | --- | --- | |
-|     |     |     |     | |
-| **Embedded content:** |     |     |     | |
-| EMBED | --- | --- | --- | |
-| IMG | --- | --- | "[" + elm.src + ", " + elm.alt + "]" + space | X |
-|     |     |     |     | |
-| **Sections:** |     |     |     | |
+|     |     |     |     |     |
+| **Special cases:** |     |     |     |     |
+| Text between elements | --- | text (white spaces at the beginning and end are removed) | space |     |
+|     |     |     |     |     |
+| LABEL The following is inserted as a prefix of the referenced element. If the value of the referenced element is empty or a "INPUT/checkbox" is not checked, nothing is inserted. | --- | label.text | LABEL_SUFFIX + space |     |
+|     |     |     |     |     |
+| Elements with attribute "disabled" or "hidden" set are ignored |     |     |     |     |
+| Elements with a CSS property "display: none" or "visibility: hidden" are ignored |     |     |     |     |
+|     |     |     |     |     |
+| **The root element:** |     |     |     |     |
+| HTML | --- | --- | --- |     |
+|     |     |     |     |     |
+| **Document metadata:** |     |     |     |     |
+| HEAD | --- | --- | --- |     |
+| META | --- |     | --- |     |
+| STYLE | --- | --- | --- |     |
+| TITLE | --- |     | --- |  X  |
+| LINK | --- | --- | --- |     |
+|     |     |     |     |     |
+| **Scripting:** |     |     |     |     |
+| SCRIPT | --- | --- | --- |     |
+|     |     |     |     |     |
+| **Embedded content:** |     |     |     |     |
+| EMBED | --- | --- | --- |  X  |
+| IMG | --- | "[" + elm.src + ", " + elm.alt + "]"  | space | X |
+|     |     |     |     |     |
+| **Sections:** |     |     |     |     |
 | BODY | --- | --- | --- | X |
 | SECTION | newline + newline | --- | --- | X |
 | HEADER | --- | --- | newline + newline | X |
-|     |     |     |     | X |
-| **Grouping content:** |     |     |     | X |
+|     |     |     |     |     |
+| **Grouping content:** |     |     |     |     |
 | LI | If the parent element is "UL": "-" + space. If the parent element is "OL": "x" + space | --- | newline | X |
 | OL | newline | --- | --- | X |
 | P | --- | --- | newline + newline | X |
 | UL | newline | --- | --- | X |
-|     |     |     |     | |
-| **Tables:** |     |     |     | |
+|     |     |     |     |     |
+| **Tables:** |     |     |     |     |
 | TABLE | newline + newline | --- | newline + newline | X |
 | TD | --- | --- | --- | X |
 | TH | --- | --- | --- | X |
 | TR | --- | --- | newline | X |
-|     |     |     |     | |
-| **Forms:** |     |     |     | |
+|     |     |     |     |     |
+| **Forms:** |     |     |     |     |
 | INPUT type = text, number, date, time | --- | elm.value | space | X |
 | INPUT type = checkbox | --- | If the element is "checked": elm.value | If the element is "checked": space | X |
 | INPUT type = textarea | (---) | (elm.value) | (space) | X |
-| TEXTAREA | --- | elm.value | newline | X |
-| OPTION | --- | --- | --- | X |
-| SELECT | --- | --- | --- | X |
-|     |     |     |     | |
-| **Text-level semantics:** |     |     |     | X |
-| A | --- | --- | "[" + elm.href + "]" + space | X |
+| TEXTAREA | --- | elm.value | newline |   |
+| OPTION | --- | --- | --- |   |
+| SELECT | --- | The value of the selected option(s) | space | X |
+|     |     |     |     |     |
+| **Text-level semantics:** |     |     |     |   |
+| A | --- | "[" + elm.href + "]"  | space | X |
 | BR | --- | --- | newline | X |
 | EM | --- | --- | --- | X |
 | Q | quote | --- | quote | X |
@@ -179,7 +179,7 @@ When pressing the `COPY` button, the HTML5 content is rendered as pure text. For
 
 If the rendering results in two or more consecutive empty lines, they are replaced by one empty line before putting into the clipboard.
 
-If the rendering results in two or more consecutive spaces, they are replaced by space before putting into the clipboard.
+If the rendering results in two or more consecutive spaces, they are replaced by one space before putting into the clipboard.
 
 If the rendering results contains a space directly followed by a period, the space is removed before putting into the clipboard.
 
