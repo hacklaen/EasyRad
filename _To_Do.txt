@@ -1,5 +1,36 @@
 
+============ 2017-05-03 ============
+
+EasyRad Editor:
+
+Loading of a template to edit at startup using the parameter "easyrad_param_template_to_edit".
+
+This works well, if EasyRad Edit runs on a server, but not, if index.html is loaded
+from the local filesystem in the browser.
+
+Problem with access rights?
+
+Problem in specifying the path?
+var easyrad_param_template_to_edit = 'file:///C:/Users/Tom/Desktop/EasyRad/EasyRadEdit_Project/GitHub/EasyRad/easyrad/samples/IHE_MRRT_Example_TI_TH.html';
+
+
+============ 2017-05-03 ============
+
+EasyRad Editor:
+
+The MRRT file format does not allow <textarea> elements. The functionality is
+defined by <input type="textarea"> elements, which are NOT part of HTML 5.
+
+To allow editing of a MRRT file, these elments may be replaced on the fly when
+reading and witing a MRRT file.
+
+This could be done in setupTemplateEditor(doc) and function updateTemplateDoc(),
+both defined in /edit/js/index.js.
+
+
 ============ 2017-04-23 ============
+
+EasyRad:
 
 W3C states that URLs of stylesheets must ALWAYS be relativ to the file they referre to.
 
@@ -13,6 +44,8 @@ the style must be specified relative to index.html.
 
 ============ 2017-04-23 ============
 
+EasyRad:
+
 <embed> tags in template files are ignored when loading the file.
 
 ? => Force a redraw the window: $(...).hide().show(0); or $(window).trigger('resize');
@@ -21,6 +54,8 @@ the style must be specified relative to index.html.
 
 
 ============ 2017-04-23 ============
+
+EasyRad:
 
 Images referenced in an <img> tag are not rendered as image, but with the alternative
  text.
