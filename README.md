@@ -60,6 +60,8 @@ If the global JavaScript variable ` easyrad_param_hide_selection` is set to true
 
 ### Configuration of text rendering
 Some aspects of rendering the text are configurable by parameters specified in file `config/config.js`.
+
+
 |Parameter | Default value | Description |
 |---|---|---|
 | OPTIONS_DELIMITER | ", " | Delimiter between to options in one select element. |
