@@ -12,7 +12,14 @@
  */
 
 var favoredTemplates = [
-    // The TOP 5 templates provided by RSNA (2017-04-20)
+   // Befundvorlagen der DRG (2017-05-08)
+     ["HRCT Pneumokoniosen (L2)", "./templates/ct_hr_pneumokoniose.html"],
+     ["MRT Rektum-Ca (L2)", "./templates/mrt_rectalca.html"],
+     ["Ultraschall FAST (L1)", "./templates/us_fast.html"],
+     ["Ultraschall Carotis (L1)", "./templates/us_carotis.html"],
+     ["Ultraschall Hüftscreening (L1)", "./templates/us_hueftscreening.html"],
+     ["LTx-Evaluation HCC (L1)", "./templates/gen_ltx_hcc.html"],
+   // The TOP 5 templates provided by RSNA (2017-04-20)
     ["Chest Xray (en)", "./templates/Chest_Xray_RSNA.html"],
     ["Chest Xray - 2 Views (en)", "./templates/Chest_Xray_2_Views_RSNA.html"],
     ["US Abdomen (en)", "./templates/US_Abdomen_RSNA.html"],

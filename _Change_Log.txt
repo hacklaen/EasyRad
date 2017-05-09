@@ -1,4 +1,26 @@
 
+============ 2017-05-09 ============
+
+Release Version 1.1
+
+EasyRad:
+
+x Modification of /samples/IHE_MRRT_Example_TI_TH.html
+x Element labels are not displayed if the element content is empty.
+
++ Template Attributes specified in the templated now included in the info dilaog
++ Added global JavaScript parameters evaluated in index.js when opening EasyRad:
+    easyrad_param_template
+    easyrad_param_hide_selection
++ Added configuration parameters in file /config/config.js to modify the text
+  presentation in the clipboard: OPTIONS_DELIMITER, LABEL_SUFFIX, USE_OPTION_TEXT, MESSAGE_DESTINATION.
+
+
+EasyRad Editor:
+
++ Experimental alpha release of a template editor in /edit/index.html
+
+
 ============ 2017-04-23 ============
 
 Release Version 1.0

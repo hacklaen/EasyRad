@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<!--
+ * EasyRad Editor
+ *
+ * This browser application allows to edit MRRT templates.
+ * 
+ * Copyright (C) 2017  IFTM Institut für Telematik in der Medizin GmbH
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @version 0.1 alpha
+ * @author T. Hacklaender
+ * @date 2017-05-05
+-->
+<html>
+
+    <head>
+        <title>EasyRad Editor (c) IFTM GmbH</title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- External libraries -->    
+        <script src="../libs/jquery-3.2.0.js"></script> 
+        <script src="../libs/bootstrap.min.js"></script> 
+        <script src="../libs/clipboard.min.js"></script> 
+        <script src="../libs/bootstrap-filestyle.min.js"></script>
+
+        <script src="./libs/tinymce.min.js"></script>
+
+        <!-- Project includes -->    
+        <script src="../config/config.js"></script> 
+        <script src="../js/main.js"></script> 
+        <script src="./lang/edit-translations.js"></script> 
+        <script src="./js/empty-templates.js"></script> 
+        <script src="./js/index.js"></script> 
+
+        <link rel="stylesheet" href="../css/bootstrap.min.css">
+        <link rel="stylesheet" href="./css/index.css">
+
+    </head>
+
+    <body>
+
+        <div class="panel panel-default" id="header-panel">
+
+            <div class="panel-body">
+
+                <div class="row">
+
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-block btn-primary" id="new-btn">
+                            New
+                        </button>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary" id="dicom20-btn">
+                            New DICOM 20
+                        </button>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary" id="din25300-btn">
+                            New DIN 25300-1
+                        </button>
+                    </div>
+
+                    <div class="col-md-4">
+                        <input type="file" class="filestyle" data-buttonName="btn-primary" data-buttonText="Open" data-icon="false" id="open-btn" name="files">
+                    </div>
+
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-warning btn-block pull-center" id="get-info-btn">
+                            ?
+                        </button>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-success pull-center" id="save-btn">
+                            Save
+                        </button>
+                    </div>
+
+                </div>
+            </div> <!-- row -->
+        </div> <!-- panel -->
+
+        <div class="panel panel-default" id="template-panel">
+
+            <div class="panel-heading">
+
+                <div class="row">
+                </div> <!-- row -->
+
+            </div> <!-- panel-heading -->
+
+            <div class="panel-body">
+                <div class="col-md-12"  id="template-div">
+                    <textarea class="template" cols="100" rows="20" id="template-textarea"></textarea> 
+                </div>
+            </div>
+
+        </div>
+
+        <div class="panel panel-default" id="footer-panel">
+            <div class="panel-body text-center">
+                EasyRad Editor Version 0.1 - (c) IFTM Institut für Telematik in der Medizin GmbH - 
+                <a href="http://www.iftm.de" target="_blank">
+                    www.iftm.de
+                </a> 
+                <p>
+                    <span>License: 
+                        <a href="https://www.gnu.org/licenses/agpl-3.0.en.html" target="_blank">
+                            AGPL 3.0
+                        </a> 
+                    </span>
+                    <span> - Source code: 
+                        <a href="https://github.com/hacklaen/EasyRad" target="_blank">
+                            GitHub project EasyRad
+                        </a> 
+                    </span>
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- =============================================================================
+        *
+        * The Modal Dialog to display template information
+        *
+        * ============================================================================= -->
+
+        <div id="template-info-modal-dialog" class="modal fade" role="dialog">
+
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+
+                <div class="modal-content">
+
+                    <!-- Modal header-->
+
+                    <div class="modal-header">
+                        <button type="button" class="close" id="modal-close-btn-x" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" id="modal-title-text">Template Info</h4>
+                    </div>
+
+                    <!-- Modal body -->
+
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row  col-md-12">
+
+                                <form class="form-horizontal">
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="email">Title:</label>
+                                        <div class="col-sm-5">
+                                            <input id="dcterms-title" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="pwd">Identifier:</label>
+                                        <div class="col-sm-5">
+                                            <input id="dcterms-identifier" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="pwd">Type:</label>
+                                        <div class="col-sm-5">
+                                            <input id="dcterms-type" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="pwd">Publisher:</label>
+                                        <div class="col-sm-5">
+                                            <input id="dcterms-publisher" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="pwd">Rights:</label>
+                                        <div class="col-sm-5">
+                                            <input id="dcterms-rights" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="pwd">License:</label>
+                                        <div class="col-sm-5">
+                                            <input id="dcterms-license" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="pwd">Date:</label>
+                                        <div class="col-sm-5">
+                                            <input id="dcterms-date" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="pwd">Creator:</label>
+                                        <div class="col-sm-5">
+                                            <input id="dcterms-creator" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="pwd">Contributor:</label>
+                                        <div class="col-sm-5">
+                                            <input id="dcterms-contributor" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="pwd">Relation:</label>
+                                        <div class="col-sm-5">
+                                            <input id="dcterms-relation" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="pwd">Language:</label>
+                                        <div class="col-sm-5">
+                                            <input id="dcterms-language" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="pwd">Top level flag:</label>
+                                        <div class="col-sm-5">
+                                            <input id="top-level-flag" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="pwd">Status:</label>
+                                        <div class="col-sm-5">
+                                            <input id="status" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="pwd">User list:</label>
+                                        <div class="col-sm-5">
+                                            <input id="user-list" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="pwd">Provider group list:</label>
+                                        <div class="col-sm-5">
+                                            <input id="provider-group-list" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                </form>
+
+                            </div> <!-- row -->
+
+                        </div> <!-- End modal-body -->
+                    </div> <!-- container -->
+
+                </div> <!-- End modal-content -->
+
+            </div> <!-- End modal-dialog -->  
+
+        </div> <!-- End modal -->
+
+    </body>
+</html>

@@ -19,9 +19,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * @version 1.0
+ * @version 1.1
  * @author T. Hacklaender
- * @date 2017-04-21
+ * @date 2017-05-09
  */
 
 /*
@@ -34,6 +34,22 @@
  * Link: https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb?hl=en
  */
 
+
+/*=============================================
+ *====      Configuration parameters       ====
+ *===========================================*/
+
+/* EasyRad parameter: The URL of the template display when opening the report creator */
+//var easyrad_param_template = '';
+//var easyrad_param_template = './samples/IHE_MRRT_Example_TI_TH.html';
+//var easyrad_param_template = './samples/IHE_MRRT_Example_TI_TH_content_only.html';
+
+/* EasyRad parameter: If true, the UI elements to select a new teplate are hidden. */
+//var easyrad_param_hide_selection = false;
+
+/* ========================================= */
+
+/* The clipboard object */
 var clipboard;
 
 /*
@@ -62,8 +78,16 @@ $(document).ready(function () {
     // Build list of favored templates
     setupFavoredTemplates();
 
+    // Setup user interface
+    if ((typeof easyrad_param_hide_selection !== "undefined") && (easyrad_param_hide_selection.length > 0)) {
+        $("#favored-templates-btn").hide();
+        $("#files-div").hide();
+    }
+
     // Load sample data
-    //loadTemplate('./samples/IHE_MRRT_Example_TI_TH.html');
+    if ((typeof easyrad_param_template !== "undefined") && (easyrad_param_template.length > 0)) {
+        loadTemplate(easyrad_param_template);
+    }
 
     /*
      *  Create a Clipboard object.
@@ -234,7 +258,7 @@ $(document).ready(function () {
 
 
 /**
- * Gets the dcterms defined in the meta tags of the template.
+ * Gets the dcterms defined in the meta tags of the included template.
  * 
  * @returns Object containing the dcterms as properties (keys) and their content as values.
  */
@@ -252,6 +276,41 @@ function getDcterms() {
     }
 
     return dcterms;
+}
+
+
+/**
+ * Gets the template attributes defined in the <script type="text/xml"> tag of the included template.
+ * 
+ * @returns Object containing the template attributes (keys) and their content as values.
+ */
+function getTemplateAttributes() {
+    var xmlScriptElm;
+    var xmlDoc;
+    var templateAttrElms;
+    var key;
+
+    var templateAttrs = new Array();
+
+    // Get the <script> element containg XML content
+    xmlScriptElm = getXmlScriptElm(document);
+    if (xmlScriptElm !== null) {
+        // Convert the XML <script> element into a XML document.
+        xmlDoc = xmlScriptToXmlDoc(xmlScriptElm);
+
+        // Extract the template attribute information from the XML document
+        for (var i = 0; i < templateAttributes.length; i++) {
+            templateAttrElms = xmlDoc.getElementsByTagName(templateAttributes[i]);
+            if (templateAttrElms.length > 0) {
+                key = templateAttributes[i];
+                // Replace '-' in name with space
+                key = key.replace('-', ' ');
+                templateAttrs[key] = templateAttrElms[0].textContent;
+            }
+        }
+    }
+
+    return templateAttrs;
 }
 
 
@@ -290,7 +349,12 @@ function setupFavoredTemplates() {
 function setupInfoTable() {
     var content;
     var upper;
-    var dcterms = getDcterms();
+    var dcterms;
+    var templateAttrs;
+
+    /* Setup the Dublin Core Metadata Elements */
+
+    dcterms = getDcterms();
 
     // JavaScript does not know associative arrays. Instead properties of an object are used.
     // See: http://stackoverflow.com/questions/8312459/iterate-through-object-properties
@@ -307,6 +371,27 @@ function setupInfoTable() {
         content += "</td>";
         content += "<td>";
         content += dcterms[key];
+        content += "</td>";
+        content += "</tr>";
+    });
+
+    /* Setup the template attributes */
+
+    templateAttrs = getTemplateAttributes();
+
+    Object.keys(templateAttrs).forEach(function (key, index) {
+        // key: the name of the object key
+        // index: the ordinal position of the key within the object 
+        content += "<tr>";
+        content += "<td>";
+        // Capitalize first character
+        upper = key.toLowerCase().replace(/\b[a-z]/g, function (letter) {
+            return letter.toUpperCase();
+        });
+        content += upper;
+        content += "</td>";
+        content += "<td>";
+        content += templateAttrs[key];
         content += "</td>";
         content += "</tr>";
     });
@@ -330,46 +415,4 @@ function localize() {
     // $("#template-publisher").html(i18n('template_publisher'));
 
     $("#modal-title-text").text(i18n('modal_title_text'));
-}
-
-
-/**
- * Get the localized string corresponing to a given key.
- * The localization is given in the language, which is preselected in the used
- * browser.
- * 
- * @param key The key to search the localization for
- * @returns The localized string. If no translation is found for the requested
- *          language, English is used as a fallback. If no translation could be
- *          found, the key is returned as a last fallback.
- */
-function i18n(key) {
-    var t;
-    var iso = navigator.language || navigator.userLanguage;
-
-    // If no translations available return the given keying as fallback
-    if (typeof translations === 'undefined') {
-        return key;
-    }
-    // Will evaluate to true if value is not: null, undefined, NaN, empty keying (""), 0 or false
-    // Return english translation as a fallback
-    if (!iso) {
-        iso = "en";
-    }
-    if (iso.length < 2) {
-        iso = "en";
-    }
-
-    // Get the ISO 639-1 two-letter code
-    iso = iso.substr(0, 2);
-
-    // Get the translation
-    t = translations[iso][key];
-
-    if (t) {
-        return t;
-    } else {
-        // If no translations available return the given keying as fallback
-        return key;
-    }
 }
