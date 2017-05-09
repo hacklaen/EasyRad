@@ -1,4 +1,74 @@
 
+============ 2017-05-09 ============
+
+EasyRad:
+
+MRRT specifies, that a Report Creator must use the value attribute of an OPTION 
+element as its value. The value attribute and the text of an OPTION should be the same.
+
+To allow temporary compatibility with templates, which do not follow MRRT strict
+the following extension is implemented:
+
+By the parameter
+
+  USE_OPTION_TEXT = true; 
+
+the text of an OPTION element is as its value.
+
+Affected function:
+
+js/converter.js: getElmValue(elm)
+
+This parameter is marked as "deprecated" and will be removed in following version.
+EasyRad will use the value attribute instead.
+
+
+
+
+============ 2017-05-09 ============
+
+EasyRad:
+
+To allow temporary compatibility with templates, which do not follow MRRT strict
+the following extension is implemented:
+
+DIV elements are allowed and are handled during conversion to text in the same way as P elements.
+
+Affected function:
+
+js/converter.js: processElementNode(elm, text), 
+js/converter.js: getElmValue(elm)
+
+This extension should be removed!
+
+All templates had to follow the MRRT specification.
+
+
+============ 2017-05-09 ============
+
+EasyRad Editor:
+
+The following MRRT elements are still not available in the WYSIWYG mode of TinyMCE:
+
+SPAN
+HEADER
+SELECT
+OPTION
+INPUT (all execpt type="textarea", which is replaced by TEXTAREA in teh editor)
+TEXTAREA
+
+Corresponding plugins have to be programmed.
+
+A starting point could be the form editor plugin for TinyMCE "JMForm plugin for TinyMCE".
+Link: https://sourceforge.net/projects/jmforms/
+
+In its latest version 2.0.2 the plugin is still not compatible with TinyMCE and 
+needs an update!
+
+Additionally TinyMCE has to extended to allow edting of element attribute values 
+according to MRRT specification.
+
+
 ============ 2017-05-03 ============
 
 EasyRad Editor:

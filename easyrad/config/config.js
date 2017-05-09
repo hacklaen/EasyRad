@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * @author T. Hacklaender
- * @date 2017-05-08
+ * @date 2017-05-09
  */
 
 // For Text in Clipboard: Delimiter between to options in one select element
@@ -26,6 +26,14 @@ OPTIONS_DELIMITER = ", ";
 // For Text in Clipboard: The suffix to append to a label if not already present. May be an empty string.
 LABEL_SUFFIX = ":";
 
-// For Text in Clipboard: If true, a warning is displayed if an element not supported by MRRT is found.
-//                        If false, the element and its children are ignored.
-NOT_PERMITTED_WARNING = false;
+// Specifies the destination for messages (error, warnings):
+// 'CONSOLE': The message is displayed on the JavaScript console in the browser.
+// 'REPORT': The message is inserted in the report text.
+// 'NO', false, empty or not specified: The message is not displayed
+MESSAGE_DESTINATION = "CONSOLE";
+
+// DEPRECATED - May be removed in following versions with default value false.
+// The following paramater is included temorary to visualize templates, which do not follow MRRT strict 
+// For Text in Clipboard: If true, the text node of an OPTION element is used as its value.
+//                        MRRT specifies, that its value attribute has ti be used, but that attribute value and text must be the same.
+USE_OPTION_TEXT = true;

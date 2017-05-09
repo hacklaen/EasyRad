@@ -223,3 +223,38 @@ function i18n(key) {
         return key;
     }
 }
+
+/**
+ * Send a message (error or warning) to the user.
+ * The destination is specified in the configuration parameter MESSAGE_DESTINATION:
+ * 'CONSOLE': The message is displayed on the JavaScript console in the browser.
+ * 'REPORT': The message is inserted in the report text.
+ * 'NO', false, empty or not specified: The message is not displayed
+ * 
+ * @param {String} msg
+ * @param {String} reportText If null the MESSAGE_DESTINATION option "REPORT"
+ *                            has no effect and null is returned.
+ * @returns {String} The optional modified reportText parameter.
+ */
+function sendMessage(msg, reportText) {
+
+    if ((typeof MESSAGE_DESTINATION === "undefined") || (!MESSAGE_DESTINATION)) {
+        return reportText;
+    }
+
+    switch (MESSAGE_DESTINATION) {
+        case 'CONSOLE':
+            console.log(msg + `\n`);
+            break;
+
+        case 'REPORT':
+            if (typeof reportText === "string") {
+                reportText += msg + ' ';
+            }
+            break;
+
+        default:
+        // Nothing to do
+    }
+    return reportText;
+}

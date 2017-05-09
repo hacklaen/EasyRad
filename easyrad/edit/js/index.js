@@ -20,7 +20,7 @@
  * 
  * @version 0.1 alpha
  * @author T. Hacklaender
- * @date 2017-05-05
+ * @date 2017-05-09
  */
 
 /*=============================================
@@ -28,9 +28,10 @@
  *===========================================*/
 
 /* EasyRad Editor parameter: The URL of the template to edit when opening the editor */
+//var easyrad_param_template_to_edit = '../samples/IHE_MRRT_Example_TI_TH.html';
 //var easyrad_param_template_to_edit = '../samples/dicom20.html';
-var easyrad_param_template_to_edit = '../samples/IHE_MRRT_Example_TI_TH.html';
 //var easyrad_param_template_to_edit = 'file:///C:/Users/Tom/Desktop/EasyRad/EasyRadEdit_Project/GitHub/EasyRad/easyrad/samples/IHE_MRRT_Example_TI_TH.html';
+
 
 /* ========================================= */
 
@@ -38,10 +39,8 @@ var easyrad_param_template_to_edit = '../samples/IHE_MRRT_Example_TI_TH.html';
 /* The template in the editor as a HTML Document object (set before editing starts). */
 var templateDoc;
 
-
 /* The name of the templates file (set if template was loaded from fileystem). */
 var templateFilename;
-
 
 /*
  * Defer the JQuery scripts until the DOM has been completely parsed.
@@ -57,41 +56,51 @@ $(document).ready(function () {
         $("#open-btn").prop("disabled", true);
     }
 
-    // TinyMce code plugin: https://www.tinymce.com/docs/plugins/code/
-    // HTML5 formats: http://archive.tinymce.com/tryit/3_x/html5_formats.php
+    /*
+     * TinyMCE code plugin: https://www.tinymce.com/docs/plugins/code/
+     * 
+     * A list of editor controls: https://www.tinymce.com/docs/advanced/editor-control-identifiers/
+     */
     tinymce.init({
         selector: "textarea",
-        plugins: "code,visualblocks",
-        // toolbar: "code",
-        content_css: 'css/content.css',
+        // Use some additional plugins
+        plugins: "code,visualblocks,table,lists,link,image",
+
+        // Use smaller icons
+        toolbar_items_size: 'small',
 
         // Schema is HTML5 instead of default HTML4
         schema: "html5",
+
+        // Pressing ENTER inserts a <br/> Pressing SHIFT + ENTER inserts a <p></p>
+        forced_root_block: false,
 
         // End container block element when pressing enter inside an empty block
         end_container_on_empty_block: true,
         visualblocks_default_state: true,
 
-        // HTML5 formats
+        // Use a special stylesheet for content visualization
+        content_css: 'css/content.css',
+
+        // Specifies a list of valid elements preserved when the editor saves
+        // See: https://www.tinymce.com/docs/configure/content-filtering/
+        //valid_elements: 'html[*], head[*], meta[*], style[*], title[*], link[*], script[*], embed[*], img[*], body[*], section[*], header[*], li[*], ol[*], p[*], ul[*], table[*], td[*], th[*], tr[*], input[*], label[*], option[*], select[*], a[*], br[*], em[*], q[*], span[*], strong[*], sub[*], sup[*], u[*]',
+        valid_elements: '*[*]',
+
+        // No menubar
+        menubar: false,
+
+        // Configure the toolbar(s)
+        toolbar1: 'undo redo | cut copy paste | visualblocks code',
+        toolbar2: 'bold italic underline subscript superscript blockquote | bullist numlist table  styleselect | link unlink image |',
+
+        // Configure the styleselect toolbar menu with HTML5 formats
         style_formats: [
-            {title: 'h1', block: 'h1'},
-            {title: 'h2', block: 'h2'},
-            {title: 'h3', block: 'h3'},
-            {title: 'h4', block: 'h4'},
-            {title: 'h5', block: 'h5'},
-            {title: 'h6', block: 'h6'},
-            {title: 'p', block: 'p'},
-            {title: 'div', block: 'div'},
-            {title: 'pre', block: 'pre'},
             {title: 'section', block: 'section', wrapper: true, merge_siblings: false},
-            {title: 'article', block: 'article', wrapper: true, merge_siblings: false},
-            {title: 'blockquote', block: 'blockquote', wrapper: true},
-            {title: 'hgroup', block: 'hgroup', wrapper: true},
-            {title: 'aside', block: 'aside', wrapper: true},
-            {title: 'figure', block: 'figure', wrapper: true}
+            {title: 'header', block: 'header', wrapper: true, merge_siblings: false},
         ],
 
-        // Definition of an event handler called when TinyMce is initialized
+        // Definition of an event handler called when TinyMCE is initialized
         setup: function (editor) {
             editor.on('init', function () {
                 // If specified in the parameters: Load a default template to edit
@@ -146,14 +155,11 @@ $(document).ready(function () {
         var files;
         var f;
         var fileReader;
-
         // Get the FileList object
         files = evt.target.files;
-
         // We do not use the "multiple" attribute in input
         // Therefore we have only one file
         f = files[0];
-
         // Only process HTML files.
         if (f.type != "text/html") {
             return;
@@ -161,21 +167,17 @@ $(document).ready(function () {
 
         // Store the name of the file for later use
         templateFilename = f.name;
-
         // Lesen von Dateien in JavaScript mit den File APIs
         // See: https://www.html5rocks.com/de/tutorials/file/dndfiles/
         fileReader = new FileReader();
-
         // Closure to capture the file information.
         fileReader.onload = (function (theFile) {
             return function (e) {
                 loadTemplateDoc(e.target.result);
             };
         })(f);
-
         // Read the file as a data URL.
         fileReader.readAsDataURL(f);
-
     });
 
 
@@ -209,15 +211,12 @@ $(document).ready(function () {
         var text;
         var titleElm;
         var filename;
-
         // Update the document to reflect the edited changes
         updateTemplateDoc();
-
         // outerHTML() is not supported by InternetExplore. We simulate it
         text = templateDoc.documentElement.innerHTML;
         text = '<html>' + '\n' + text + '\n' + '</html>';
         text = '<!DOCTYPE html>' + '\n' + text;
-
         // Alternative method: Works, but returns code inside <SCRIPT> element HTML-escaped
         // text = new XMLSerializer().serializeToString(templateDoc);
 
@@ -232,14 +231,12 @@ $(document).ready(function () {
                 filename = 'Template';
             }
             filename = filename + '.html';
-
             // Make valid filename: a-z, A-Z, 0-9, . and -
             filename = filename.replace(/[^a-zA-Z0-9_.-]/g, "_");
         }
 
         saveTextAsFile(text, filename);
     });
-
 });
 
 
@@ -287,8 +284,7 @@ function setTemplateDoc(doc) {
     /* Setup the content editor */
 
     bodyHtml = templateDoc.getElementsByTagName('body')[0].innerHTML;
-
-    // We have to update the content of the TinyMce editor. The TEXTAREA is hidden.
+    // We have to update the content of the TinyMCE editor. The TEXTAREA is hidden.
     // $('#template-textarea').val(bodyHtml);
     tinymce.activeEditor.setContent(bodyHtml);
 
@@ -329,7 +325,6 @@ function setTemplateDoc(doc) {
     if (xmlScriptElm !== null) {
         // Convert the XML <script> element into a XML document.
         xmlDoc = xmlScriptToXmlDoc(xmlScriptElm);
-
         // Extract the template attribute information from the XML document
         for (var k = 0; k < templateAttributes.length; k++) {
             templateAttrElms = xmlDoc.getElementsByTagName(templateAttributes[k]);
@@ -383,11 +378,10 @@ function updateTemplateDoc() {
         xmlScriptElm = templateDoc.createElement('SCRIPT');
         xmlScriptElm.setAttribute('type', 'text/xml');
         templateDoc.head.appendChild(xmlScriptElm);
-
     }
+
     // Convert the script elements content to a XML document
     xmlDoc = xmlScriptToXmlDoc(xmlScriptElm);
-
     // Get/create <template_attributes> element
     templateAttributesElms = xmlDoc.getElementsByTagName('template_attributes');
     if (templateAttributesElms.length === 0) {
@@ -401,7 +395,6 @@ function updateTemplateDoc() {
     for (var i = 0; i < templateAttributes.length; i++) {
         // Get the edited value
         attrVal = $('#' + templateAttributes[i]).val();
-
         attrElms = xmlDoc.getElementsByTagName(templateAttributes[i]);
         if (attrElms.length === 0) {
             // Not defined, crete new element
@@ -418,7 +411,6 @@ function updateTemplateDoc() {
     serializer = new XMLSerializer();
     rootChildElms = xmlDoc.documentElement.children;
     xml = '';
-
     for (var i = 0; i < rootChildElms.length; i++) {
         xml = xml + serializer.serializeToString(rootChildElms[i]) + '\n';
     }
@@ -426,7 +418,6 @@ function updateTemplateDoc() {
 
     // Update the XML script content
     xmlScriptElm.textContent = xml;
-
     /* Modification of the documents DOM could be done here */
 
     // Replace <textarea> elements with <input type="textarea">
@@ -497,7 +488,6 @@ function loadTemplateDoc(url) {
                     // Setup the template editor
                     setTemplateDoc(doc);
                     break;
-
                 default:
                     // Display the HTTP result code and text
                     alert('Error code: ' + this.status + ' - ' + this.statusText);
@@ -508,7 +498,6 @@ function loadTemplateDoc(url) {
 }
 
 
-
 /**
  * Localizes the text of the user interface to the language used by the browser.
  */
@@ -516,11 +505,9 @@ function localize() {
     $("#new-btn").html(i18n('new_btn'));
     $("#dicom20-btn").html(i18n('dicom20_btn'));
     $("#din25300-btn").html(i18n('din25300_btn'));
-
     $("#open-btn").filestyle('buttonText', i18n('open_btn'));
     $("#get-info-btn").html(i18n('get_info_btn'));
     $("#save-btn").html(i18n('save_btn'));
-
     // Set in function loadTemplateDoc(url) for each template loaded
     // $("#template-title").html(i18n('template_title'));
     // $("#template-publisher").html(i18n('template_publisher'));

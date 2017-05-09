@@ -60,11 +60,12 @@ If the global JavaScript variable ` easyrad_param_hide_selection` is set to true
 
 ### Configuration of text rendering
 Some aspects of rendering the text are configurable by parameters specified in file `config/config.js`.
-|Parameter | Description |
-|---|---|
-| OPTIONS_DELIMITER   | Delimiter between to options in one select element. |
-| LABEL_SUFFIX   | The suffix to append to a label if not already present. May be an empty string. |
-| NOT_PERMITTED_WARNING    | If true, a warning is displayed if an element not supported by MRRT is found. If false, the element and its children are ignored. |
+|Parameter | Default value | Description |
+|---|---|---|
+| OPTIONS_DELIMITER | ", " | Delimiter between to options in one select element. |
+| LABEL_SUFFIX   | ":" | The suffix to append to a label if not already present. May be an empty string. |
+| USE_OPTION_TEXT | true | If true, the text node of an OPTION element is used as its value. Otherwise the value attribute is used (as MRRT specifies) |
+| MESSAGE_DESTINATION | "CONSOLE" | Specifies the destination for messages (error, warnings). Possible value: "CONSOLE", "REPORT", "NO" |
 
 
 ### List of favored templates
@@ -265,15 +266,27 @@ The texts of the user interface are displayed in the preferred language selected
 By editing the file `edit/lang/translations.js` additional languages could be easily provided: For a new language the block `en: {}` should be copied and labeled with the ISO 639-1 two-letter code of the new language instead of `en`. After that the English texts must be replaced with their translations. After saving the file and reloading `easyrad/edit/index.html` the new language is available.
 
 
+
+
 ## Implementation details
-EasyRadEditor is based on the TinyMce editor, which is highly configurable and allows to add additional features by plugins.
+EasyRadEditor is based on the TinyMCE editor, which is highly configurable and allows to add additional features by plugins.
+
+
+
+### Template modification during editing
+The MRRT standard defines a multiline text field as `<input type="textarea">` whereas HTML5 specifies it as `<textarea>`. The `type="textarea"` is not defined in HTML5.
+To allow editing the template with the HTML editor TinyMCE, all `<input type="textarea">` elements are converted on the fly to `<textarea>` elements when the template is loaded into the editor and vice versa when saving it.
+During this rocedure the attributes of the `<input type="textarea">` are copied to the `<textarea>` elements (besides the `type` attribute, which does not make sense in a `<textarea>`.
+
+
 
 ### Used libraries
 Besides the libraries used EasyRad the following libraries are used by EasyRad Editor:
 
 |Library | Version | License | URL |
 |---|---|---|---|
-| TinyMce |4.5.7|LGPL 2.0|[http://jquery.com/download/](https://www.tinymce.com/download//)|
+| TinyMCE |4.5.7|LGPL 2.0|[http://jquery.com/download/](https://www.tinymce.com/download//)|
+
 
 
 ## Tests

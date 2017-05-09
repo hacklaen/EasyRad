@@ -136,7 +136,7 @@ function walk(node, text) {
                 break;
 
             default:
-                text += "\n" + "[Error: Unknown node type = " + childNode.nodeType + "]" + "\n";
+                text += sendMessage('[Error: Unknown node type = ' + childNode.nodeType + ']', text);
                 text = walk(childNode, text);
         }
     }
@@ -145,8 +145,11 @@ function walk(node, text) {
 
 
 /**
+* Processes an ELEMENT node during work throu DOM.
  * 
- * @param Element elm
+ * @param {Element} elm
+ * @param {string} text The report text.
+ * @returns {string} The optional modified report text.
  */
 function processElementNode(elm, text) {
     var parentElm;
@@ -264,7 +267,7 @@ function processElementNode(elm, text) {
                     break;
 
                 default:
-                    text += "\n" + "[Error: Attribute not supported in INPUT: " + elm.type + "]" + "\n";
+                    text += sendMessage('[Error: Attribute not supported in INPUT: ' + elm.type + ']', text);
             }
             break;
 
@@ -310,6 +313,7 @@ function processElementNode(elm, text) {
             text = walk(elm, text);
             break;
 
+        case "DIV":	// NOT SPECIFIED IN MRRT. SHOULD BE REMOVED. Document division
         case "P":	// Paragraph
             text = walk(elm, text);
             text += "\n\n";
@@ -373,10 +377,7 @@ function processElementNode(elm, text) {
             break;
 
         default:
-            // MRRT permitts other elements, but they shoul be ignored: 8.1.5 Permitted HTML5 Formatting Tags
-            if (NOT_PERMITTED_WARNING) {
-                text += "[Element ignored by MRRT: " + elm.nodeName + "] ";
-            }
+            text += sendMessage('[Element ignored by MRRT: ' + elm.nodeName + ']', text);
     }
 
     return text;
@@ -384,10 +385,11 @@ function processElementNode(elm, text) {
 
 
 /**
+ * Processes a TEXT node during work throu DOM.
  * 
- * @param {type} textNode
- * @param {type} text
- * @returns {unresolved}
+ * @param {Node} textNode
+ * @param {string} text The report text.
+ * @returns {string} The optional modified report text.
  */
 function processTextNode(textNode, text) {
     // Get the text of the node
@@ -407,7 +409,7 @@ function processTextNode(textNode, text) {
     var parentElm = textNode.parentNode;
 
     if (parentElm == null) {
-        text += "\n" + "[Error: Text node has no parent element: " + nodeText + "]" + "\n";
+        text += sendMessage('[Error: Text node has no parent element: ' + nodeText + ']', text);
         return text;
     }
 
@@ -492,7 +494,12 @@ function getElmValue(elm) {
                         }
                         // MRRT specifies in 8.1.3.5.1 Selection Items, that the value of an OPTION is its value attribute, not the displayed text
                         // Text and content of value attribute must be the same according to MRRT!
-                        elmValue += childElms[i].getAttribute("value");
+                        if (USE_OPTION_TEXT) {
+                            // Returns all text nodes of the OPTION element and its children
+                            elmValue += childElms[i].textContent;
+                        } else {
+                            elmValue += childElms[i].getAttribute("value");
+                        }
                     }
                 }
             }
@@ -519,12 +526,13 @@ function getElmValue(elm) {
                     break;
 
                 default:
-                    elmValue = "\n" + "[Error: Attribute not supported in INPUT: " + elm.type + "]" + "\n";
+                    elmValue = sendMessage('[Error: Attribute not supported in INPUT: ' + elm.type + ']', elmValue);
             }
             break;
 
             /* ==== 8.1.5 Permitted HTML5 Formatting Tags ==== */
 
+        case "DIV":	// NOT SPECIFIED IN MRRT. SHOULD BE REMOVED. Document division
         case "BR":	// Line break
         case "LI":	// List item
         case "OL":	// Ordered list
@@ -570,7 +578,7 @@ function getElmValue(elm) {
             break;
 
         default:
-            elmValue = "\n" + "[Error: Element not allowed in MRRT: " + elm.nodeName + "]" + "\n";
+            elmValue = sendMessage('[Error: Element not allowed in MRRT: ' + elm.nodeName + ']', elmValue);
     }
 
     return elmValue;
@@ -610,7 +618,7 @@ function getElmLabelText(elm) {
 
         case "LABEL":
             // Inline labels are not specified in MRRT: 8.1.3.2 Linkage Between Template Text and Template Fields
-            labelText += "[WARNING: Inline labels are not supported by MRRT] ";
+            labelText += sendMessage("[WARNING: Inline labels are not supported by MRRT]", labelText);
             labelText += parentElm.textContent.trim();
             break;
 
