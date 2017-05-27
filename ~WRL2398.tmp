@@ -1,4 +1,4 @@
-﻿# EasyRad
+# EasyRad
 EasyRad is a browser application that allows you to fill out radiology report templates and to copy the result as plain text into the clipboard for further processing. The templates must comply with the IHE Radiology Technical Framework Supplement Management of Radiology Report Templates (MRRT).
 
 **[HOMEPAGE](http://iftm.de/index.php/radiologie/easyrad)**
@@ -55,21 +55,8 @@ Use the clipboard content to transfer the text to your RIS or HIS system or to p
 ## Configuration
 
 ### Start-up behavior
-Some aspects of EasyRad may be configured during start-up. When loading the `index.html` page, the following URL-parameter are evaluated and stored in global JavaScript variables:
-
-|URL-parameter | JavaScript variable | Description |
-|---|---|---|
-|tpl| param_template | A valid URL of a template file relative to index.html, that should be loaded when the applications starts |
-|hide| param_hide_selection |If set to `1`, the user interface elements to select favored templates and to load templates from the filesystem are hidden. |
-
-
-Sample: The URL
-
-```
-http://localhost:8383/ReportCreator/index.html?tpl=templates/mrt_rectalca.html&hide=1
-```
-starts EasyRad with the template `mrt_rectalca.html` preloaded and hidden user interface elements to select other templates.
-
+If the global JavaScript variable `param_template` is set to a valid URL of a template file, that file is loaded when the applications starts.
+If the global JavaScript variable ` param_hide_selection` is set to true, the user interface elements to select favored templates and to load templates from the filesystem are hidden.
 
 ### Configuration of text rendering
 Some aspects of rendering the text are configurable by parameters specified in file `config/config.js`.

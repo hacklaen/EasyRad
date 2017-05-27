@@ -20,7 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * @version 1.2
- * @author T. Hacklaender
+ * @author Thomas Hacklaender
  * @date 2017-05-27
  */
 
@@ -40,12 +40,12 @@
  *===========================================*/
 
 /* EasyRad parameter: The URL of the template display when opening the report creator */
-var easyrad_param_template = '';
-//var easyrad_param_template = './samples/IHE_MRRT_Example_TI_TH.html';
-//var easyrad_param_template = './samples/IHE_MRRT_Example_TI_TH_content_only.html';
+var param_template = '';
+//var param_template = './samples/IHE_MRRT_Example_TI_TH.html';
+//var param_template = './samples/IHE_MRRT_Example_TI_TH_content_only.html';
 
 /* EasyRad parameter: If true, the UI elements to select a new teplate are hidden. */
-var easyrad_param_hide_selection = false;
+var param_hide_selection = false;
 
 /* ========================================= */
 
@@ -83,14 +83,14 @@ $(document).ready(function () {
     setupFavoredTemplates();
 
     // Setup user interface
-    if ((typeof easyrad_param_hide_selection !== "undefined") && (easyrad_param_hide_selection.length > 0)) {
+    if ((typeof param_hide_selection !== "undefined") && (param_hide_selection)) {
         $("#favored-templates-btn").hide();
         $("#files-div").hide();
     }
 
     // Load sample data
-    if ((typeof easyrad_param_template !== "undefined") && (easyrad_param_template.length > 0)) {
-        loadTemplate(easyrad_param_template);
+    if ((typeof param_template !== "undefined") && (param_template.length > 0)) {
+        loadTemplate(param_template);
     }
 
     /*
@@ -265,12 +265,13 @@ $(document).ready(function () {
  * Get configuration parameter from the URL.
  * 
  * @author Marian Feiler - urbanstudio GmbH
+ * @author Thomas Hacklaender
  * @date 2017-05-23
  * 
- * @param string querystring URL parameter
-  */
+ * @param {string} querystring URL parameter
+ */
 function getAtts(querystring) {
-    if (querystring == '')
+    if (querystring === '')
         return;
     var qs = querystring.slice(1);
     var pairs = qs.split("&");
@@ -279,11 +280,11 @@ function getAtts(querystring) {
         pair = pairs[i].split("=");
         key = unescape(pair[0]).replace("+", " ");
         val = unescape(pair[1]).replace("+", " ");
-        if (key == "tpl") {
-            easyrad_param_template = val;
+        if (key === "tpl") {
+            param_template = val;
         }
-        if (key == "hide") {
-            easyrad_param_hide_selection = (val != 1 ? '' : val);
+        if (key === "hide") {
+            param_hide_selection = (val === '1' ? true : false);
         }
     }
 }
