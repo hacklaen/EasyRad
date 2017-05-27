@@ -40,17 +40,21 @@
  *===========================================*/
 
 /* EasyRad parameter: The URL of the template display when opening the report creator */
-//var easyrad_param_template = '';
+var easyrad_param_template = '';
 //var easyrad_param_template = './samples/IHE_MRRT_Example_TI_TH.html';
 //var easyrad_param_template = './samples/IHE_MRRT_Example_TI_TH_content_only.html';
 
 /* EasyRad parameter: If true, the UI elements to select a new teplate are hidden. */
-//var easyrad_param_hide_selection = false;
+var easyrad_param_hide_selection = false;
 
 /* ========================================= */
 
 /* The clipboard object */
 var clipboard;
+
+/* Update the configuration parameter from the URL */
+getAtts(location.search);
+
 
 /*
  * Defer the JQuery scripts until the DOM has been completely parsed.
@@ -255,6 +259,34 @@ $(document).ready(function () {
         });
     }
 });
+
+
+/**
+ * Get configuration parameter from the URL.
+ * 
+ * @author Marian Feiler - urbanstudio GmbH
+ * @date 2017-05-23
+ * 
+ * @param string querystring URL parameter
+  */
+function getAtts(querystring) {
+    if (querystring == '')
+        return;
+    var qs = querystring.slice(1);
+    var pairs = qs.split("&");
+    var pair, key, val;
+    for (var i = 0; i < pairs.length; i++) {
+        pair = pairs[i].split("=");
+        key = unescape(pair[0]).replace("+", " ");
+        val = unescape(pair[1]).replace("+", " ");
+        if (key == "tpl") {
+            easyrad_param_template = val;
+        }
+        if (key == "hide") {
+            easyrad_param_hide_selection = (val != 1 ? '' : val);
+        }
+    }
+}
 
 
 /**
