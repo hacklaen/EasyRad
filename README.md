@@ -59,7 +59,7 @@ Some aspects of EasyRad may be configured during start-up. When loading the `ind
 
 |URL-parameter | JavaScript variable | Description |
 |---|---|---|
-|tpl| param_template | A valid URL of a template file relative to index.html, that should be loaded when the applications starts |
+|tpl| param_template | A valid URL of a template file relative to `index.html`, that should be loaded when the applications starts. |
 |hide| param_hide_selection |If set to `1`, the user interface elements to select favored templates and to load templates from the filesystem are hidden. |
 
 

@@ -40,17 +40,19 @@
  *===========================================*/
 
 /* EasyRad parameter: The URL of the template display when opening the report creator */
-var param_template = '';
+//var param_template = '';
 //var param_template = './samples/IHE_MRRT_Example_TI_TH.html';
 //var param_template = './samples/IHE_MRRT_Example_TI_TH_content_only.html';
+var param_template = './templates/us_fast.html';
 
-/* EasyRad parameter: If true, the UI elements to select a new teplate are hidden. */
+/* EasyRad parameter: If true, the UI elements to select a new template are hidden. */
 var param_hide_selection = false;
 
 /* ========================================= */
 
 /* The clipboard object */
 var clipboard;
+
 
 /* Update the configuration parameter from the URL */
 getAtts(location.search);
