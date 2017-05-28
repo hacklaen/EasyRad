@@ -19,9 +19,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * @version 1.1
- * @author T. Hacklaender
- * @date 2017-05-09
+ * @version 1.2
+ * @author Thomas Hacklaender
+ * @date 2017-05-27
  */
 
 /*
@@ -40,17 +40,23 @@
  *===========================================*/
 
 /* EasyRad parameter: The URL of the template display when opening the report creator */
-//var easyrad_param_template = '';
-//var easyrad_param_template = './samples/IHE_MRRT_Example_TI_TH.html';
-//var easyrad_param_template = './samples/IHE_MRRT_Example_TI_TH_content_only.html';
+//var param_template = '';
+//var param_template = './samples/IHE_MRRT_Example_TI_TH.html';
+//var param_template = './samples/IHE_MRRT_Example_TI_TH_content_only.html';
+var param_template = './templates/us_fast.html';
 
-/* EasyRad parameter: If true, the UI elements to select a new teplate are hidden. */
-//var easyrad_param_hide_selection = false;
+/* EasyRad parameter: If true, the UI elements to select a new template are hidden. */
+var param_hide_selection = false;
 
 /* ========================================= */
 
 /* The clipboard object */
 var clipboard;
+
+
+/* Update the configuration parameter from the URL */
+getAtts(location.search);
+
 
 /*
  * Defer the JQuery scripts until the DOM has been completely parsed.
@@ -79,14 +85,14 @@ $(document).ready(function () {
     setupFavoredTemplates();
 
     // Setup user interface
-    if ((typeof easyrad_param_hide_selection !== "undefined") && (easyrad_param_hide_selection.length > 0)) {
+    if ((typeof param_hide_selection !== "undefined") && (param_hide_selection)) {
         $("#favored-templates-btn").hide();
         $("#files-div").hide();
     }
 
     // Load sample data
-    if ((typeof easyrad_param_template !== "undefined") && (easyrad_param_template.length > 0)) {
-        loadTemplate(easyrad_param_template);
+    if ((typeof param_template !== "undefined") && (param_template.length > 0)) {
+        loadTemplate(param_template);
     }
 
     /*
@@ -255,6 +261,35 @@ $(document).ready(function () {
         });
     }
 });
+
+
+/**
+ * Get configuration parameter from the URL.
+ * 
+ * @author Marian Feiler - urbanstudio GmbH
+ * @author Thomas Hacklaender
+ * @date 2017-05-23
+ * 
+ * @param {string} querystring URL parameter
+ */
+function getAtts(querystring) {
+    if (querystring === '')
+        return;
+    var qs = querystring.slice(1);
+    var pairs = qs.split("&");
+    var pair, key, val;
+    for (var i = 0; i < pairs.length; i++) {
+        pair = pairs[i].split("=");
+        key = unescape(pair[0]).replace("+", " ");
+        val = unescape(pair[1]).replace("+", " ");
+        if (key === "tpl") {
+            param_template = val;
+        }
+        if (key === "hide") {
+            param_hide_selection = (val === '1' ? true : false);
+        }
+    }
+}
 
 
 /**
