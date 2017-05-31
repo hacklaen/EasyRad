@@ -1,4 +1,20 @@
 
+============ 2017-05-28 ============
+
+Release Version 1.2
+
+EasyRad:
+
+x Changed name of global JavaScript parameters evaluated in index.js when opening EasyRad
+  to param_template and param_hide_selection
+
+x Bugfix: Returned value of function main.js/sendMessage should not be added to
+  the already existig text (it is included in the returned string).
+
++ Parameters param_template and param_hide_selection can be set by new URL-parameters
+  tpl and hide
+
+
 ============ 2017-05-09 ============
 
 Release Version 1.1

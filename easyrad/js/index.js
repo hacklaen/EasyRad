@@ -19,9 +19,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * @version 1.2
+ * @version 1.3
  * @author Thomas Hacklaender
- * @date 2017-05-27
+ * @date 2017-05-31
  */
 
 /*
@@ -40,13 +40,14 @@
  *===========================================*/
 
 /* EasyRad parameter: The URL of the template display when opening the report creator */
-//var param_template = '';
+var param_template = '';
 //var param_template = './samples/IHE_MRRT_Example_TI_TH.html';
 //var param_template = './samples/IHE_MRRT_Example_TI_TH_content_only.html';
-var param_template = './templates/us_fast.html';
+//var param_template = './templates/us_fast.html';
 
 /* EasyRad parameter: If true, the UI elements to select a new template are hidden. */
 var param_hide_selection = false;
+
 
 /* ========================================= */
 

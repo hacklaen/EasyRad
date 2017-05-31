@@ -18,9 +18,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @version 1.1
+ * @version 1.2
  * @author T. Hacklaender
- * @date 2017-05-07
+ * @date 2017-05-28
  */
 
 
@@ -136,7 +136,7 @@ function walk(node, text) {
                 break;
 
             default:
-                text += sendMessage('[Error: Unknown node type = ' + childNode.nodeType + ']', text);
+                text = sendMessage('[Error: Unknown node type = ' + childNode.nodeType + ']', text);
                 text = walk(childNode, text);
         }
     }
@@ -145,7 +145,7 @@ function walk(node, text) {
 
 
 /**
-* Processes an ELEMENT node during work throu DOM.
+ * Processes an ELEMENT node during work throu DOM.
  * 
  * @param {Element} elm
  * @param {string} text The report text.
@@ -267,7 +267,7 @@ function processElementNode(elm, text) {
                     break;
 
                 default:
-                    text += sendMessage('[Error: Attribute not supported in INPUT: ' + elm.type + ']', text);
+                    text = sendMessage('[Error: Attribute not supported in INPUT: ' + elm.type + ']', text);
             }
             break;
 
@@ -377,7 +377,7 @@ function processElementNode(elm, text) {
             break;
 
         default:
-            text += sendMessage('[Element ignored by MRRT: ' + elm.nodeName + ']', text);
+            text = sendMessage('[Element ignored by MRRT: ' + elm.nodeName + ']', text);
     }
 
     return text;
@@ -409,7 +409,7 @@ function processTextNode(textNode, text) {
     var parentElm = textNode.parentNode;
 
     if (parentElm == null) {
-        text += sendMessage('[Error: Text node has no parent element: ' + nodeText + ']', text);
+        text = sendMessage('[Error: Text node has no parent element: ' + nodeText + ']', text);
         return text;
     }
 
@@ -618,7 +618,7 @@ function getElmLabelText(elm) {
 
         case "LABEL":
             // Inline labels are not specified in MRRT: 8.1.3.2 Linkage Between Template Text and Template Fields
-            labelText += sendMessage("[WARNING: Inline labels are not supported by MRRT]", labelText);
+            labelText = sendMessage("[WARNING: Inline labels are not supported by MRRT]", labelText);
             labelText += parentElm.textContent.trim();
             break;
 
