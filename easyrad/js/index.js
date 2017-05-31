@@ -233,8 +233,29 @@ $(document).ready(function () {
         // Using Mozilla Firefox as a browser works fine!
 
         // Load the new template
-        $("#template-html").load(url, function () {
-            // Function is executed afer completition of load
+        // From the loaded HTML document the <html>, <head> and <body> elements 
+        // were automatically removed.
+        // The child elements of <head> and <body> are inserted in the sequence 
+        // of appearing in the origibnal file
+        $("#template-html").load(url, function (response, status, xhr) {
+            // Function is executed after completition of load
+
+            // Move <link> into head part of index.html and correct the relative link
+            $("#template-html").find("link").each(function (index) {
+                 // Move to head element
+                $("head").append($(this));
+
+                // Change the path from relative to file to relative to index.html
+                var hrefAttr = $(this).attr("href");
+                $(this).attr("href", getRelUrlPath(url) + hrefAttr);
+            });
+
+            // For <img> elemnts: Change the path from relative to file to relative to index.html
+            $("#template-html").find("img").each(function (index) {
+                // Change the path from relative to file to relative to index.html
+                var hrefAttr = $(this).attr("src");
+                $(this).attr("src", getRelUrlPath(url) + hrefAttr);
+            });
 
             // Replace <input type="textarea" /> with a TEXTAREA tags
             $("input[type='textarea']").replaceWith(function () {
@@ -262,6 +283,23 @@ $(document).ready(function () {
         });
     }
 });
+
+/**
+ * Gets the path of a relative URL of a file.
+ * 
+ * @param {type} relUrl The relative URL of a file
+ * @returns {String} The realtive path of the given URL
+ */
+function getRelUrlPath(relUrl) {
+    var path = "";
+    var urlParts = relUrl.split('/');
+    if (urlParts.length > 1) {
+        for (var i = 0; i < urlParts.length - 1; i++) {
+            path += urlParts[i] + '/';
+        }
+    }
+    return path;
+}
 
 
 /**
