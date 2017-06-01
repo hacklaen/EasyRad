@@ -96,38 +96,3 @@ reading and witing a MRRT file.
 
 This could be done in setupTemplateEditor(doc) and function updateTemplateDoc(),
 both defined in /edit/js/index.js.
-
-
-============ 2017-04-23 ============
-
-EasyRad:
-
-W3C states that URLs of stylesheets must ALWAYS be relativ to the file they referre to.
-
-Templates may import stylsheets with the <link> tag. It should be expected, that 
-the URLs are specified relative to the template file.
-On the other hand the template file is loaded into /easyrad/index.html. Therefore
-the style must be specified relative to index.html.
-
-=> When loading the template the URLs of the <link> tag should be adopted on the fly.
-
-
-============ 2017-04-23 ============
-
-EasyRad:
-
-<embed> tags in template files are ignored when loading the file.
-
-? => Force a redraw the window: $(...).hide().show(0); or $(window).trigger('resize');
-
-? => Replace the <embed> tag on the fly with the embedded HTML content (recursive)
-
-
-============ 2017-04-23 ============
-
-EasyRad:
-
-Images referenced in an <img> tag are not rendered as image, but with the alternative
- text.
-
-? => Force a redraw the window: $(...).hide().show(0); or $(window).trigger('resize');

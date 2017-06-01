@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>IHE MRRT Embedded Template Example</title>
+
+        <meta charset="UTF-8">
+        <meta name="dcterms.title" content="Embedded">
+        <meta name="dcterms.identifier" content="1.2.3.4.5">
+        <meta name="dcterms.type" content="IMAGE_REPORT_TEMPLATE">
+        <meta name="dcterms.language" content="en">
+        <meta name="dcterms.publisher" content="Radiological Society of North America (RSNA)">
+        <meta name="dcterms.rights" content="May be used freely, subject to license agreement">
+        <meta name="dcterms.license" content="http://www.radreport.org/license.pdf">
+        <meta name="dcterms.date" content="2017-05-31">
+        <meta name="dcterms.creator" content="Thomas Hacklaender">
+        <script type="text/xml">
+                <template_attributes></template_attributes>
+                <coded_content></coded_content>
+        </script>
+
+        <link rel="stylesheet" type="text/css" href="embedded_style.css" />
+    </head>
+
+    <body>
+        <section data-section-name="Procedure:">
+            <header class="level1">This is embedded content level 1</header>
+            <p>
+                Ebedded file may include images:  <img src="img1.jpg" alt="Image embed level 1" height="128" width="128">
+                <!-- Ebedded file may include images:  <img src="http://www.iftm.de/easyrad/samples/ct-scan.jpg" alt="Image embed level 1" height="128" width="128"> -->
+            </p>
+            <p>
+                <label for="add-info">Embedded text area</label>
+                <input 
+                    id="embedded-1-add-info"
+                    name="additional  information" 
+                    data-field-type="TEXT"
+                    type="textarea" 
+                    value="None"  
+                    title="Additional information"
+                    data-field-merge-flag="Y"
+                    data-field-merge-identifier="Patient Info"
+                    />
+            </p>
+            <embed src="./embed2/embed_level2.html" type="text/html" height="60" />
+        </section>
+    </body>
+
+</html>
