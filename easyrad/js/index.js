@@ -21,7 +21,7 @@
  * 
  * @version 1.3
  * @author Thomas Hacklaender
- * @date 2017-05-31
+ * @date 2017-06-01
  */
 
 /*
@@ -240,35 +240,14 @@ $(document).ready(function () {
         $("#template-html").load(url, function (response, status, xhr) {
             // Function is executed after completition of load
 
-            // Move <link> into head part of index.html and correct the relative link
-            $("#template-html").find("link").each(function (index) {
-                 // Move to head element
-                $("head").append($(this));
+            // Modify the loaded template
+            modifyLoadedTemplate($("#template-html"), url);
 
-                // Change the path from relative to file to relative to index.html
-                var hrefAttr = $(this).attr("href");
-                $(this).attr("href", getRelUrlPath(url) + hrefAttr);
+            // Process <embed> elements
+            $("#template-html").find("embed").each(function (index) {
+                loadEmbedded($(this), url);
             });
 
-            // For <img> elemnts: Change the path from relative to file to relative to index.html
-            $("#template-html").find("img").each(function (index) {
-                // Change the path from relative to file to relative to index.html
-                var hrefAttr = $(this).attr("src");
-                $(this).attr("src", getRelUrlPath(url) + hrefAttr);
-            });
-
-            // Replace <input type="textarea" /> with a TEXTAREA tags
-            $("input[type='textarea']").replaceWith(function () {
-                return $("<textarea/>", {// JQuery object-literal
-                    name: this.name,
-                    "data-field-type": $(this).attr("data-field-type"),
-                    "data-field-merge-flag": $(this).attr("data-field-merge-flag"),
-                    "data-field-verbal-trigger": $(this).attr("data-field-verbal-trigger"),
-                    "data-field-completion-action": $(this).attr("data-field-completion-action"),
-                    "Title": $(this).attr("Title"),
-                    id: this.id,
-                }).val($(this).val());
-            });
 
             // Get the title of the template
             title = $('#template-html').find("title").text();
@@ -282,23 +261,140 @@ $(document).ready(function () {
             $('#template-publisher-value').text(dcterms['publisher']);
         });
     }
+
+    /**
+     * Load an embedded template.
+     * Replaces the <embed> element with a <div> element containing the loaded 
+     * template as children.
+     * 
+     * @param embedElm The <embed> element to replace.
+     * @param {string} templateFileUrl The URL of the template file. Relative URLs 
+     *                 must be specified relative to index.html.
+     */
+    function loadEmbedded(embedElm, templateFileUrl) {
+        var divElm;
+        var embedSrcUrl;
+
+        // Embedded file must be HTML
+        if (embedElm.attr("type") !== "text/html") {
+            // Other file type: Nothing to do
+            return;
+        }
+
+        // Create a new <div> element
+        divElm = document.createElement("DIV");
+
+        // Replace the <embed> element with the new <div>
+        $(embedElm).replaceWith(divElm);
+
+        // Get the URL of the template to embed
+        embedSrcUrl = embedElm.attr("src");
+        if (!isAbsoluteUrl(embedSrcUrl)) {
+            // Get the URL of the embedded file relative to index.html
+            embedSrcUrl = removeFileName(templateFileUrl) + embedSrcUrl;
+        }
+
+        // Load the content of the embedded template as children of the <div>
+        // From the loaded HTML document the <html>, <head> and <body> elements 
+        // were automatically removed.
+        // The child elements of <head> and <body> are inserted in the sequence 
+        // of appearing in the origibnal file
+        $(divElm).load(embedSrcUrl, function (response, status, xhr) {
+            // Function is executed after completition of load
+
+            // Modify the loaded template
+            modifyLoadedTemplate(divElm, embedSrcUrl);
+
+            // Process <embed> elements
+            $(divElm).find("embed").each(function (index) {
+                loadEmbedded($(this), embedSrcUrl);
+            });
+        });
+    }
+
 });
 
+
 /**
- * Gets the path of a relative URL of a file.
+ * Modifies a loaded template:
+ * - Adapt relative links of <img> and <link> elements.
+ * - Replace <input type="textarea"> elements with <textarea> elements.
  * 
- * @param {type} relUrl The relative URL of a file
- * @returns {String} The realtive path of the given URL
+ * @param baseElm JQuery object containing the loaded template as child elements.
+ * @param {string} templateFileUrl The URL of the template file. Relative URLs 
+ *                 must be specified relative to index.html.
  */
-function getRelUrlPath(relUrl) {
-    var path = "";
-    var urlParts = relUrl.split('/');
+function modifyLoadedTemplate(baseElm, templateFileUrl) {
+
+    // Move <link> into head part of index.html and correct the relative link
+    $(baseElm).find("link").each(function (index) {
+        // Move to head element
+        $("head").append($(this));
+
+        var hrefUrl = $(this).attr("href");
+        if (!isAbsoluteUrl(hrefUrl)) {
+            // Change the path from relative to template file to relative to index.html
+            $(this).attr("href", removeFileName(templateFileUrl) + hrefUrl);
+        }
+    });
+
+    // For <img> elemnts: Change the path from relative to file to relative to index.html
+    $(baseElm).find("img").each(function (index) {
+        var srcUrl = $(this).attr("src");
+        if (!isAbsoluteUrl(srcUrl)) {
+            // Change the path from relative to template file to relative to index.html
+            $(this).attr("src", removeFileName(templateFileUrl) + srcUrl);
+        }
+    });
+
+    // Replace <input type="textarea" /> with a TEXTAREA tags
+    $(baseElm).find("input[type='textarea']").replaceWith(function () {
+        return $("<textarea/>", {// JQuery object-literal
+            name: this.name,
+            "data-field-type": $(this).attr("data-field-type"),
+            "data-field-merge-flag": $(this).attr("data-field-merge-flag"),
+            "data-field-verbal-trigger": $(this).attr("data-field-verbal-trigger"),
+            "data-field-completion-action": $(this).attr("data-field-completion-action"),
+            "Title": $(this).attr("Title"),
+            id: this.id,
+        }).val($(this).val());
+    });
+}
+
+
+/**
+ * Tests, whether a given URL is absolute.
+ * 
+ * @param {String} url The URL to test
+ * @returns {Boolean} True, if the given URL is absolute.
+ */
+function isAbsoluteUrl(url) {
+    try {
+        // Throws exception for relative URLs
+        new URL(url);
+        return true;
+    } catch (err) {
+        return false;
+    }
+}
+
+/**
+ * Removes the filename from a given URL.
+ * 
+ * @param {string} url The URL of a file.
+ * @returns {string} The URL without the filename (either absolute or relative URL).
+ *                   If the given URL was a relative URL containing a filename only
+ *                   an empty string is returned.
+ */
+function removeFileName(url) {
+    var str = "";
+    var urlParts = url.split('/');
     if (urlParts.length > 1) {
         for (var i = 0; i < urlParts.length - 1; i++) {
-            path += urlParts[i] + '/';
+            str += urlParts[i] + '/';
         }
     }
-    return path;
+    return str;
 }
 
 
