@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+<!-- Version: 2017-06-06 -->
 <html>
     <head>
         <title>IHE MRRT Embedded Template Example</title>
 
         <meta charset="UTF-8">
         <meta name="dcterms.title" content="Embedded">
-        <meta name="dcterms.identifier" content="1.2.3.4.5">
+        <meta name="dcterms.identifier" content="2.3.4.5.6">
         <meta name="dcterms.type" content="IMAGE_REPORT_TEMPLATE">
         <meta name="dcterms.language" content="en">
         <meta name="dcterms.publisher" content="Radiological Society of North America (RSNA)">
@@ -23,15 +24,14 @@
 
     <body>
         <section data-section-name="Procedure:">
-            <header class="level1">This is embedded content level 1</header>
+            <header class="level1">This is embedded content level 2</header>
             <p>
-                Ebedded file may include images:  <img src="img1.jpg" alt="Image embed level 1" height="128" width="128">
-                <!-- Ebedded file may include images:  <img src="http://www.iftm.de/easyrad/samples/ct-scan.jpg" alt="Image embed level 1" height="128" width="128"> -->
+                Level 2 embedded files may include images as well:  <img src="./embedded_resources/img2.jpg" alt="Image embed level 2" height="128" width="128">
             </p>
             <p>
-                <label for="add-info">Embedded text area</label>
+                <label for="add-info">Text areas are allowed also</label>
                 <input 
-                    id="embedded-1-add-info"
+                    id="embedded-2-add-info"
                     name="additional  information" 
                     data-field-type="TEXT"
                     type="textarea" 
@@ -41,7 +41,6 @@
                     data-field-merge-identifier="Patient Info"
                     />
             </p>
-            <embed src="./embed2/embed_level2.html" type="text/html" height="60" />
         </section>
     </body>
 

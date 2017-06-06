@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * @author T. Hacklaender
- * @date 2017-05-09
+ * @date 2017-06-06
  */
 
 // For Text in Clipboard: Delimiter between to options in one select element
@@ -37,3 +37,11 @@ MESSAGE_DESTINATION = "CONSOLE";
 // For Text in Clipboard: If true, the text node of an OPTION element is used as its value.
 //                        MRRT specifies, that its value attribute has ti be used, but that attribute value and text must be the same.
 USE_OPTION_TEXT = true;
+
+// The URL of the directory where templates to embed are located.
+// May be either a absolute or relative URL. If relative, it must be specified
+// relative to the embedding template.
+// If empty, the URL of the embedding template is used.
+//EMBED_DIRECTORY_URL = "http://localhost:8383/ReportCreator/samples/embed_templates";
+//EMBED_DIRECTORY_URL = "./embed_templates";
+EMBED_DIRECTORY_URL = "";

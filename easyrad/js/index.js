@@ -54,6 +54,9 @@ var param_hide_selection = false;
 /* The clipboard object */
 var clipboard;
 
+/* An array containing the hrefs of all link elements originally specified in EasyRad */
+var originalLinks;
+
 
 /* Update the configuration parameter from the URL */
 getAtts(location.search);
@@ -63,6 +66,10 @@ getAtts(location.search);
  * Defer the JQuery scripts until the DOM has been completely parsed.
  */
 $(document).ready(function () {
+
+    // Sets the global variable originalLinks which contains the hrefs of all link 
+    // elements originally specified in EasyRad. 
+    getOriginalLinks();
 
     // Test whether all requiered APIs are available in the browser
     if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -219,6 +226,9 @@ $(document).ready(function () {
         var title;
         var dcterms;
 
+        // Remove all link elements included by the already loaded templates
+        removeTeplateLinks();
+
         // When loading templates in the Netbeans environment using the 
         // "Embedden Lightweight" server and Chrow as a browser the requested 
         // character encoding (e.g. utf-8) of the loaded page is not recognized.
@@ -273,6 +283,7 @@ $(document).ready(function () {
      */
     function loadEmbedded(embedElm, templateFileUrl) {
         var divElm;
+        var embedSrcFileName;
         var embedSrcUrl;
 
         // Embedded file must be HTML
@@ -287,11 +298,26 @@ $(document).ready(function () {
         // Replace the <embed> element with the new <div>
         $(embedElm).replaceWith(divElm);
 
-        // Get the URL of the template to embed
-        embedSrcUrl = embedElm.attr("src");
-        if (!isAbsoluteUrl(embedSrcUrl)) {
-            // Get the URL of the embedded file relative to index.html
-            embedSrcUrl = removeFileName(templateFileUrl) + embedSrcUrl;
+        // Get the name of the template to embed
+        embedSrcFileName = embedElm.attr("src");
+        // Get the URL of the embedded file relative to index.html
+        if (typeof EMBED_DIRECTORY_URL === 'string' && EMBED_DIRECTORY_URL.length) {
+            if (isAbsoluteUrl(EMBED_DIRECTORY_URL)) {
+                embedSrcUrl = EMBED_DIRECTORY_URL;
+                if (!embedSrcUrl.endsWith('/')) {
+                    embedSrcUrl += "/";
+                }
+                embedSrcUrl += embedSrcFileName;
+            } else {
+                embedSrcUrl = removeFileName(templateFileUrl) + EMBED_DIRECTORY_URL;
+                if (!embedSrcUrl.endsWith('/')) {
+                    embedSrcUrl += "/";
+                }
+                embedSrcUrl += embedSrcFileName;
+            }
+        } else {
+            // EMBED_DIRECTORY_URL is not specified. Use the directory of the embedding template as a default.
+            embedSrcUrl = removeFileName(templateFileUrl) + embedSrcFileName;
         }
 
         // Load the content of the embedded template as children of the <div>
@@ -305,9 +331,10 @@ $(document).ready(function () {
             // Modify the loaded template
             modifyLoadedTemplate(divElm, embedSrcUrl);
 
-            // Process <embed> elements
+            // Process <embed> elements in the embedded template
             $(divElm).find("embed").each(function (index) {
-                loadEmbedded($(this), embedSrcUrl);
+//                loadEmbedded($(this), embedSrcUrl);
+                loadEmbedded($(this), templateFileUrl);
             });
         });
     }
@@ -585,4 +612,33 @@ function localize() {
     // $("#template-publisher").html(i18n('template_publisher'));
 
     $("#modal-title-text").text(i18n('modal_title_text'));
+}
+
+
+/**
+ * Sets the global variable originalLinks which contains the hrefs of all link 
+ * elements originally specified in EasyRad. 
+ */
+function getOriginalLinks() {
+    originalLinks = [];
+
+    $("head").find("link").each(function (index) {
+        originalLinks.push($(this).attr("href"));
+    });
+}
+
+/**
+ * Removes all link elements included by templates. 
+ */
+function removeTeplateLinks() {
+    var hasReplaced = false;
+
+    // Process all link elements
+    do {
+        $("head").find("link").each(function (index) {
+            if (originalLinks.indexOf($(this).attr("href")) < 0) {
+                $(this).remove();
+            }
+        });
+    } while (hasReplaced);
 }

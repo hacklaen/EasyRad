@@ -81,6 +81,7 @@ Some aspects of rendering the text are configurable by parameters specified in f
 | LABEL_SUFFIX   | ":" | The suffix to append to a label if not already present. May be an empty string. |
 | USE_OPTION_TEXT | true | If true, the text node of an OPTION element is used as its value. Otherwise the value attribute is used (as MRRT specifies) |
 | MESSAGE_DESTINATION | "CONSOLE" | Specifies the destination for messages (error, warnings). Possible value: "CONSOLE", "REPORT", "NO" |
+| EMBED_DIRECTORY_URL | "" | Specifies the URL of the directory where templates to embed are located. May be either a absolute or relative URL. If relative, it must be specified relative to the embedding template. If empty, the URL of the embedding template is used. |
 
 
 ### List of favored templates
