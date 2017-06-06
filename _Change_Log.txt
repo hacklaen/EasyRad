@@ -1,4 +1,18 @@
 
+============ 2017-06-06 ============
+
+Release Version 1.4
+
+EasyRad:
+
+x Bugfix: Links to stylesheets introduced by templates are removed before a new
+  template is loaded.
+
+x Bugfix: The src attribute of the <embed> element  shall contain a string 
+  concatenating the unique identifier for the template to be included, and “.html”.
+  Embedded templates are now loaded according to this rule.
+
+
 ============ 2017-06-01 ============
 
 Release Version 1.3

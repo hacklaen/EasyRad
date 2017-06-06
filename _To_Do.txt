@@ -1,4 +1,19 @@
 
+============ 2017-06-06 ============
+
+EasyRad:
+
+Inline labels are not specified in MRRT: 8.1.3.2 Linkage Between Template Text 
+and Template Fields.
+
+Affected function:
+
+js/converter.js: getElmLabelText(elm) 
+
+This extension should be removed!
+
+
+
 ============ 2017-05-09 ============
 
 EasyRad:
