@@ -1,4 +1,16 @@
 
+============ 2017-06-07 ============
+
+EasyRad:
+
+<option> elements may embed templates (see MRRT: 8.1.3.5.1 Selection Items).
+The identifier of the template to embed is specified in attribute data-template-UID,
+The element in the calling template, which should be replaced with the embedded template,
+is specified in attribute data-replacement-element-id.
+
+Must be implemented.
+
+
 ============ 2017-06-06 ============
 
 EasyRad:

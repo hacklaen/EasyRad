@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Version: 2017-06-06 -->
+<!-- Version: 2017-06-07 -->
 <html>
     <head>
         <title>CT Brain</title>
@@ -420,6 +420,18 @@
         <section>
             <header class="level1">Other information:</header>
             <p>
+                <label for="embed-select">Select template to embed</label>
+                <select 
+                    id="embed-select" 
+                    name="embed-select"
+                    data-field-type="SELECT"
+                    title=""
+                    >
+                    <option value="">--no template--</option>
+                    <option data-template-UID="3.4.5.6.7" data-replacement-element-id="embed-option" value="Template 3.4.5.6.7.html">Template 3.4.5.6.7.html</option>
+                </select>
+            </p>
+            <p>
                 <label><input type="checkbox" name="pat in bed" value="Yes"/>Patient in bed</label>
             </p>
             <p>
@@ -464,6 +476,7 @@
                 <li>Item 2</li>
                 <li>Item 3</li>
             </ul>
+            <span id="embed-option" />
         </section>
 
     </body>

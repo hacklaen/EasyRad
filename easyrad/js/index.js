@@ -54,6 +54,9 @@ var param_hide_selection = false;
 /* The clipboard object */
 var clipboard;
 
+/* The URL of the actual loaded template file. Set by function loadT emplate. Relative URLs are specified relative to index.html. */
+var loadedTemplateUrl = '';
+
 /* An array containing the hrefs of all link elements originally specified in EasyRad */
 var originalLinks;
 
@@ -216,6 +219,25 @@ $(document).ready(function () {
         $('#template-info-modal-dialog').modal('hide');
     });
 
+    /*
+     * A general event handler for select elements, which are children of #template-html
+     */
+    $('#template-html').on('change', 'select', function (e) {
+        var optionSelected = $(this).find('option:selected');
+        var templateUidAttr = optionSelected.attr('data-template-UID');
+        
+        // Process option elements with an 'data-template-UID' attribute set
+        // (options which trigger an embed of a template)
+        if (templateUidAttr) {
+            var templateUid = optionSelected.attr('data-template-UID');
+            var replacementElementId = optionSelected.attr('data-replacement-element-id');
+            var elm = $("#" + replacementElementId);
+            var srcFileName = templateUid + ".html";
+            // Replace the element specified in the option element with the specified template
+            replaceElm(elm, srcFileName);
+        }
+    });
+
 
     /**
      * Loads a template file from a given URL.
@@ -228,6 +250,9 @@ $(document).ready(function () {
 
         // Remove all link elements included by the already loaded templates
         removeTeplateLinks();
+
+        // Store the URL in global variable
+        loadedTemplateUrl = url;
 
         // When loading templates in the Netbeans environment using the 
         // "Embedden Lightweight" server and Chrow as a browser the requested 
@@ -251,11 +276,11 @@ $(document).ready(function () {
             // Function is executed after completition of load
 
             // Modify the loaded template
-            modifyLoadedTemplate($("#template-html"), url);
+            modifyLoadedTemplate($("#template-html"), loadedTemplateUrl);
 
             // Process <embed> elements
             $("#template-html").find("embed").each(function (index) {
-                loadEmbedded($(this), url);
+                replaceEmbedElm($(this));
             });
 
 
@@ -273,18 +298,13 @@ $(document).ready(function () {
     }
 
     /**
-     * Load an embedded template.
-     * Replaces the <embed> element with a <div> element containing the loaded 
-     * template as children.
+     * Replaces an <embed> element with a <div> element containing the loaded 
+     * template as its children.
      * 
-     * @param embedElm The <embed> element to replace.
-     * @param {string} templateFileUrl The URL of the template file. Relative URLs 
-     *                 must be specified relative to index.html.
+     * @param embedElm The <embed> element to be replaced.
      */
-    function loadEmbedded(embedElm, templateFileUrl) {
-        var divElm;
-        var embedSrcFileName;
-        var embedSrcUrl;
+    function replaceEmbedElm(embedElm) {
+        var srcFileName;
 
         // Embedded file must be HTML
         if (embedElm.attr("type") !== "text/html") {
@@ -292,14 +312,31 @@ $(document).ready(function () {
             return;
         }
 
+        // Get the name of the template to embed
+        srcFileName = embedElm.attr("src");
+
+        // Replace the embed element
+        replaceElm(embedElm, srcFileName);
+    }
+
+
+    /**
+     * Replaces an element with a <div> element containing the loaded 
+     * template as its children.
+     * 
+     * @param elm The element to be replaced.
+     * @param srcFileName The name of the template file to embed
+     */
+    function replaceElm(elm, srcFileName) {
+        var divElm;
+        var embedSrcUrl;
+
         // Create a new <div> element
         divElm = document.createElement("DIV");
 
         // Replace the <embed> element with the new <div>
-        $(embedElm).replaceWith(divElm);
+        $(elm).replaceWith(divElm);
 
-        // Get the name of the template to embed
-        embedSrcFileName = embedElm.attr("src");
         // Get the URL of the embedded file relative to index.html
         if (typeof EMBED_DIRECTORY_URL === 'string' && EMBED_DIRECTORY_URL.length) {
             if (isAbsoluteUrl(EMBED_DIRECTORY_URL)) {
@@ -307,17 +344,17 @@ $(document).ready(function () {
                 if (!embedSrcUrl.endsWith('/')) {
                     embedSrcUrl += "/";
                 }
-                embedSrcUrl += embedSrcFileName;
+                embedSrcUrl += srcFileName;
             } else {
-                embedSrcUrl = removeFileName(templateFileUrl) + EMBED_DIRECTORY_URL;
+                embedSrcUrl = removeFileName(loadedTemplateUrl) + EMBED_DIRECTORY_URL;
                 if (!embedSrcUrl.endsWith('/')) {
                     embedSrcUrl += "/";
                 }
-                embedSrcUrl += embedSrcFileName;
+                embedSrcUrl += srcFileName;
             }
         } else {
             // EMBED_DIRECTORY_URL is not specified. Use the directory of the embedding template as a default.
-            embedSrcUrl = removeFileName(templateFileUrl) + embedSrcFileName;
+            embedSrcUrl = removeFileName(loadedTemplateUrl) + srcFileName;
         }
 
         // Load the content of the embedded template as children of the <div>
@@ -333,8 +370,7 @@ $(document).ready(function () {
 
             // Process <embed> elements in the embedded template
             $(divElm).find("embed").each(function (index) {
-//                loadEmbedded($(this), embedSrcUrl);
-                loadEmbedded($(this), templateFileUrl);
+                replaceEmbedElm($(this));
             });
         });
     }

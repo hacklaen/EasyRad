@@ -1,4 +1,14 @@
 
+============ 2017-06-07 ============
+
+Release Version 1.5
+
+EasyRad:
+
++ Embedding of a templates triggert by the selection of an option in a select element
+  is implemented.
+
+
 ============ 2017-06-06 ============
 
 Release Version 1.4
