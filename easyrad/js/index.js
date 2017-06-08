@@ -19,9 +19,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * @version 1.4
+ * @version 1.4.1
  * @author Thomas Hacklaender
- * @date 2017-06-02
+ * @date 2017-06-08
  */
 
 /*
