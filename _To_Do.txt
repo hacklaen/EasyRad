@@ -26,31 +26,6 @@ This extension should be removed!
 
 
 
-============ 2017-05-09 ============
-
-EasyRad:
-
-MRRT specifies, that a Report Creator must use the value attribute of an OPTION 
-element as its value. The value attribute and the text of an OPTION should be the same.
-
-To allow temporary compatibility with templates, which do not follow MRRT strict
-the following extension is implemented:
-
-By the parameter
-
-  USE_OPTION_TEXT = true; 
-
-the text of an OPTION element is as its value.
-
-Affected function:
-
-js/converter.js: getElmValue(elm)
-
-This parameter is marked as "deprecated" and will be removed in following version.
-EasyRad will use the value attribute instead.
-
-
-
 
 ============ 2017-05-09 ============
 
@@ -71,6 +46,32 @@ This extension should be removed!
 All templates had to follow the MRRT specification.
 
 
+
+============ 2017-05-09 ============
+
+EasyRad:
+
+MRRT specifies, that a Report Creator must use the value attribute of an OPTION 
+element as its value. The value attribute and the text of an OPTION should be the same.
+
+To allow temporary compatibility with templates, which do not follow MRRT strict
+the following extension is implemented:
+
+By the parameter
+
+  USE_OPTION_TEXT = true; 
+
+the text of an OPTION element is used as its value.
+
+Affected function:
+
+js/converter.js: getElmValue(elm)
+
+This parameter is marked as "deprecated" and will be removed in following version.
+EasyRad will use the value attribute instead.
+
+
+
 ============ 2017-05-09 ============
 
 EasyRad Editor:
@@ -81,7 +82,7 @@ SPAN
 HEADER
 SELECT
 OPTION
-INPUT (all execpt type="textarea", which is replaced by TEXTAREA in teh editor)
+INPUT (all execpt type="textarea", which is replaced by TEXTAREA in the editor)
 TEXTAREA
 
 Corresponding plugins have to be programmed.
@@ -95,20 +96,6 @@ needs an update!
 Additionally TinyMCE has to extended to allow edting of element attribute values 
 according to MRRT specification.
 
-
-============ 2017-05-03 ============
-
-EasyRad Editor:
-
-Loading of a template to edit at startup using the parameter "easyrad_param_template_to_edit".
-
-This works well, if EasyRad Edit runs on a server, but not, if index.html is loaded
-from the local filesystem in the browser.
-
-Problem with access rights?
-
-Problem in specifying the path?
-var easyrad_param_template_to_edit = 'file:///C:/Users/Tom/Desktop/EasyRad/EasyRadEdit_Project/GitHub/EasyRad/easyrad/samples/IHE_MRRT_Example_TI_TH.html';
 
 
 ============ 2017-05-03 ============
