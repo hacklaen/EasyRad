@@ -18,9 +18,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @version 1.2
+ * @version 1.4.1
  * @author T. Hacklaender
- * @date 2017-05-28
+ * @date 2017-06-08
  */
 
 
@@ -267,7 +267,7 @@ function processElementNode(elm, text) {
                     break;
 
                 default:
-                    text = sendMessage('[Error: Attribute not supported in INPUT: ' + elm.type + ']', text);
+                    text = sendMessage('[Warning: Value of type attribute not supported for INPUT: ' + elm.type + ']', text);
             }
             break;
 
@@ -360,7 +360,8 @@ function processElementNode(elm, text) {
             text = walk(elm, text);
             break;
 
-            /* ==== Elements not supported by MRRT ==== */
+            /* ==== Elements not supported by MRRT but replaced for editing  ==== */
+            /* ==== Therefore NO warning or error message has to be generated ==== */
 
         case "TEXTAREA":
             // Finish previous line
@@ -375,6 +376,8 @@ function processElementNode(elm, text) {
                 text += "\n";
             }
             break;
+
+            /* ==== Elements not supported by MRRT ==== */
 
         default:
             text = sendMessage('[Element ignored by MRRT: ' + elm.nodeName + ']', text);
@@ -526,7 +529,7 @@ function getElmValue(elm) {
                     break;
 
                 default:
-                    elmValue = sendMessage('[Error: Attribute not supported in INPUT: ' + elm.type + ']', elmValue);
+                // Nothing to do: Warning ist given in processElementNode
             }
             break;
 
@@ -578,7 +581,7 @@ function getElmValue(elm) {
             break;
 
         default:
-            elmValue = sendMessage('[Error: Element not allowed in MRRT: ' + elm.nodeName + ']', elmValue);
+        // Nothing to do: Warning ist given in processElementNode
     }
 
     return elmValue;
