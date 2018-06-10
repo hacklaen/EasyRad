@@ -29,7 +29,7 @@ EasyRad can be called either on a server or in the local file system. Templates 
 |iOS Safari | 10+ | + (text only) | + (text only) | + (text only) |
 |Opera | 29+ | + | + | + |
 
-Full compatibility can be achieved with Firefox. If you do not have Firefox installed on your computer, you can download a portal version of the browser from the following link: [PortableApps.com : Firefox](https://portableapps.com/de/apps/internet/firefox_portable).
+Full compatibility can be achieved with Firefox. If you do not have Firefox installed on your computer, you can download a portable version of the browser from the following link: [PortableApps.com : Firefox](https://portableapps.com/de/apps/internet/firefox_portable).
 
 The portable version does not need to be installed, so you do not need administrator rights on your computer to use EasyRad.
 
