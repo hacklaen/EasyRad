@@ -54,6 +54,9 @@ When pressing the button a standard file dialog is presented, which allows to se
 
 [The user interface with loaded template](easyrad/img/docs/ui-template.png)
 
+**Please Note:**
+This option is only available if EasyRad has been started on a server.
+
 
 #### ` ? `
 
