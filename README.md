@@ -60,8 +60,11 @@ Some aspects of EasyRad may be configured during start-up. When loading the `ind
 |URL-parameter | JavaScript variable | Description |
 |---|---|---|
 |tpl| param_template | A valid URL of a template file relative to `index.html`, that should be loaded when the applications starts. |
+|path| param_local_templates_path | Absolute URL of the directory where local template files (including referenced files) reside. The base directory of EasyRad, ie. the directory where index.html resides, MUST be in the path of the specified directory. |
 |hide| param_hide_selection |If set to `1`, the user interface elements to select favored templates and to load templates from the filesystem are hidden. |
 
+**Please Note:**
+URLs can only be sent over the Internet using the ASCII character-set. Since URLs often contain characters outside the ASCII set, the URL has to be converted into a valid ASCII format. URL encoding replaces unsafe ASCII characters with a "%" followed by two hexadecimal digits. URLs cannot contain spaces. URL encoding replaces a space with %20.
 
 Sample: The URL
 
