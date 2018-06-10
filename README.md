@@ -52,10 +52,10 @@ This drop-down menu allows to load one of predefined templates by selecting its 
 #### `Select template`
 When pressing the button a standard file dialog is presented, which allows to select a local template file. After selecting an appropriate file its name is displayed left to the button and its content is rendered in the middle section of the user interface.
 
-[The user interface with loaded template](easyrad/img/docs/ui-template.png)
-
 **Please Note:**
 This option is only available if EasyRad has been started on a server.
+
+[The user interface with loaded template](easyrad/img/docs/ui-template.png)
 
 
 #### ` ? `
