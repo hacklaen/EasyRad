@@ -24,7 +24,7 @@ EasyRad can be called either on a server or in the local file system. Templates 
 |Firefox | 41+ | + | + | + |
 |Chrome | 42+ | + | + | + |
 |Edge |  | + | + | + |
-|Safari | > 40 | + | + | + |
+|Safari | 10+ | + | + | + |
 |Internet Explorer | 9+ | + (text only) | + (text only) | + (text only) |
 |iOS Safari | 10+ | + (text only) | + (text only) | + (text only) |
 |Opera | 29+ | + | + | + |
