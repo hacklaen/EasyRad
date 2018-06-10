@@ -21,11 +21,13 @@ EasyRad can be called either on a server or in the local file system. Templates 
 |Browser | Version | Server based EasyRad | Local Filesystem based EasyRad | Local Filesystem based EasyRad |
 |:---|:---:|:---:|:---:|:---:|
 | | | Server based template | Server based template | Local Filesystem based template |
-|Firefox | > 40 | + | + | + |
-|Chrome | > 40 | + | + | + |
-|Edge | > 40 | + | + | + |
+|Firefox | 41+ | + | + | + |
+|Chrome | 42+ | + | + | + |
+|Edge |  | + | + | + |
 |Safari | > 40 | + | + | + |
-|Internet Explorer | > 40 | + | + | + |
+|Internet Explorer | 9+ | + (text only) | + (text only) | + (text only) |
+|iOS Safari | 10+ | + (text only) | + (text only) | + (text only) |
+|Opera | 29+ | + | + | + |
 
 Full compatibility can be achieved with Firefox. If you do not have Firefox installed on your computer, you can download a portal version of the browser from the following link: [PortableApps.com : Firefox](https://portableapps.com/de/apps/internet/firefox_portable).
 
