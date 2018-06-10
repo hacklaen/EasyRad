@@ -18,10 +18,10 @@ THAT's ALL!
 ## Compatibility
 EasyRad can be called either on a server or in the local file system. Templates that are to be edited are integrated into the main page of EasyRad. This procedure is the easiest way for the user to use the program, but for security reasons it also has some limitations. These ultimately lead to incompatibilities with some browsers.
 
-|Browser | Version | Server based EasyRad | Local Filesysetm based EasyRad | Local Filesysetm based EasyRad |
-|:---|---|:---|:---|:---
-| | | Server based template | Server based template | Local Filesysetm based template |
-|Firefox | > 40 | param_template |  |  |
+|Browser | Version | Server based EasyRad | Local Filesystem based EasyRad | Local Filesystem based EasyRad |
+|:---|:---:|:---:|:---:|:---:|
+| | | Server based template | Server based template | Local Filesystem based template |
+|Firefox | > 40 | + | + | + |
 
 Full compatibility can be achieved with Firefox. If you do not have Firefox installed on your computer, you can download a portal version of the browser from the following link: [PortableApps.com : Firefox](https://portableapps.com/de/apps/internet/firefox_portable).
 
