@@ -135,9 +135,9 @@ $(document).ready(function () {
     if (idx > -1) {
         baseDirURL = baseDirURL.substring(0, idx);
     }
-    
+
     // Remove the filename
-    baseDirURL=removeFilename(baseDirURL);
+    baseDirURL = removeFilename(baseDirURL);
 
     // Append a base-element with URL of the directory of current window to head
     var base = $('<base href="' + baseDirURL + '">');
@@ -269,7 +269,7 @@ $(document).ready(function () {
 
         // Only process HTML files.
         if (f.type != "text/html") {
-            console.error("Selected file is not a HTML file: " + f.name + " type: " + f.type);
+            window.alert("Selected file is not a HTML file: " + f.name + " type: " + f.type);
             return;
         }
 
@@ -404,6 +404,15 @@ $(document).ready(function () {
 //            console.log("loadTemplate > $('#template-html').load > embeddingTemplaetURL: " + embeddingTemplaetURL);
 //            console.log("loadTemplate > $('#template-html').load > actualProcessedTemplate: " + actualProcessedTemplate);
 
+//            console.log("loadTemplate > $('#template-html').load > url: " + url);
+//            console.log("loadTemplate > $('#template-html').load > status: " + status);
+//            console.log("loadTemplate > $('#template-html').load > response: " + response);
+
+            if (status !== "success") {
+                window.alert("Could not load template: " + url);
+                return;
+            }
+            
             // Preserve the title of the template (will be removed in function modifyLoadedTemplate()
             var title = $('#template-html').find("title").text();
 
@@ -531,7 +540,7 @@ $(document).ready(function () {
                 }
             } else {
                 newURL = url;
-                console.error("EasyRad runs neither on a server, nor in the local filesystem: " + baseDirURL);
+                windows.alert("EasyRad runs neither on a server, nor in the local filesystem: " + baseDirURL);
             }
         }
 
