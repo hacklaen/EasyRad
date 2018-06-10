@@ -1,5 +1,5 @@
 ﻿# EasyRad
-EasyRad is a browser application that allows you to fill out radiology report templates and to copy the result as plain text into the clipboard for further processing. The templates must comply with the IHE Radiology Technical Framework Supplement Management of Radiology Report Templates (MRRT).
+EasyRad is a browser application that allows you to fill out radiology report templates and to copy the result as HTML or plain text into the clipboard for further processing. The templates must comply with the IHE Radiology Technical Framework Supplement Management of Radiology Report Templates (MRRT).
 
 **[HOMEPAGE](http://iftm.de/index.php/radiologie/easyrad)**
 
@@ -12,6 +12,16 @@ Start a web browser and enter the link to the downloaded directory followed by `
 Sample: If you have downloaded the files to your local computer at `C:/tmp/easyrad/` enter the following link in browser: `file:///C:/tmp/easyrad/index.html`. When using the software on a server the `index.html` may be omitted.
 
 THAT's ALL!
+
+
+
+## Compatibility
+EasyRad can be called either on a server or in the local file system. Templates that are to be edited are integrated into the main page of EasyRad. This procedure is the easiest way for the user to use the program, but for security reasons it also has some limitations. These ultimately lead to incompatibilities with some browsers.
+
+|Browser | Version | Server based EasyRad | Local Filesysetm based EasyRad |
+|---|---|---|---|
+|Firefox |  | param_template | A valid URL of a template file relative to `index.html`, that should be loaded when the applications starts. |
+
 
 
 ## Usage
