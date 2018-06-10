@@ -22,6 +22,8 @@ EasyRad can be called either on a server or in the local file system. Templates 
 |---|---|---|---|
 |Firefox |  | param_template | A valid URL of a template file relative to `index.html`, that should be loaded when the applications starts. |
 
+Full compatibility can be achieved with Firefox. If you do not have Firefox installed on your computer, you can download a portal version of the browser from the following link: [PortableApps.com : Firefox](https://portableapps.com/de/apps/internet/firefox_portable)
+The portable version does not need to be installed, so you do not need administrator rights on your computer to use EasyRad.
 
 
 ## Usage
