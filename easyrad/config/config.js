@@ -17,31 +17,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * @author T. Hacklaender
- * @date 2017-06-06
+ * @date 2018-06-07
  */
 
-// For Text in Clipboard: Delimiter between to options in one select element
+
+// Absolute URL of the directory where local template files (including referenced files) reside.
+// The base directory of EasyRad, ie. the directory where index.html resides, MUST be in the path of the specified directory. 
+// This global value may be overwritten by parameter 'path' when starting EasyRad.
+LOCAL_TEMPLATES_PATH = "D:/Tom/EasyRad/EasyRad_Project/GitHub/EasyRad/easyrad/templates/local-sample-templates/";
+
+
+// index.js: The type of content of the clipboard when exporting the report:
+// HTML : text/html only
+// HTML : text/plain only
+// BOTH : text/html and text/plain
+CLIPBOARD_TYPE = "BOTH";
+
+
+// converter-html.js: Delimiter between to options in one select element
 OPTIONS_DELIMITER = ", ";
 
-// For Text in Clipboard: The suffix to append to a label if not already present. May be an empty string.
-LABEL_SUFFIX = ":";
+// converter-html.js: The string to be used as praefix when converting form elements to text inside <span> elements 
+HTML_FORM_PRAEFIX = "";
 
-// Specifies the destination for messages (error, warnings):
-// 'CONSOLE': The message is displayed on the JavaScript console in the browser.
-// 'REPORT': The message is inserted in the report text.
-// 'NO', false, empty or not specified: The message is not displayed
-MESSAGE_DESTINATION = "CONSOLE";
+// converter-html.js: The string to be used as postfix when converting form elements to text inside <span> elements 
+HTML_FORM_POSTFIX = " ";
 
-// DEPRECATED - May be removed in following versions with default value false.
-// The following paramater is included temorary to visualize templates, which do not follow MRRT strict 
-// For Text in Clipboard: If true, the text node of an OPTION element is used as its value.
-//                        MRRT specifies, that its value attribute has ti be used, but that attribute value and text must be the same.
-USE_OPTION_TEXT = true;
+// converter-html.js: If true,  labels of empty form elements (empty text value) 
+// are ignored in the output.
+IGNORE_LABELS_OF_EMPTY_ELEMENTS = true;
 
-// The URL of the directory where templates to embed are located.
-// May be either a absolute or relative URL. If relative, it must be specified
-// relative to the embedding template.
-// If empty, the URL of the embedding template is used.
-//EMBED_DIRECTORY_URL = "http://localhost:8383/ReportCreator/samples/embed_templates";
-//EMBED_DIRECTORY_URL = "./embed_templates";
-EMBED_DIRECTORY_URL = "";
+// converter-html.js: If true, emty section elements are ignored in the output.
+// A section element is empty, if its children (except the header elment) do not 
+// contain any text.
+IGNORE_EMPTY_SECTION_ELEMENTS = true;

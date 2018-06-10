@@ -1,0 +1,14 @@
+/* 
+ * CSS file to be used for template: sample-valid.html 
+ * 
+ * @version 2.0.0
+ * @author Thomas Hacklaender
+ * @date 2018-05-29
+ */
+
+/* Indend nested tables */
+td.indend{padding:0 15px 10px 0 !important;vertical-align:middle !important;}
+
+/* Format level 2 und 3 section headers */
+section header.level2{display:block;font-weight:bold;font-size:12px;color:#337ab7;margin:0 0 10px 0 !important;padding:0;}
+section header.level3{display:block;font-size:12px;color:#337ab7;margin:0 0 10px 0 !important;padding:0;}

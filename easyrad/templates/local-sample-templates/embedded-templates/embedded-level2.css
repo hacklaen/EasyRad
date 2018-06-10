@@ -1,0 +1,10 @@
+/* 
+ * CSS file to be used for template: sample-valid.html 
+ * 
+ * @version 2.0.0
+ * @author Thomas Hacklaender
+ * @date 2018-05-29
+ */
+
+/* Indend nested tables */
+section header.level1.embed2{display:block;font-weight:bold;font-size:12px;color:#00ff00;margin:0 0 10px 0 !important;padding:0;}

@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * @version 0.1 alpha
+ * @version 2.0
  * @author T. Hacklaender
- * @date 2017-05-08
+ * @date 2018-05-17
  */
 
 
@@ -27,16 +27,19 @@
  * use the notation 'dcterms.title' */
 var dcTerms = [
     'dcterms.title',
+    'dcterms.abstract',     // Not defined in MRRT, DRG extension
+    'dcterms.description',  // Not defined in MRRT, DRG extension
+    'dcterms.subject',      // Not defined in MRRT, DRG extension
     'dcterms.identifier',
-    'dcterms.type',
-    'dcterms.publisher',
-    'dcterms.rights',
-    'dcterms.license',
+    'dcterms.references',   // Not defined in MRRT, DRG extension
     'dcterms.date',
+    'dcterms.publisher',
     'dcterms.creator',
     'dcterms.contributor',
-    'dcterms.relation',
+    'dcterms.type',
     'dcterms.language',
+    'dcterms.rights',
+    'dcterms.license',
 ];
 
 
@@ -222,39 +225,4 @@ function i18n(key) {
         // If no translations available return the given keying as fallback
         return key;
     }
-}
-
-/**
- * Send a message (error or warning) to the user.
- * The destination is specified in the configuration parameter MESSAGE_DESTINATION:
- * 'CONSOLE': The message is displayed on the JavaScript console in the browser.
- * 'REPORT': The message is inserted in the report text.
- * 'NO', false, empty or not specified: The message is not displayed
- * 
- * @param {String} msg
- * @param {String} reportText If null the MESSAGE_DESTINATION option "REPORT"
- *                            has no effect and null is returned.
- * @returns {String} The optional modified reportText parameter.
- */
-function sendMessage(msg, reportText) {
-
-    if ((typeof MESSAGE_DESTINATION === "undefined") || (!MESSAGE_DESTINATION)) {
-        return reportText;
-    }
-
-    switch (MESSAGE_DESTINATION) {
-        case 'CONSOLE':
-            console.log(msg + `\n`);
-            break;
-
-        case 'REPORT':
-            if (typeof reportText === "string") {
-                reportText += msg + ' ';
-            }
-            break;
-
-        default:
-        // Nothing to do
-    }
-    return reportText;
 }
