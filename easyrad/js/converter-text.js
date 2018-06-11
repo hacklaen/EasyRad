@@ -24,7 +24,7 @@
  *  
  * @version 2.0.0
  * @author T. Hacklaender
- * @date 2018-05-25
+ * @date 2018-06-11
  */
 
 
@@ -123,7 +123,7 @@ function walkText(nodeToProcess, text) {
                 break;
 
             default:
-                console.error('ERROR: Unknown nodeToProcess type = ' + childNode.nodeType);
+                window.alert(i18n('err_unknown_node_type') + childNode.nodeType);
                 // Ignore the unknown nodeToProcess and its children
         }
     }
@@ -268,7 +268,7 @@ function processElementNode(elmToProcess, text) {
             /* ==== Elements not supported by MRRT ==== */
 
         default:
-            console.error('ERROR:Element ignored by MRRT: ' + elmToProcess.nodeName);
+            window.alert(i18n('err_element_ignored') + elmToProcess.nodeName);
     }
 
     return text;
@@ -302,7 +302,7 @@ function processTextNode(textNodeToProcess, text) {
     var parentElm = textNodeToProcess.parentNode;
 
     if (parentElm === null) {
-        console.error('Error: Text node has no parent element: ' + nodeText);
+        window.alert(i18n('err_text_has_no_parent') + nodeText);
         return text;
     }
 

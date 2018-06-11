@@ -13,7 +13,7 @@
  * NOTE: Filenames may not contain spaces!     
  * 
  * @author T. Hacklaender
- * @date 2018-06-08
+ * @date 2018-06-11
  */
 
 var favoredTemplates = [
@@ -36,6 +36,7 @@ var favoredTemplates = [
     ["Sample valid", "templates/samples/sample-valid.html"],
     ["DIN25300-1", "templates/samples/din25300.html"],
     ["CT Schaedel", "templates/samples/ct-schaedel.html"],
+    ["CR Knochen", "templates/samples/cr-knochen.html"],
 ];
 
 

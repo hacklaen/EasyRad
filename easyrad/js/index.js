@@ -269,7 +269,7 @@ $(document).ready(function () {
 
         // Only process HTML files.
         if (f.type != "text/html") {
-            window.alert("Selected file is not a HTML file: " + f.name + " type: " + f.type);
+            window.alert(i18n('err_selected_file_not_html') + f.name + ' type: ' + f.type);
             return;
         }
 
@@ -409,7 +409,7 @@ $(document).ready(function () {
 //            console.log("loadTemplate > $('#template-html').load > response: " + response);
 
             if (status !== "success") {
-                window.alert("Could not load template: " + url);
+                window.alert(i18n('err_could_not_load_template') + url);
                 return;
             }
             
@@ -540,17 +540,17 @@ $(document).ready(function () {
                 }
             } else {
                 newURL = url;
-                windows.alert("EasyRad runs neither on a server, nor in the local filesystem: " + baseDirURL);
+                window.alert(i18n('err_easyrad_not_server_or_local') + baseDirURL);
             }
         }
 
-        // Log the paths
-        console.log("redirectUrl > url: " + url);
-        console.log("redirectUrl > baseDirURL: " + baseDirURL);
-        console.log("redirectUrl > baseTemplateURL: " + baseTemplateURL);
-        console.log("redirectUrl > embeddingTemplateURL: " + embeddingTemplateURL);
-        console.log("redirectUrl > actualProcessedTemplateURL: " + actualProcessedTemplateURL);
-        console.log("redirectUrl > newURL: " + newURL);
+//        // Log the paths
+//        console.log("redirectUrl > url: " + url);
+//        console.log("redirectUrl > baseDirURL: " + baseDirURL);
+//        console.log("redirectUrl > baseTemplateURL: " + baseTemplateURL);
+//        console.log("redirectUrl > embeddingTemplateURL: " + embeddingTemplateURL);
+//        console.log("redirectUrl > actualProcessedTemplateURL: " + actualProcessedTemplateURL);
+//        console.log("redirectUrl > newURL: " + newURL);
 
         return newURL;
     }
@@ -612,6 +612,11 @@ $(document).ready(function () {
         // of appearing in the origibnal file
         $(divElm).load(urlToLoad, function (response, status, xhr) {
             // Function is executed after completition of load
+
+            if (status !== "success") {
+                window.alert(i18n('err_could_not_load_template') + urlToLoad);
+                return;
+            }
 
             embeddingTemplateURL = actualProcessedTemplateURL;
             actualProcessedTemplateURL = urlToLoad;

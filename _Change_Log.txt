@@ -1,5 +1,5 @@
 
-============ 2018-05-18 ============
+============ 2018-06-11 ============
 
 Release Version 2.0.0
 
@@ -14,10 +14,15 @@ x Conceptual change: Export to clipboard is now a two stage process:
        a) With the new HTML DOM.
        b) With a plain text version of the HTML DOM
        
++ Added URL parameter: path
 + Added library clipboard-polyfill which supports HTML export to clipboard.
++ Added library startswith to get backward compatibility with Internet Explorer < 12.
++ Added configuration globals: LOCAL_TEMPLATES_PATH, CLIPBOARD_TYPE, HTML_FORM_PRAEFIX, 
+  HTML_FORM_POSTFIX, IGNORE_LABELS_OF_EMPTY_ELEMENTS, IGNORE_EMPTY_SECTION_ELEMENTS
 
 - Removed library clipboard.js.
-- Removed option: USE_OPTION_TEXT
+- Removed configuration globals: LABEL_SUFFIX, USE_OPTION_TEXT, MESSAGE_DESTINATION, 
+  EMBED_DIRECTORY_URL
 
 
 ============ 2017-06-06 ============

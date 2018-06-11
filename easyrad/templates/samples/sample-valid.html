@@ -1,7 +1,8 @@
 <!DOCTYPE html>
+<!-- Version: 2018-06-11 -->
 <html>
     <head>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <title>Befundvorlage zum Testen von EasyRad</title>
         <!--Dublin Core metadata elements here-->
         <meta name="dcterms.title" content="Befundvorlage zum Testen von EasyRad">
@@ -328,15 +329,21 @@
             <!-- Relative references must be given relative to the top-level template -->
             <embed src="embedded-templates/embedded-level1.html" type="text/html" height="60" />
 
+            <p><br></p>
+            
             <p>
-                <label for="singel-list-field-3">Ein Liste zur Auswahl eines Templates zurm Einfügen</label>
+                <label for="singel-list-field-3">Liste zur Auswahl eines Templates zurm Einfügen</label>
                 <select id="singel-list-field-3">
                     <option value="" name="SL3-1" selected ></option>
-                    <option value="Option 2 value" name="SL3-2" data-template-UID="" data-replacement-element-id="">Option 2</option>
+                    <!-- Note: data-template-UID does not include the postfix '.html' -->
+                    <option value="Template zum Ersetzen" name="SL3-2" data-template-UID="1.2.3.4.5.6.7" data-replacement-element-id="span001">Template zum Ersetzen</option>
                 </select>
             </p>
+
+            <p><br></p>
+            
             <div>
-                <span id="span001">Dieser Text wird durch ein Template erstetzt</span>
+                <span id="span001"> <em>[Dieser Text wird bei Auswahl in der Liste durch ein Template ersetzt]</em> </span>
             </div>
 
             <p><br></p>

@@ -24,7 +24,7 @@
  *  
  * @version 2.0.0
  * @author T. Hacklaender
- * @date 2018-05-25
+ * @date 2018-06-11
  */
 
 
@@ -108,7 +108,7 @@ function walkHtml(nodeToProcess, nodeToAppendTo) {
                 break;
 
             default:
-                console.error('Error: Unknown node type = ' + childNodeToProcess.nodeType);
+                window.alert(i18n('err_unknown_node_type') + childNodeToProcess.nodeType);
                 // Ignore the unknown node and its children
         }
     }
@@ -255,7 +255,7 @@ function processElementNodeHtml(elmToProcess, elmToAppendTo) {
 
         default:
             // Ignore element
-            console.error('ERROR: Element not specified in MRRT -> ignored: ' + elmToProcess.nodeName);
+            window.alert(i18n('err_element_not_specified') + elmToProcess.nodeName);
     }
 }
 
@@ -367,7 +367,7 @@ function getFormElmAsSpan(elm) {
             break;
 
         default:
-            console.error('ERROR getFormElmValue: Form element is not specified in MRRT: ' + elm.nodeName);
+            window.alert(i18n('err_form_not_specified') + elm.nodeName);
     }
 
     if ((text === null) || (text.length === 0)) {
