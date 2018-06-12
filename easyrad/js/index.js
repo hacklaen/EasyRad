@@ -513,7 +513,7 @@ $(document).ready(function () {
     function redirectUrl(url) {
         var newURL;
 
-        if (baseDirURL.startsWith("http:")) {
+        if ((baseDirURL.startsWith("http:")) || (baseDirURL.startsWith("https:"))) {
             // EasyRad runs on a server
             if (isRelativeURL(url)) {
                 // url to redirect is a relative URL
@@ -540,7 +540,7 @@ $(document).ready(function () {
                 }
             } else {
                 newURL = url;
-                window.alert(i18n('err_easyrad_not_server_or_local') + baseDirURL);
+                window.alert(i18n('err_unsupportet_scheme') + baseDirURL);
             }
         }
 

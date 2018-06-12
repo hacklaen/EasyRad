@@ -49,7 +49,7 @@ var translations = {
         err_text_has_no_parent: 'ERROR: Text node has no parent element: ',
         err_selected_file_not_html: 'ERROR: Selected file is not a HTML file: ',
         err_could_not_load_template: 'ERROR: Could not load template: ',
-        err_easyrad_not_server_or_local: 'ERROR: EasyRad runs neither on a server, nor in the local filesystem: ',
+        err_unsupportet_scheme: 'ERROR: Unsupportet scheme for starting EasyRad: ',
     },
     
     de: {
@@ -68,6 +68,6 @@ var translations = {
         err_text_has_no_parent: 'FEHLER: Text Node hat kein Eltern-Element: ',
         err_selected_file_not_html: 'FEHLER: Gewählte Datei ist keine HTML Datei: ',
         err_could_not_load_template: 'FEHLER: Kann Template nicht laden: ',
-        err_easyrad_not_server_or_local: 'FEHLER: EasyRad läuft weder auf einem Server, noch im lokalen Dateisystem: ',
+        err_unsupportet_scheme: 'FEHLER: Nicht unterstütztes URL-Schmea zum Start von EasyRad: ',
     }
 };

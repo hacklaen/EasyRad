@@ -1,9 +1,14 @@
-﻿@charset "UTF-8";
-/*
-	urbanstudio EasyRad FormStyles
-	URI: http://www.urbanstudio.de
-	Author: Oli Feiler
+﻿/*  
+    Based on:
+        urbanstudio EasyRad FormStyles
+        URI: http://www.urbanstudio.de
+        Author: Oli Feiler
+ 
+    Modified to format DRG templates.
+ 
+    @date 2018-06-07       
 */
+
 /* -- STANDARD ---------------------------------------------------------------------- */
 td{padding:0 15px 10px 0 !important;vertical-align:middle !important;}
 th{padding-right:15px !important;text-align:left !important;}
