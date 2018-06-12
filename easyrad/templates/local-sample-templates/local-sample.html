@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<!-- Version: 2018-06-11 -->
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <title>Befundvorlage zum Testen von EasyRad</title>
+        <!--Dublin Core metadata elements here-->
+        <meta name="dcterms.title" content="Befundvorlage zum Testen von EasyRad">
+        <meta name="dcterms.abstract" content="Die Vorlage enthält nur gültige MRRT Element.">
+        <meta name="dcterms.description" content="Die Vorlage enthält nur gültige MRRT Element. Sie dient dazu, die Funktionlaität von EasyRad zu testen. Zur Überprüfung von Fehlersituation und der Verwendunbg von CSS Dateien müssen separate Beispielvorlagen verwendet werden.">
+        <meta name="dcterms.subject" content="CR; US; CT; MR; NM; PET;">
+        <meta name="dcterms.identifier" content="041807.05.80529">
+        <meta name="dcterms.references" content="041807.05.80529">
+        <meta name="dcterms.date" content="2018-05-29">
+        <meta name="dcterms.publisher" content="IFTM GmbH">
+        <meta name="dcterms.creator" content="Hackländer, Thomas">
+        <meta name="dcterms.contributor" content="Hackländer, Thomas [Kodierung]">
+        <meta name="dcterms.type" content="IMAGE_REPORT_TEMPLATE">
+        <meta name="dcterms.language" content="de">
+        <meta name="dcterms.rights" content="GNU Affero General Public License">
+        <meta name="dcterms.license" content="http://www.gnu.org/licenses/">
+
+        <!--non-Dublin Core metadata attributes and term elements here-->
+        <script type="text/xml">
+             <template_attributes>
+                <top-level-flag>true</top-level-flag>
+                <status>ACTIVE</status>
+                <user-list></user-list>
+                <provider-grouplist></provider-grouplist>
+                <coded_content>
+                    <coding_schemes>
+                        <!-- See: https://www.hl7.org/fhir/terminologies-systems.html -->
+                        <coding_scheme name="RADLEX" designator="2.16.840.1.113883.6.256" />
+                        <coding_scheme name="LOINC" designator="2.16.840.1.113883.6.1" />
+                        <entry ORIGTXT="S001">
+                            <term>
+                                <code meaning="Findings" value="59776-5" scheme="LOINC" />
+                            </term>
+                        </entry>
+                        <entry ORIGTXT="S003">
+                            <term>
+                                <code meaning="Impressions" value="19005-8" scheme="LOINC" />
+                            </term>
+                        </entry>
+                    </coding_schemes>
+                </coded_content>
+            </template_attributes>
+        </script>
+
+        <!-- Do not use bold labels -->
+        <style>
+            label {font-weight: normal;}
+        </style>
+
+        <!--Link to Stylesheet-->
+        <link rel="stylesheet" type="text/css" href="local-sample.css">
+    </head>
+
+    <body>
+
+        <section id="S001" data-section-name="Sample for a local files-based template" data-section-required="true">
+            <header class="level1"><strong>Sample for a local file-based template</strong></header>
+            <p>
+                <br>
+            </p>
+        </section>
+
+        <section id="S001" data-section-name="Findings (Formular Elemente)" data-section-required="true">
+            <header class="level1"><strong>Findings (Formular Elemente)</strong></header>
+            <p>
+                <span>Dies ist ein erster Text in einem span-Element. </span>
+                <span>Dies ist ein weiterer Text in einem span-Element der in der selben Zeile folgen sollte. </span>
+            </p>
+
+            <p>
+                <span>Dies ist ein erster Text in einem span-Element. </span>
+            </p>
+            <!-- Ein div-Element darf nicht innerhalb eines p-Elements stehen -->
+            <div>Dies ist ein weiterer Text in einem div-Element der in einer neuen Zeile beginnen sollte.</div>
+
+            <p>
+                <label for="text-field-1">Ein Text-Feld</label>
+                <input id="text-field-1" type="text" value="Dieser Text ist der initiale Inhalt."
+                       data-field-type="TEXT" data-field-merge-flag="false" data-field-verbal-trigger="" data-field-completion-action="NONE"/>
+            </p>
+
+            <p>
+                <label for="number-field-1">Ein Number-Feld</label>
+                <input id="number-field-1" type="number" value="-123.56"
+                       data-field-type="NUMBER" data-field-merge-flag="false" data-field-verbal-trigger="" data-field-completion-action="NONE"/>
+            </p>
+
+            <p>
+                <label for="date-field-1">Ein Date-Feld</label>
+                <input id="date-field-1" type="date" value="2018-05-29"
+                       data-field-type="DATE" data-field-merge-flag="false" data-field-verbal-trigger="" data-field-completion-action="NONE"/>
+            </p>
+
+            <p>
+                <label for="time-field-1">Ein Time-Feld</label>
+                <input id="time-field-1" type="time" value="19:47"
+                       data-field-type="TIME" data-field-merge-flag="false" data-field-verbal-trigger="" data-field-completion-action="NONE"/>
+            </p>
+
+            <p>
+                <label for="checkbox-field-1">Ein Checkbox-Feld</label>
+                <input id="checkbox-field-1" type="checkbox" checked value="Checkbox value"
+                       data-field-type="CHECKBOX" data-field-merge-flag="false" data-field-verbal-trigger="" data-field-completion-action="NONE"/>
+            </p>
+
+            <p>
+                <label for="singel-list-field-1">Ein Liste mit Einfachauswahl</label>
+                <select id="singel-list-field-1">
+                    <option value="Option 1 value" name="SL1" >Option 1</option>
+                    <option value="Option 2 value" name="SL2" selected >Option 2</option>
+                    <option value="Option 3 value" name="SL3" >Option 3</option>
+                </select>
+            </p>
+
+            <p>
+                <label for="multi-list-field-1">Ein Liste mit Mehrfachauswahl</label>
+                <select id="multi-list-field-1" multiple>
+                    <option value="Option 1 value" name="ML1" selected >Option 1</option>
+                    <option value="Option 2 value" name="ML2" >Option 2</option>
+                    <option value="Option 3 value" name="ML3" selected >Option 3</option>
+                </select>
+            </p>
+
+            <p>
+                <textarea id="text-area-1">Initialer Text.
+                </textarea> 
+                <label for="text-area-1">Ein mehrzeiliges Textfeld mit nachfolgendem Label</label>
+            </p>
+
+            <p>
+                <label for="text-area2">Ein mehrzeiliges Textfeld mit Größenvorgabe</label>
+                <textarea id="text-area2" rows="3" cols="80">Erste Zeile des initialen Textes.
+                Zweite Zeile des Textes.
+                Dritte Zeile des Textes.
+                </textarea> 
+            </p>
+
+            <p><br></p>
+
+        </section>
+
+        <section id="S003" data-section-name="Impressions (Formatierung)" data-section-required="false">
+            <header class="level1"><strong>Impressions (Formatierung)</strong></header>
+            <p></p>
+
+            <div>
+                <span>Dies ist unformatierter Text.</span>
+            </div>
+
+            <div>
+                <span>Dies ist Text in den <br>ein br eingebettet ist.</span>
+            </div>
+
+            <div>
+                <span>Dies ist Text in den <em>em-formatierter Text eingebettet</em> ist.</span>
+            </div>
+
+            <div>
+                <span>Dies ist Text in den <strong>strong-formatierter Text eingebettet</strong> ist.</span>
+            </div>
+
+            <div>
+                <span>Dies ist Text in den <sup>sup-formatierter Text eingebettet</sup> ist.</span>
+            </div>
+
+            <div>
+                <span>Dies ist Text in den <sub>sub-formatierter Text eingebettet</sub> ist.</span>
+            </div>
+
+            <div>
+                <span>Dies ist Text in den <q>q-formatierter Text eingebettet</q> ist.</span>
+            </div>
+
+            <div>
+                <span>Dies ist Link zur EasyRad Homepage: <a href="https://github.com/hacklaen/EasyRad" target="_blank">EasyRad Home</a></span>
+            </div>
+
+            <div>
+                <span>Eine geordnete Liste</span>
+                <ol>
+                    <li>Item 1</li>
+                    <li>Item 2</li>
+                    <li>Item 3</li>
+                </ol>
+            </div>
+
+            <div>
+                <span>Eine ungeordnete Liste</span>
+                <ul>
+                    <li>Item 1</li>
+                    <li>Item 2</li>
+                    <li>Item 3</li>
+                </ul>
+            </div>
+
+            <div>
+                <span>Hier wird ein externes Bild eingefügt: </span>
+                <!-- Relative references must be given relative to the top-level template -->
+                <img src="embedded-templates/embedded-resources/ct-scan.jpg" alt="[CT Scan]" height="128" width="128">
+            </div>
+
+            <p><br></p>
+
+        </section>
+
+        <section id="S002" data-section-name="Tabellen" data-section-required="false">
+            <header class="level1"><strong>Tabellen</strong></header>
+            <p></p>
+            <table>
+                <tr>
+                    <th><span>Column 1</span></th>
+                    <th><span>Column 2</span></th>
+                    <th><span>Column 3</span></th>
+                    <th><span>Column 4</span></th>
+                    <th><span>Column 5</span></th>
+                </tr>
+                <tr>
+                    <td><span>Row 1</span></td>
+                    <td><span>Cell 12</span></td>
+                    <td><span>Cell 13</span></td>
+                    <td><span>Cell 14</span></td>
+                    <td><div>Cell 15</div></td>
+                </tr>
+                <tr>
+                    <td><span>Row 2</span></td>
+                    <td><span>Cell 22</span></td>
+                    <td><span>Cell 23</span></td>
+                    <td><span>Cell 24</span></td>
+                    <td><div>Cell 25</div></td>
+                </tr>
+            </table>
+
+            <p><br></p>
+
+        </section>
+
+        <section id="S004" data-section-name="Kommentar" data-section-required="false">
+            <header class="level1"><strong>Kommentar</strong></header>
+            <p>
+                <mark>
+                    <span>Dieser Text soll nur wärend des Ausfüllens der Vorlage sichtbar sein.</span>
+                    <span>Er darf nicht in den Befundtext übernommen werden.</span>
+                    <label for="text-field-2">Hierzu zählen auch Formularfelder</label>
+                    <input id="text-field-2" type="text" value="Hier ein Text in einem Textfeld."
+                           data-field-type="TEXT" data-field-merge-flag="false" data-field-verbal-trigger="" data-field-completion-action="NONE"/>
+                </mark>              
+            </p>
+
+            <p><br></p>
+
+        </section>
+
+        <section id="S005" data-section-name="CSS Datei" data-section-required="false">
+            <header class="level1"><strong>CSS Datei</strong></header>
+            <p></p>
+            <table>     <!-- Ein table-Element darf nicht innerhalb eines p-Elements stehen -->
+                <tr>
+                    <td class="indend"></td>
+                    <td class="indend">
+                        <section data-section-name="Abschnittebene Level 2" data-section-required="false">
+                            <header class="level2">Abschnittebene Level 2</header>
+                            <p></p>
+                            <table>
+                                <tr>
+                                    <td class="indend"></td>
+                                    <td class="indend">
+                                        <section data-section-name="Abschnittebene Level 3" data-section-required="false">
+                                            <header class="level3">Abschnittebene Level 3</header>
+                                            <p></p>
+                                            <table>
+                                                <tr>
+                                                    <td class="indend"></td>
+                                                </tr>
+                                            </table>
+                                        </section>
+                                    </td>
+                                </tr>
+                            </table>
+                        </section>
+                    </td>
+                </tr>
+            </table>
+
+            <p><br></p>
+
+        </section>
+
+        <section id="S007" data-section-name="Abschnitt ohne Textinhalt" data-section-required="false">
+            <header class="level1"><strong>Abschnitt ohne Textinhalt</strong></header>
+            <p><p>
+            <section id="S007" data-section-name="Level 2" data-section-required="false">
+                <header class="level2">Level 2</header>
+                <p></p>
+
+                <p>
+                    <label for="text-field-2">Ein Text-Feld</label>
+                    <input id="text-field-2" type="text" value=""
+                           data-field-type="TEXT" data-field-merge-flag="false" data-field-verbal-trigger="" data-field-completion-action="NONE"/>
+                </p>
+
+                <section id="S008" data-section-name="Level 3" data-section-required="false">
+                    <header class="level3">Level 3</header>
+
+                    <p>
+                        <label for="checkbox-field-2">Ein Checkbox-Feld</label>
+                        <input id="checkbox-field-2" type="checkbox" value="Checkbox value"
+                               data-field-type="CHECKBOX" data-field-merge-flag="false" data-field-verbal-trigger="" data-field-completion-action="NONE"/>
+                    </p>
+
+                    <p>
+                        <label for="singel-list-field-2">Ein Liste mit Einfachauswahl</label>
+                        <select id="singel-list-field-2">
+                            <option value="" name="SL1" selected ></option>
+                            <option value="Option 2 value" name="SL2" >Option 2</option>
+                            <option value="Option 3 value" name="SL3" >Option 3</option>
+                        </select>
+                    </p>
+
+                </section>
+            </section>
+
+            <p><br></p>
+
+        </section>
+
+        <section id="S008" data-section-name="Eingebettete Vorlagen" data-section-required="false">
+            <header class="level1"><strong>Eingebettete Vorlagen</strong></header>
+            <p>
+                <span>An dieser Stelle wird das Template 'embedded-level1.html' eingefügt:</span>
+            </p>
+            <!-- Relative references must be given relative to the top-level template -->
+            <embed src="embedded-templates/embedded-level1.html" type="text/html" height="60" />
+
+            <p><br></p>
+            
+            <p>
+                <label for="singel-list-field-3">Liste zur Auswahl eines Templates zurm Einfügen</label>
+                <select id="singel-list-field-3">
+                    <option value="" name="SL3-1" selected ></option>
+                    <!-- Note: data-template-UID does not include the postfix '.html' -->
+                    <option value="Template zum Ersetzen" name="SL3-2" data-template-UID="1.2.3.4.5.6.7" data-replacement-element-id="span001">Template zum Ersetzen</option>
+                </select>
+            </p>
+
+            <p><br></p>
+            
+            <div>
+                <span id="span001"> <em>[Dieser Text wird bei Auswahl in der Liste durch ein Template ersetzt]</em> </span>
+            </div>
+
+            <p><br></p>
+
+        </section>
+
+    </body>
+</html>
