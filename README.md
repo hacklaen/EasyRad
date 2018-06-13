@@ -29,7 +29,7 @@ For security reasons, most browsers prohibit the integration of HTML code (in th
 |:---|:---:|:---:|:---:|:---:|
 | | | | Template selection: Dropdown list | Template selection: File selection dialog |
 |Firefox | 41+ | + | + | + |
-|Chrome | 42+ | + | + | - |
+|Chrome | 42+ | + | - | - |
 |Edge |  | + | + | - |
 |Safari | 10+ | + | + | - |
 |Internet Explorer | 9+ | + (text export only) | - | - |
