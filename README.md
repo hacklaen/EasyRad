@@ -26,8 +26,7 @@ EasyRad can be called either on a server or in the local file system. Templates 
 |Edge |  | + | + | + |
 |Safari | 10+ | + | + | + |
 |Internet Explorer | 9+ | + (text only) | + (text only) | + (text only) |
-|iOS Safari | 10+ | + (text only) | + (text only) | + (text only) |
-|Opera | 29+ | + | + | + |
+|Safari | 10+ | + (text only) | + (text only) | + (text only) |
 
 Full compatibility can be achieved with Firefox. If you do not have Firefox installed on your computer, you can download a portable version of the browser from the following link: [PortableApps.com : Firefox](https://portableapps.com/de/apps/internet/firefox_portable).
 
@@ -83,7 +82,7 @@ Some aspects of EasyRad may be configured during start-up. When loading the `ind
 |URL-parameter | JavaScript variable | Description |
 |---|---|---|
 |tpl| param_template | A valid URL of a template file relative to `index.html`, that should be loaded when the applications starts. |
-|path| param_local_templates_path | Absolute URL of the directory where local template files (including referenced files) reside. The base directory of EasyRad, ie. the directory where index.html resides, MUST be in the path of the specified directory. |
+|path| param_rel_path_to_local_templates | Relative Path from EasyRad's base directory to the directory where local template files (including referenced files) reside. MUST be a child directory of EasyRad's base directory. This global value may be overwritten by parameter 'path' when starting EasyRad. |
 |hide| param_hide_selection |If set to `1`, the user interface elements to select favored templates and to load templates from the filesystem are hidden. |
 
 **Please Note:**
@@ -103,11 +102,12 @@ Some aspects of rendering the text are configurable by parameters specified in f
 
 |Parameter | Default value | Description |
 |---|---|---|
+| CLIPBOARD_TYPE | "BOTH" | The type of content of the clipboard when exporting the report: HTML = text/html only, HTML = text/plain only, BOTH = text/html and text/plain. |
 | OPTIONS_DELIMITER | ", " | Delimiter between to options in one select element. |
-| LABEL_SUFFIX   | ":" | The suffix to append to a label if not already present. May be an empty string. |
-| USE_OPTION_TEXT | true | If true, the text node of an OPTION element is used as its value. Otherwise the value attribute is used (as MRRT specifies) |
-| MESSAGE_DESTINATION | "CONSOLE" | Specifies the destination for messages (error, warnings). Possible value: "CONSOLE", "REPORT", "NO" |
-| EMBED_DIRECTORY_URL | "" | Specifies the URL of the directory where templates to embed are located. May be either a absolute or relative URL. If relative, it must be specified relative to the embedding template. If empty, the URL of the embedding template is used. |
+| HTML_FORM_PRAEFIX   | "" | The string to be used as praefix when converting form elements to text inside <span> elements. |
+| HTML_FORM_POSTFIX | " " | The string to be used as postfix when converting form elements to text inside <span> elements. |
+| IGNORE_LABELS_OF_EMPTY_ELEMENTS | true | If true,  labels of empty form elements (empty text value) are ignored in the output. |
+| IGNORE_EMPTY_SECTION_ELEMENTS | true | If true, emty section elements are ignored in the output. A section element is empty, if its children (except the header elment) do not contain any text. |
 
 
 ### List of favored templates
