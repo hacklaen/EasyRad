@@ -144,20 +144,7 @@ The application renders the `<textarea>` tag although it is not allowed by MRRT.
 `<label>` tags may be applied to all tags although MRRT restricts them to template fields, i.e. `<select>` and `<input>` tags.
 
 #### Limitations
-The actual version does not support referenced content inside template.
-This limitation causes, that 
-1.	referenced images are not displayed in the user interface,
-2.	the `<embed>` tag is ignored.
 
-Templates may import stylesheets with the `<link>` tag, but the URL must be specified relative to the `easyrad/index.html` file.
-
-Due to limitations of the used clipboard.js library the following browsers are supported:
-- Chrome 42+
-- Firefox 41+
-- Safari 10+
-- Edge 12+
-- IE 9+
-- Opera 29+
 
 ### Rendering of templates
 The MRRT templates are first rendered as HTML5 content. Because HTML5 does not support the `<INPUT type="textarea">` element defined in MRRT, this element is replaced by a `<textarea>` element.
@@ -244,8 +231,7 @@ The following libraries are used by EasyRad:
 |Bootstrap|3.3.7|MIT|[http://getbootstrap.com/getting-started/](http://getbootstrap.com/getting-started/)|
 |Bootstrap Filestyle|1.2.1|MIT|[https://github.com/markusslima/bootstrap-filestyle](https://github.com/markusslima/bootstrap-filestyle)|
 |clipboard-polyfill|2.4.6|MIT|[https://github.com/lgarron/clipboard-polyfill](https://github.com/lgarron/clipboard-polyfill)|
-|String.prototype.startsWith
-|0.2.0|MIT|[https://github.com/mathiasbynens/String.prototype.startsWith](https://github.com/mathiasbynens/String.prototype.startsWith)|
+|String.prototype.startsWith|0.2.0|MIT|[https://github.com/mathiasbynens/String.prototype.startsWith](https://github.com/mathiasbynens/String.prototype.startsWith)|
 
 
 ## Create/Edit templates
