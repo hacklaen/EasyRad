@@ -73,7 +73,7 @@ When pressing this button optional information about the actual loaded template 
 
 #### `Copy`
 
-When pressing this button the HTML content including is rendered to plain text and copied to the system clipboard. The modifications of the input elements done by the user are respected.
+When pressing this button the completed form is copied to the system clipboard aso plain and/or HTML formatted text .
 
 Use the clipboard content to transfer the text to your RIS or HIS system or to put it into a word processor.
 
