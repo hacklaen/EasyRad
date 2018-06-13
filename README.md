@@ -16,19 +16,21 @@ THAT's ALL!
 
 
 ## Compatibility
-EasyRad can be called either on a server or in the local file system. Templates that are to be edited are integrated into the main page of EasyRad. This procedure is the easiest way for the user to use the program, but for security reasons it also has some limitations. These ultimately lead to incompatibilities with some browsers.
+In principle, EasyRad can be used with any browser. However, due to used libraries and security settings of individual browsers, certain restrictions apply. For example, some browsers cannot copy formatted HTML text to the clipboard.
+
+For security reasons, most browsers prohibit the integration of HTML code (in this case templates) into existing web pages if the code is loaded from the local file system.
 
 |Browser | Version | Server based EasyRad | Local Filesystem based EasyRad | Local Filesystem based EasyRad |
 |:---|:---:|:---:|:---:|:---:|
-| | | Server based template | Server based template | Local Filesystem based template |
+| | | | Template selection: Dropdown list | Template selection: File selection dialog |
 |Firefox | 41+ | + | + | + |
-|Chrome | 42+ | + | + | + |
-|Edge |  | + | + | + |
-|Safari | 10+ | + | + | + |
-|Internet Explorer | 9+ | + (text only) | + (text only) | + (text only) |
-|Safari | 10+ | + (text only) | + (text only) | + (text only) |
+|Chrome | 42+ | + | + | - |
+|Edge |  | + | + | - |
+|Safari | 10+ | + | + | - |
+|Internet Explorer | 9+ | + (text export only) | + (text export only) | - |
+|Safari | 10+ | + (text Export only) | + (text Export only) | - |
 
-Full compatibility can be achieved with Firefox. If you do not have Firefox installed on your computer, you can download a portable version of the browser from the following link: [PortableApps.com : Firefox](https://portableapps.com/de/apps/internet/firefox_portable).
+Full compatibility can be achieved with Firefox. If you do not have Firefox installed on your computer, you can download a portable (Windows) version from the following link: [PortableApps.com : Firefox](https://portableapps.com/de/apps/internet/firefox_portable).
 
 The portable version does not need to be installed, so you do not need administrator rights on your computer to use EasyRad.
 
