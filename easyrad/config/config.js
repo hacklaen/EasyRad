@@ -21,10 +21,10 @@
  */
 
 
-// Absolute URL of the directory where local template files (including referenced files) reside.
-// The base directory of EasyRad, ie. the directory where index.html resides, MUST be in the path of the specified directory. 
+// Relative Path from EasyRad's base directory to the directory where local template files (including referenced files) reside.
+// MUST be a child directory of EasyRad's base directory. 
 // This global value may be overwritten by parameter 'path' when starting EasyRad.
-LOCAL_TEMPLATES_PATH = "D:/Tom/EasyRad/EasyRad_Project/GitHub/EasyRad/easyrad/templates/local-sample-templates/";
+REL_PATH_TO_LOCAL_TEMPLATES = "templates/local-sample-templates/";
 
 
 // index.js: The type of content of the clipboard when exporting the report:

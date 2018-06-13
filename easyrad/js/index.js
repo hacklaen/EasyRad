@@ -59,7 +59,7 @@
  *  
  * @version 2.0.0
  * @author Thomas Hacklaender
- * @date 2018-06-08
+ * @date 2018-06-13
  */
 
 /*=============================================
@@ -85,10 +85,16 @@ var param_hide_selection = false;
  * (including referenced files) reside. The base directory of EasyRad, ie. the
  *  directory where index.html resides, MUST be in the path of the specified directory. 
  * Can be set with the URL parameter "path".                                          */
-var param_local_templates_path = LOCAL_TEMPLATES_PATH;
+var param_rel_path_to_local_templates = REL_PATH_TO_LOCAL_TEMPLATES;
 
 
 /* ========================================= */
+
+/* The absolute URL of the directory in which this file (e.g. EasyRad's index.html) resides */
+/* Sample if loaded from file: file:///D:/Tom/EasyRad/EasyRad_Project/GitHub/EasyRad/easyrad/ */
+/* Sample if loaded from server: http://localhost:8383/ReportCreator/ */
+var baseDirURL;
+
 
 /* The URL of the actual loaded template file.
  * Set by function loadTemplate.
@@ -112,11 +118,6 @@ var embeddingTemplateURL = "";
 
 /* An array containing the hrefs of all link elements originally specified in EasyRad */
 var originalLinks;
-
-/* The absolute URL of the directory in which this file (e.g. EasyRad's index.html) resides */
-/* Sample if loaded from file: file:///D:/Tom/EasyRad/EasyRad_Project/GitHub/EasyRad/easyrad/ */
-/* Sample if loaded from server: http://localhost:8383/ReportCreator/ */
-var baseDirURL;
 
 /* Update the configuration parameter from the URL */
 getUrlParameter(location.search);
@@ -143,7 +144,10 @@ $(document).ready(function () {
     var base = $('<base href="' + baseDirURL + '">');
     $("head").append(base);
 
-//    // Log the URL of the base directory
+//    // Log globals
+//    console.info("document.ready > param_template: " + param_template);
+//    console.info("document.ready > param_hide_selection: " + param_hide_selection);
+//    console.info("document.ready > param_rel_path_to_local_templates: " + param_rel_path_to_local_templates);
 //    console.info("document.ready > baseDirURL: " + baseDirURL);
 
     // If EasyRad is loaded from a server, file selction of local files is not possible
@@ -289,8 +293,8 @@ $(document).ready(function () {
 
         // Test whether the file URL is a pseudo URL
         if (isBlobURL(fileURL)) {
-            // Build a absolute file URL
-            fileURL = "file://localhost/" + param_local_templates_path;
+            // Build a absolute file URL. In this context baseDirURL is always a fil-URL
+            fileURL = baseDirURL + param_rel_path_to_local_templates;
             if (!fileURL.endsWith("/")) {
                 fileURL += "/";
             }
@@ -412,7 +416,7 @@ $(document).ready(function () {
                 window.alert(i18n('err_could_not_load_template') + url);
                 return;
             }
-            
+
             // Preserve the title of the template (will be removed in function modifyLoadedTemplate()
             var title = $('#template-html').find("title").text();
 
