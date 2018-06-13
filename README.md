@@ -137,7 +137,7 @@ By editing the file `lang/translations.js` additional languages could be easyly 
 ## Implementation details
 
 ### Implemented standard
-EasyRad renders report templates which fulfill the technical specification given in Volume 3 "Content Modules" of the MRRT standard in the version of September 9, 2016. The text could be downloaded here: [http://ihe.net/Technical_Frameworks/]( http://ihe.net/Technical_Frameworks/) 
+EasyRad renders report templates which fulfill the technical specification given in Volume 3 "Content Modules" of the MRRT standard in the version of July 14, 2017. The text could be downloaded here: [http://ihe.net/Technical_Frameworks/]( http://ihe.net/Technical_Frameworks/) 
 
 #### Additional features
 The application renders the `<textarea>` tag although it is not allowed by MRRT.
