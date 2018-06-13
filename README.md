@@ -33,7 +33,6 @@ For security reasons, most browsers prohibit the integration of HTML code (in th
 |Edge |  | + | + | - |
 |Safari | 10+ | + | + | - |
 |Internet Explorer | 9+ | + (text export only) | - | - |
-|Safari | 10+ | + (text Export only) | + (text Export only) | - |
 
 Full compatibility can be achieved with Firefox. If you do not have Firefox installed on your computer, you can download a portable (Windows) version from the following link: [PortableApps.com : Firefox](https://portableapps.com/de/apps/internet/firefox_portable).
 
