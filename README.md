@@ -243,7 +243,9 @@ The following libraries are used by EasyRad:
 |jQuery|3.2.1|MIT|[http://jquery.com/download/](http://jquery.com/download/)|
 |Bootstrap|3.3.7|MIT|[http://getbootstrap.com/getting-started/](http://getbootstrap.com/getting-started/)|
 |Bootstrap Filestyle|1.2.1|MIT|[https://github.com/markusslima/bootstrap-filestyle](https://github.com/markusslima/bootstrap-filestyle)|
-|clipboard.js|1.6.1|MIT|[https://github.com/zenorocha/clipboard.js/](https://github.com/zenorocha/clipboard.js/)|
+|clipboard-polyfill|2.4.6|MIT|[https://github.com/lgarron/clipboard-polyfill](https://github.com/lgarron/clipboard-polyfill)|
+|String.prototype.startsWith
+|0.2.0|MIT|[https://github.com/mathiasbynens/String.prototype.startsWith](https://github.com/mathiasbynens/String.prototype.startsWith)|
 
 
 ## Create/Edit templates
