@@ -107,7 +107,7 @@ Some aspects of rendering the text are configurable by parameters specified in f
 | HTML_FORM_PRAEFIX   | "" | The string to be used as praefix when converting form elements to text inside <span> elements. |
 | HTML_FORM_POSTFIX | " " | The string to be used as postfix when converting form elements to text inside <span> elements. |
 | IGNORE_LABELS_OF_EMPTY_ELEMENTS | true | If true,  labels of empty form elements (empty text value) are ignored in the output. |
-| IGNORE_EMPTY_SECTION_ELEMENTS | true | If true, emty section elements are ignored in the output. A section element is empty, if its children (except the header elment) do not contain any text. |
+| IGNORE_EMPTY_SECTION_ELEMENTS | true | If true, empty section elements are ignored in the output. A section element is empty, if its children (except the header elment) do not contain any text. |
 
 
 ### List of favored templates
