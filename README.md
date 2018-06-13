@@ -140,15 +140,18 @@ By editing the file `lang/translations.js` additional languages could be easyly 
 EasyRad renders report templates which fulfill the technical specification given in Volume 3 "Content Modules" of the MRRT standard in the version of July 14, 2017. The text could be downloaded here: [http://ihe.net/Technical_Frameworks/]( http://ihe.net/Technical_Frameworks/) 
 
 #### Additional features
-The application renders the `<textarea>` tag although it is not allowed by MRRT.
-`<label>` tags may be applied to all tags although MRRT restricts them to template fields, i.e. `<select>` and `<input>` tags.
+The MRRT standard specifies that tags that are not listed in the standard should be ignored.
+
+EasyRad allows the `<mark>` tag, which is not specified in MRRT, within templates. The tag itself and its child tags are displayed while editing the template, but the content is not exported to the clipboard.
 
 #### Limitations
-
+No limitation to the standard.
 
 ### Rendering of templates
-The MRRT templates are first rendered as HTML5 content. Because HTML5 does not support the `<INPUT type="textarea">` element defined in MRRT, this element is replaced by a `<textarea>` element.
-When pressing the `COPY` button, the HTML5 content is rendered as pure text. For that the following rules apply:
+When pressing the `COPY` button, the completed form is rendered in a two stage process: 
+
+
+In a second step the already rendered HTML content is rendered to plain text. For that the following rules apply:
 
 |Element | Prefix | Content | Postfix |Evaluate children |
 |---|---|---|---| --- |
