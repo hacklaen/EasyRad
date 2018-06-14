@@ -555,13 +555,13 @@ $(document).ready(function () {
             }
         }
 
-        // Log the paths
-        console.log("toAbsoluteURL > url: " + url);
-        console.log("toAbsoluteURL > baseDirURL: " + baseDirURL);
-        console.log("toAbsoluteURL > baseTemplateURL: " + baseTemplateURL);
-        console.log("toAbsoluteURL > embeddingTemplateURL: " + embeddingTemplateURL);
-        console.log("toAbsoluteURL > actualProcessedTemplateURL: " + actualProcessedTemplateURL);
-        console.log("toAbsoluteURL > newURL: " + newURL);
+//        // Log the paths
+//        console.log("toAbsoluteURL > url: " + url);
+//        console.log("toAbsoluteURL > baseDirURL: " + baseDirURL);
+//        console.log("toAbsoluteURL > baseTemplateURL: " + baseTemplateURL);
+//        console.log("toAbsoluteURL > embeddingTemplateURL: " + embeddingTemplateURL);
+//        console.log("toAbsoluteURL > actualProcessedTemplateURL: " + actualProcessedTemplateURL);
+//        console.log("toAbsoluteURL > newURL: " + newURL);
 
         return newURL;
     }
