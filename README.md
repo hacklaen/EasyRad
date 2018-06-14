@@ -145,6 +145,10 @@ No limitation to the standard.
 ### Rendering of templates
 When pressing the `COPY` button, the completed form is rendered in a two stage process: 
 
+In a first step, the completed template is converted into a reduced HTML format that no longer contains any form tags (`<input>`, `<select>`, `<option>` and `<textarea>`). The following rules are applied:
+
+- `<input>`, `<textarea>` and `<select>` tags are replaced by a `<span>` tag
+- The attributes of the form tags are copied to the `<span>` tag
 
 In a second step the already rendered HTML content is rendered to plain text. For that the following rules apply:
 
