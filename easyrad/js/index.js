@@ -4,7 +4,7 @@
  * This browser application allows to fill out MRRT templates and copy the result
  * into the clipboard.
  * 
- * Copyright (C) 2017  IFTM Institut für Telematik in der Medizin GmbH
+ * Copyright (C) 2018  IFTM Institut für Telematik in der Medizin GmbH
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
@@ -19,12 +19,32 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * @version 1.4.1
- * @author Thomas Hacklaender
- * @date 2017-06-08
- */
-
-/*
+ * Compatibility with browser to copy to clipboard:
+ *   - Chrome 42+
+ *   - Firefox 41+
+ *   - Opera 29+
+ *   - Internet Explorer 9+ (text only)
+ *   - Edge
+ *   - Desktop Safari 10+
+ *   - iOS Safari 10+ (text only)
+ *  
+ *  Firefox portable:
+ *  Link: https://portableapps.com/de/apps/internet/firefox_portable
+ *  
+ *  Chrome Version 66.0.3359.181:
+ *  jquery-3.2.0.js:9557 Failed to load file:///D:/Tom/EasyRad/EasyRad_Project/GitHub/EasyRad/easyrad/templates/samples/sample-valid.html: Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https.
+ *  
+ *  
+ *  Internet Explorer 11.0.9600 - EasyRad auf Server:
+ *  Beim Laden des Beispielfiles: jquery-3.2.0.js:3869 Das Objekt unterstützt die Eigenschaft oder Methode "startsWith" nicht
+ *  
+ *  NOTE:
+ *  JQuery load:
+ *  Due to browser security restrictions, most "Ajax" requests are subject to the 
+ *  same origin policy; the request can not successfully retrieve data from a 
+ *  different domain, subdomain, port, or protocol. 
+ *  Link: https://en.wikipedia.org/wiki/Same-origin_policy
+ *  
  * Chrome Browsers do not allow cross origin requests for local files. If you load
  * this file in Chrome, the following exception is thrown:
  * "Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https.
@@ -32,8 +52,15 @@
  * See: http://stackoverflow.com/questions/20041656/xmlhttprequest-cannot-load-file-cross-origin-requests-are-only-supported-for-ht
  * The recommended local server as a Chrome extension "Web Server for Chrome" is an open source (MIT) HTTP server for Chrome:
  * Link: https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb?hl=en
+ *
+ * How to Disable Same Origin Policy on Chrome and IE browser
+ *  Link: https://www.thegeekstuff.com/2016/09/disable-same-origin-policy/
+ *  
+ *  
+ * @version 2.0.0
+ * @author Thomas Hacklaender
+ * @date 2018-06-14
  */
-
 
 /*=============================================
  *====      Configuration parameters       ====
@@ -41,36 +68,94 @@
 
 /* EasyRad parameter: The URL of the template display when opening the report creator.
  * Can be set with the URL parameter "tpl".                                             */
-var param_template = '';
-//var param_template = './samples/IHE_MRRT_Example_TI_TH.html';
-//var param_template = './samples/IHE_MRRT_Example_TI_TH_content_only.html';
-//var param_template = './templates/us_fast.html';
+//var param_template = '';
+var param_template = 'templates/samples/sample-valid.html';
+//var param_template = 'templates/samples/ct-schaedel.html';
+//var param_template = 'templates/samples/din25300.html';
+//var param_template = 'templates/samples/IHE_MRRT_Example_TI_TH.html';
+//var param_template = 'templates/samples/IHE_MRRT_Example_TI_TH_content_only.html';
+//var param_template = 'templates/drg/CT-Thorax_Lungenembolie.html';
 
 /* EasyRad parameter: If true, the UI elements to select a new template are hidden.
  * Can be set with the URL parameter "hide".                                          */
 var param_hide_selection = false;
 
 
+/* EasyRad parameter: Absolute URL of the directory where local template files 
+ * (including referenced files) reside. The base directory of EasyRad, ie. the
+ *  directory where index.html resides, MUST be in the path of the specified directory. 
+ * Can be set with the URL parameter "path".                                          */
+var param_rel_path_to_local_templates = REL_PATH_TO_LOCAL_TEMPLATES;
+
+
 /* ========================================= */
 
-/* The clipboard object */
-var clipboard;
+/* The absolute URL of the directory in which this file (e.g. EasyRad's index.html) resides */
+/* Sample if loaded from file: file:///D:/Tom/EasyRad/EasyRad_Project/GitHub/EasyRad/easyrad/ */
+/* Sample if loaded from server: http://localhost:8383/ReportCreator/ */
+var baseDirURL;
 
-/* The URL of the actual loaded template file. Set by function loadT emplate. Relative URLs are specified relative to index.html. */
-var loadedTemplateUrl = '';
+
+/* The URL of the actual loaded template file.
+ * Set by function loadTemplate.
+ * Relative URLs are specified relative to index.html.
+ * Sample URLs: If index.html is loaded as file:
+ *   - Selection from drop-down list: samples/sample-valid.html
+ *   - File selction button:          blob:null/f9c49663-7a11-4f36-b94d-d2b15d5146a7
+ * Sample URLs: If index.html is loaded from server:
+ *   - Selection from drop-down list: samples/sample-valid.html
+ *   - File selction button:          blob:http://localhost:8383/33536f1c-79a6-4184-930b-42f92b1fc73a
+ */
+var baseTemplateURL = "";
+
+/* The URL of the template which is actual recursive processed after loading a new template.
+ * Either relative or absolute. */
+var actualProcessedTemplateURL = "";
+
+/* The URL of the template which has embedded the actual processed template (templates may be nested).
+ * Either relative or absolute. */
+var embeddingTemplateURL = "";
 
 /* An array containing the hrefs of all link elements originally specified in EasyRad */
 var originalLinks;
 
-
 /* Update the configuration parameter from the URL */
-getAtts(location.search);
+getUrlParameter(location.search);
 
 
 /*
  * Defer the JQuery scripts until the DOM has been completely parsed.
  */
 $(document).ready(function () {
+
+    // Get URL of the directory of current window
+    baseDirURL = window.location.href;
+
+    // Remove optional query part of the URL
+    var idx = baseDirURL.indexOf("?");
+    if (idx > -1) {
+        baseDirURL = baseDirURL.substring(0, idx);
+    }
+
+    // Remove the filename
+    baseDirURL = removeFilename(baseDirURL);
+
+    // Append a base-element with URL of the directory of current window to head
+    var base = $('<base href="' + baseDirURL + '">');
+    $("head").append(base);
+
+//    // Log globals
+//    console.info("document.ready > param_template: " + param_template);
+//    console.info("document.ready > param_hide_selection: " + param_hide_selection);
+//    console.info("document.ready > param_rel_path_to_local_templates: " + param_rel_path_to_local_templates);
+//    console.info("document.ready > baseDirURL: " + baseDirURL);
+
+    // If EasyRad is loaded from a server, file selction of local files is not possible
+    if (baseDirURL.startsWith("file:")) {
+        $("#files-div").show();
+    } else {
+        $("#files-div").hide();
+    }
 
     // Sets the global variable originalLinks which contains the hrefs of all link 
     // elements originally specified in EasyRad. 
@@ -85,7 +170,7 @@ $(document).ready(function () {
         $("#files").prop("disabled", true);
     }
 
-    if (!Clipboard.isSupported()) {
+    if (!document.queryCommandSupported("copy")) {
         alert('The Clipboard APIis not supported in this browser.');
         // Diabale copy to clipboard button
         $("#to-clipboard-btn").prop("disabled", true);
@@ -108,43 +193,62 @@ $(document).ready(function () {
         loadTemplate(param_template);
     }
 
-    /*
-     *  Create a Clipboard object.
-     */
-    clipboard = new Clipboard('#to-clipboard-btn', {
-        text: function (trigger) {
-            // Convert the HTML content to formatted TEXT
-            var myFrameText = convert($('#template-html'));
-            // Log to console (for debugging)
-            console.log(myFrameText);
-            // Put the formatted TEXT into the clipboard
-            return myFrameText;
-        }
-    });
-
-
-    /*
-     * Callback handler of the Clipboard object:
-     * Handles the 'success' event of the clipboard
-     */
-    clipboard.on('success', function (e) {
-        // console.info('Action:', e.action);
-        // console.info('Text:', e.text);
-        // console.info('Trigger:', e.trigger);
-
-        // Clear the selection
-        e.clearSelection();
-    });
-
 
     /**
-     * Callback handler of the Clipboard object:
-     * Handles the 'error' event of the clipboard
+     * Handles the selection of the to clipboard menu-button in each row of the favored 
+     * templates drop down.
+     * Uses the library "clipboard-polyfill": https://github.com/lgarron/clipboard-polyfill
+     * The library is based on the deprecated lib "clipboard-js": https://www.npmjs.com/package/clipboard-js
+     * Another lirary, called "clipboard.js", uses TEXT only: https://clipboardjs.com/
+     * 
+     * The text/html content of the clipboard is as follows:
+     * Version:0.9
+     * StartHTML:00000097
+     * EndHTML:00009463
+     * StartFragment:00000131
+     * EndFragment:00009427
+     * <html>
+     *      <body>
+     *          <!--StartFragment-->
+     *          <!-- Version: 2017-06-07 -->
+     *          ... template content goes here ...
+     *          <!--EndFragment-->
+     *      </body>
+     * </html> 
      */
-    clipboard.on('error', function (e) {
-        // Nothing to do in the moment
-        // console.error('Action:', e.action);
-        // console.error('Trigger:', e.trigger);
+    $('#to-clipboard-btn').on("click", function () {
+
+        var jqTemplateHtmlElms = $('#template-html');
+        // Get the native DOM element from the JQuery element:
+        // https://learn.jquery.com/using-jquery-core/faq/how-do-i-pull-a-native-dom-element-from-a-jquery-object/ 
+        var templateHtmlElm = jqTemplateHtmlElms[0];
+        var templateHtml = convertToHtml(templateHtmlElm);
+        var templateText = convertToText(templateHtml);
+
+        var dt = new clipboard.DT();
+
+        switch (CLIPBOARD_TYPE) {
+            case 'HTML':
+                // Put HTML formatted rich text to clipboard
+                dt.setData("text/html", templateHtml.innerHTML);
+                break;
+
+            case 'TEXT':
+                // Put plain text into the clipboard
+                dt.setData("text/plain", templateText);
+                break;
+
+            case 'BOTH':
+            default:
+                // Put HTML formatted rich text to clipboard
+                dt.setData("text/html", templateHtml.innerHTML);
+                // Put plain text into the clipboard
+                dt.setData("text/plain", templateText);
+                break;
+
+
+        }
+        clipboard.write(dt);
     });
 
 
@@ -152,11 +256,13 @@ $(document).ready(function () {
      * Loads a new template from the local filesystem.
      * The function presents the user a standard file select dialog to select 
      * the template.
+     * 
+     * Link: 
      */
     $('#files').on("change", function handleFileSelect(evt) {
         var files;
         var f;
-        var fileReader;
+        var fileURL;
 
         // Get the FileList object
         files = evt.target.files;
@@ -167,23 +273,36 @@ $(document).ready(function () {
 
         // Only process HTML files.
         if (f.type != "text/html") {
+            window.alert(i18n('err_selected_file_not_html') + f.name + ' type: ' + f.type);
             return;
         }
 
-        // Lesen von Dateien in JavaScript mit den File APIs
-        // See: https://www.html5rocks.com/de/tutorials/file/dndfiles/
-        fileReader = new FileReader();
+        // Read local files with the File API
+        // Link: https://www.creativebloq.com/web-design/read-local-files-file-api-121518548
 
-        // Closure to capture the file information.
-        fileReader.onload = (function (theFile) {
-            return function (e) {
-                loadTemplate(e.target.result);
-            };
-        })(f);
+        // Create a pseudo URL for accessing the file content, e.g.:
+        // blob:null/4858f604-5612-4d92-a7b9-cc54af09f7ee
+        // blob:http://localhost:8383/298ebb95-d54a-49e6-938b-58a82b2e651b
+        // See: https://www.w3.org/TR/FileAPI/#url
+        // See: https://stackoverflow.com/questions/30864573/what-is-a-blob-url-and-why-it-is-used
+        fileURL = window.URL.createObjectURL(f);
 
-        // Read the file as a data URL.
-        fileReader.readAsDataURL(f);
+//        console.info("$('#files').on > f.name: " + f.name);
+//        console.info("$('#files').on > f.type: " + f.type);
+//        console.info("$('#files').on > fileURL: " + fileURL);
 
+        // Test whether the file URL is a pseudo URL
+        if (isBlobURL(fileURL)) {
+            // Build a absolute file URL. In this context baseDirURL is always a fil-URL
+            fileURL = baseDirURL + param_rel_path_to_local_templates;
+            if (!fileURL.endsWith("/")) {
+                fileURL += "/";
+            }
+            fileURL += f.name;
+        }
+
+        // Load the template
+        loadTemplate(fileURL);
     });
 
 
@@ -222,12 +341,13 @@ $(document).ready(function () {
     });
 
     /*
-     * A general event handler for select elements, which are children of #template-html
+     * A general event handler for select elements, which are children of #template-html.
+     * See: Table 8.1.3.5.1-1: Attributes of Selection Items
      */
     $('#template-html').on('change', 'select', function (e) {
         var optionSelected = $(this).find('option:selected');
         var templateUidAttr = optionSelected.attr('data-template-UID');
-        
+
         // Process option elements with an 'data-template-UID' attribute set
         // (options which trigger an embed of a template)
         if (templateUidAttr) {
@@ -236,7 +356,7 @@ $(document).ready(function () {
             var elm = $("#" + replacementElementId);
             var srcFileName = templateUid + ".html";
             // Replace the element specified in the option element with the specified template
-            replaceElm(elm, srcFileName);
+            replaceElmWithTemplateAsDiv(elm, srcFileName, "");
         }
     });
 
@@ -244,17 +364,17 @@ $(document).ready(function () {
     /**
      * Loads a template file from a given URL.
      * 
-     * @param url The URL of the template
+     * @param url The URL of the template to load. If it is a realative URL it must
+     *            be specified relative to the base directory of the windew, e.g
+     *            EasyRad's index.html directory.
      */
     function loadTemplate(url) {
-        var title;
         var dcterms;
 
-        // Remove all link elements included by the already loaded templates
-        removeTeplateLinks();
+//        console.log("loadTemplate > url: " + url);
 
-        // Store the URL in global variable
-        loadedTemplateUrl = url;
+        // Remove all head elements which were included by the already loaded templates
+        removeTemplateHeadElements();
 
         // When loading templates in the Netbeans environment using the 
         // "Embedden Lightweight" server and Chrow as a browser the requested 
@@ -277,17 +397,32 @@ $(document).ready(function () {
         $("#template-html").load(url, function (response, status, xhr) {
             // Function is executed after completition of load
 
+            // Store the URL of the loaded template in a global variable
+            baseTemplateURL = url;
+            embeddingTemplaetURL = "";
+            actualProcessedTemplateURL = url;
+
+//            // Log the paths
+//            console.log("loadTemplate > $('#template-html').load > baseDirURL: " + baseDirURL);
+//            console.log("loadTemplate > $('#template-html').load > baseTemplateURL: " + baseTemplateURL);
+//            console.log("loadTemplate > $('#template-html').load > embeddingTemplaetURL: " + embeddingTemplaetURL);
+//            console.log("loadTemplate > $('#template-html').load > actualProcessedTemplate: " + actualProcessedTemplate);
+
+//            console.log("loadTemplate > $('#template-html').load > url: " + url);
+//            console.log("loadTemplate > $('#template-html').load > status: " + status);
+//            console.log("loadTemplate > $('#template-html').load > response: " + response);
+
+            if (status !== "success") {
+                window.alert(i18n('err_could_not_load_template') + url + " Status text: " + xhr.statusText);
+                return;
+            }
+
+            // Preserve the title of the template (will be removed in function modifyLoadedTemplate()
+            var title = $('#template-html').find("title").text();
+
             // Modify the loaded template
-            modifyLoadedTemplate($("#template-html"), loadedTemplateUrl);
+            modifyLoadedTemplate($("#template-html"));
 
-            // Process <embed> elements
-            $("#template-html").find("embed").each(function (index) {
-                replaceEmbedElm($(this));
-            });
-
-
-            // Get the title of the template
-            title = $('#template-html').find("title").text();
             // Display the title of the template
             $('#template-title').text(i18n('template_title'));
             $('#template-title-value').text(title);
@@ -298,6 +433,132 @@ $(document).ready(function () {
             $('#template-publisher-value').text(dcterms['publisher']);
         });
     }
+
+
+    /**
+     * Modifies a loaded template:
+     * - Adapt relative links of <img> and <link> elements.
+     * - Replace <input type="textarea"> elements with <textarea> elements.
+     * Relative URLs must be specified relative to index.html.
+     * @param baseElm JQuery object containing the loaded template as child elements.
+     */
+    function modifyLoadedTemplate(baseElm) {
+
+//        // Log the paths
+//        console.log("modifyLoadedTemplate > baseDirURL: " + baseDirURL);
+//        console.log("modifyLoadedTemplate > baseTemplateURL: " + baseTemplateURL);
+//        console.log("modifyLoadedTemplate > embeddingTemplateURL: " + embeddingTemplateURL);
+//        console.log("modifyLoadedTemplate > actualProcessedTemplateURL: " + actualProcessedTemplateURL);
+
+        // Remove <title> element of loaded template (will be set in function loadTemplate) 
+        $(baseElm).find("title").each(function (index) {
+            $(this).remove();
+        });
+
+        // Move <meta name="..."> elements into head part of index.html (e.g. EasyRad's HTML page)
+        // Remove all other meta elements
+        $(baseElm).find("meta").each(function (index) {
+            if ($(this).attr("name")) {
+                // Move to head element
+                $("head").append($(this));
+            } else {
+                $(this).remove();
+            }
+        });
+
+        // Move <link> into head part of index.html (e.g. EasyRad HTML page) and correct the relative link
+        $(baseElm).find("link").each(function (index) {
+            // Move to head element
+            $("head").append($(this));
+
+            var hrefUrl = $(this).attr("href");
+            var newHrefUrl = redirectUrl(hrefUrl);
+
+            $(this).attr("href", newHrefUrl);
+        });
+
+        // For <img> elements: Change the path from relative to file to relative to index.html
+        $(baseElm).find("img").each(function (index) {
+            var srcUrl = $(this).attr("src");
+            var newSrcUrl = redirectUrl(srcUrl);
+
+//            console.log("modifyLoadedTemplate-img > srcUrl: " + srcUrl);
+//            console.log("modifyLoadedTemplate-img > newSrcUrl: " + newSrcUrl);
+
+            $(this).attr("src", newSrcUrl);
+        });
+
+        // Process <embed> elements
+        $(baseElm).find("embed").each(function (index) {
+            replaceEmbedElm($(this));
+        });
+
+//        // FOR BACKWARD COMPATIBILITY ONLY:
+//        // Replace <input type="textarea" /> with a TEXTAREA tags
+//        $(baseElm).find("input[type='textarea']").replaceWith(function () {
+//            return $("<textarea/>", {// JQuery object-literal
+//                name: this.name,
+//                "data-field-type": $(this).attr("data-field-type"),
+//                "data-field-merge-flag": $(this).attr("data-field-merge-flag"),
+//                "data-field-verbal-trigger": $(this).attr("data-field-verbal-trigger"),
+//                "data-field-completion-action": $(this).attr("data-field-completion-action"),
+//                "Title": $(this).attr("Title"),
+//                id: this.id,
+//            }).val($(this).val());
+//        });
+    }
+
+
+    /*
+     * 
+     * @param {type} url
+     * @returns {unresolved}
+     */
+    function redirectUrl(url) {
+        var newURL;
+
+        if ((baseDirURL.startsWith("http:")) || (baseDirURL.startsWith("https:"))) {
+            // EasyRad runs on a server
+            if (isRelativeURL(url)) {
+                // url to redirect is a relative URL
+                newURL = removeFilename(actualProcessedTemplateURL) + url;
+            } else {
+                // url to redirect is an absolute URL
+                newURL = url;
+            }
+        } else {
+            if (baseDirURL.startsWith("file:")) {
+                // EasyRad runs in the local filesystem
+                if (isRelativeURL(url)) {
+                    // url to redirect is a relative URL
+                    if (embeddingTemplateURL.length === 0) {
+                        // baseDirURL is always an absolute address
+                        newURL = removeFilename(baseTemplateURL) + url;
+                    } else {
+                        // baseDirURL is always an absolute address
+                        newURL = removeFilename(actualProcessedTemplateURL) + url;
+                    }
+                } else {
+                    // url to redirect is an absolute URL
+                    newURL = url;
+                }
+            } else {
+                newURL = url;
+                window.alert(i18n('err_unsupportet_scheme') + baseDirURL);
+            }
+        }
+
+//        // Log the paths
+//        console.log("redirectUrl > url: " + url);
+//        console.log("redirectUrl > baseDirURL: " + baseDirURL);
+//        console.log("redirectUrl > baseTemplateURL: " + baseTemplateURL);
+//        console.log("redirectUrl > embeddingTemplateURL: " + embeddingTemplateURL);
+//        console.log("redirectUrl > actualProcessedTemplateURL: " + actualProcessedTemplateURL);
+//        console.log("redirectUrl > newURL: " + newURL);
+
+        return newURL;
+    }
+
 
     /**
      * Replaces an <embed> element with a <div> element containing the loaded 
@@ -318,7 +579,7 @@ $(document).ready(function () {
         srcFileName = embedElm.attr("src");
 
         // Replace the embed element
-        replaceElm(embedElm, srcFileName);
+        replaceElmWithTemplateAsDiv(embedElm, srcFileName);
     }
 
 
@@ -327,53 +588,47 @@ $(document).ready(function () {
      * template as its children.
      * 
      * @param elm The element to be replaced.
-     * @param srcFileName The name of the template file to embed
+     * @param templateURL The URL of the template file to embed
      */
-    function replaceElm(elm, srcFileName) {
+    function replaceElmWithTemplateAsDiv(elm, templateURL) {
         var divElm;
-        var embedSrcUrl;
+        var urlToLoad;
+
 
         // Create a new <div> element
         divElm = document.createElement("DIV");
-
         // Replace the <embed> element with the new <div>
         $(elm).replaceWith(divElm);
 
-        // Get the URL of the embedded file relative to index.html
-        if (typeof EMBED_DIRECTORY_URL === 'string' && EMBED_DIRECTORY_URL.length) {
-            if (isAbsoluteUrl(EMBED_DIRECTORY_URL)) {
-                embedSrcUrl = EMBED_DIRECTORY_URL;
-                if (!embedSrcUrl.endsWith('/')) {
-                    embedSrcUrl += "/";
-                }
-                embedSrcUrl += srcFileName;
-            } else {
-                embedSrcUrl = removeFileName(loadedTemplateUrl) + EMBED_DIRECTORY_URL;
-                if (!embedSrcUrl.endsWith('/')) {
-                    embedSrcUrl += "/";
-                }
-                embedSrcUrl += srcFileName;
-            }
-        } else {
-            // EMBED_DIRECTORY_URL is not specified. Use the directory of the embedding template as a default.
-            embedSrcUrl = removeFileName(loadedTemplateUrl) + srcFileName;
-        }
+        urlToLoad = removeFilename(baseTemplateURL) + templateURL;
+
+//        // Log the URLs
+//        console.log("replaceElmWithTemplateAsDiv > templateURL: " + templateURL);
+//        console.log("replaceElmWithTemplateAsDiv > baseTemplateURL: " + baseTemplateURL);
+//        console.log("replaceElmWithTemplateAsDiv > embeddingTemplateURL: " + embeddingTemplateURL);
+//        console.log("replaceElmWithTemplateAsDiv > actualProcessedTemplateURL: " + actualProcessedTemplateURL);
+//        console.log("replaceElmWithTemplateAsDiv > urlToLoad: " + urlToLoad);
 
         // Load the content of the embedded template as children of the <div>
         // From the loaded HTML document the <html>, <head> and <body> elements 
         // were automatically removed.
         // The child elements of <head> and <body> are inserted in the sequence 
         // of appearing in the origibnal file
-        $(divElm).load(embedSrcUrl, function (response, status, xhr) {
+        $(divElm).load(urlToLoad, function (response, status, xhr) {
             // Function is executed after completition of load
 
-            // Modify the loaded template
-            modifyLoadedTemplate(divElm, embedSrcUrl);
+            if (status !== "success") {
+                window.alert(i18n('err_could_not_load_template') + urlToLoad + " Status text: " + xhr.statusText);
+                return;
+            }
 
-            // Process <embed> elements in the embedded template
-            $(divElm).find("embed").each(function (index) {
-                replaceEmbedElm($(this));
-            });
+            embeddingTemplateURL = actualProcessedTemplateURL;
+            actualProcessedTemplateURL = urlToLoad;
+
+            // Modify the loaded template
+            modifyLoadedTemplate(divElm);
+//            modifyLoadedTemplate(divElm, urlToLoad, removeFilename(templateURL));
+
         });
     }
 
@@ -381,65 +636,41 @@ $(document).ready(function () {
 
 
 /**
- * Modifies a loaded template:
- * - Adapt relative links of <img> and <link> elements.
- * - Replace <input type="textarea"> elements with <textarea> elements.
+ * Tests, whether a given URL is a pseudo URL starting with "blob":.
+ * blob:null and blob:http are pseudo URLs to reference objects read by FileReader.
  * 
- * @param baseElm JQuery object containing the loaded template as child elements.
- * @param {string} templateFileUrl The URL of the template file. Relative URLs 
- *                 must be specified relative to index.html.
+ * @param {String} url The URL to test
+ * @returns {Boolean} True, if the given URL is a pseudo URL.
  */
-function modifyLoadedTemplate(baseElm, templateFileUrl) {
+function isBlobURL(url) {
 
-    // Move <link> into head part of index.html and correct the relative link
-    $(baseElm).find("link").each(function (index) {
-        // Move to head element
-        $("head").append($(this));
-
-        var hrefUrl = $(this).attr("href");
-        if (!isAbsoluteUrl(hrefUrl)) {
-            // Change the path from relative to template file to relative to index.html
-            $(this).attr("href", removeFileName(templateFileUrl) + hrefUrl);
-        }
-    });
-
-    // For <img> elemnts: Change the path from relative to file to relative to index.html
-    $(baseElm).find("img").each(function (index) {
-        var srcUrl = $(this).attr("src");
-        if (!isAbsoluteUrl(srcUrl)) {
-            // Change the path from relative to template file to relative to index.html
-            $(this).attr("src", removeFileName(templateFileUrl) + srcUrl);
-        }
-    });
-
-    // Replace <input type="textarea" /> with a TEXTAREA tags
-    $(baseElm).find("input[type='textarea']").replaceWith(function () {
-        return $("<textarea/>", {// JQuery object-literal
-            name: this.name,
-            "data-field-type": $(this).attr("data-field-type"),
-            "data-field-merge-flag": $(this).attr("data-field-merge-flag"),
-            "data-field-verbal-trigger": $(this).attr("data-field-verbal-trigger"),
-            "data-field-completion-action": $(this).attr("data-field-completion-action"),
-            "Title": $(this).attr("Title"),
-            id: this.id,
-        }).val($(this).val());
-    });
+    // blob:null and blob:http pseudo URLs are absolute
+    if (url.startsWith("blob:")) {
+        return true;
+    }
+    return false;
 }
 
 
 /**
- * Tests, whether a given URL is absolute.
+ * Tests, whether a given URL is relative.
  * 
  * @param {String} url The URL to test
- * @returns {Boolean} True, if the given URL is absolute.
+ * @returns {Boolean} True, if the given URL is relative.
  */
-function isAbsoluteUrl(url) {
-    try {
-        // Throws exception for relative URLs
-        new URL(url);
-        return true;
-    } catch (err) {
+function isRelativeURL(url) {
+
+    // Pseudo URLs are absolute
+    if (isBlobURL(url)) {
         return false;
+    }
+
+    try {
+        // Throws exception for non-absolute URLs
+        new URL(url);
+        return false;
+    } catch (err) {
+        return true;
     }
 }
 
@@ -451,7 +682,7 @@ function isAbsoluteUrl(url) {
  *                   If the given URL was a relative URL containing a filename only
  *                   an empty string is returned.
  */
-function removeFileName(url) {
+function removeFilename(url) {
     var str = "";
     var urlParts = url.split('/');
     if (urlParts.length > 1) {
@@ -468,11 +699,11 @@ function removeFileName(url) {
  * 
  * @author Marian Feiler - urbanstudio GmbH
  * @author Thomas Hacklaender
- * @date 2017-05-23
+ * @date 2018-06-08
  * 
  * @param {string} querystring URL parameter
  */
-function getAtts(querystring) {
+function getUrlParameter(querystring) {
     if (querystring === '')
         return;
     var qs = querystring.slice(1);
@@ -483,10 +714,13 @@ function getAtts(querystring) {
         key = unescape(pair[0]).replace("+", " ");
         val = unescape(pair[1]).replace("+", " ");
         if (key === "tpl") {
-            param_template = val;
+            param_template = decodeURI(val);
         }
         if (key === "hide") {
             param_hide_selection = (val === '1' ? true : false);
+        }
+        if (key === "path") {
+            param_local_templates_path = decodeURI(val);
         }
     }
 }
@@ -666,17 +900,18 @@ function getOriginalLinks() {
 }
 
 /**
- * Removes all link elements included by templates. 
+ * Remove all head elements which were included by the already loaded templates 
  */
-function removeTeplateLinks() {
-    var hasReplaced = false;
+function removeTemplateHeadElements() {
+    $("head").find("link").each(function (index) {
+        if (originalLinks.indexOf($(this).attr("href")) < 0) {
+            $(this).remove();
+        }
+    });
 
-    // Process all link elements
-    do {
-        $("head").find("link").each(function (index) {
-            if (originalLinks.indexOf($(this).attr("href")) < 0) {
-                $(this).remove();
-            }
-        });
-    } while (hasReplaced);
+    $("head").find("meta").each(function (index) {
+        if ($(this).attr("name")) {
+            $(this).remove();
+        }
+    });
 }

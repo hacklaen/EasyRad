@@ -1,12 +1,28 @@
 
-============ 2017-06-07 ============
+============ 2018-06-11 ============
 
-Release Version 1.5
+Release Version 2.0.0
 
 EasyRad:
 
-+ Embedding of a templates triggert by the selection of an option in a select element
-  is implemented.
+x Conceptual change: Export to clipboard is now a two stage process:
+    1. Replace all form elements with <span> elements and preserve attributes
+       of the form elements in the span element. The text of the <span> element
+       is set to the value of the form elements. The result is a HTML DOM containig
+       the formattig rules of the original template.
+    2. Filling the clipboard:
+       a) With the new HTML DOM.
+       b) With a plain text version of the HTML DOM
+       
++ Added URL parameter: path
++ Added library clipboard-polyfill which supports HTML export to clipboard.
++ Added library startswith to get backward compatibility with Internet Explorer < 12.
++ Added configuration globals: LOCAL_TEMPLATES_PATH, CLIPBOARD_TYPE, HTML_FORM_PRAEFIX, 
+  HTML_FORM_POSTFIX, IGNORE_LABELS_OF_EMPTY_ELEMENTS, IGNORE_EMPTY_SECTION_ELEMENTS
+
+- Removed library clipboard.js.
+- Removed configuration globals: LABEL_SUFFIX, USE_OPTION_TEXT, MESSAGE_DESTINATION, 
+  EMBED_DIRECTORY_URL
 
 
 ============ 2017-06-06 ============
