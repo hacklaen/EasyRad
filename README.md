@@ -34,7 +34,7 @@ For security reasons, most browsers prohibit the integration of HTML code (in th
 |Chrome | 42+ | + | - | - |
 |Internet Explorer | 9+ | + (text export only) | - | - |
 
-As an alternative to the browser installed on your computer, you can uise a portable version of Firefox on Windows systems. It can download from the following link: [PortableApps.com : Firefox](https://portableapps.com/de/apps/internet/firefox_portable). The portable version does not need to be installed, so you do not need administrator rights on your computer to use EasyRad.
+As an alternative to the browser installed on your computer, you can use a portable version of Firefox on Windows systems. It can download from the following link: [PortableApps.com : Firefox](https://portableapps.com/de/apps/internet/firefox_portable). The portable version does not need to be installed, so you do not need administrator rights on your computer to use EasyRad.
 
 
 ## Usage
