@@ -166,6 +166,8 @@ The following rules are applied for the conversion:
 
 In a second step the reduced HTML content is rendered by `function convertToText()` in file `converter-text.js` to plain text. 
 
+This resulting text may be exported to the clipboard.
+
 For that the following rules apply:
 
 
