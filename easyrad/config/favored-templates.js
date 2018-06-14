@@ -25,6 +25,7 @@ var favoredTemplates = [
      ["Ultraschall Carotis", "templates/drg/Ultraschall_Carotis.html"],
      ["Ultraschall Hüftscreening", "templates/drg/Ultraschall_Hüftscreening.html"],
      ["Ultraschall nach FAST-Protokoll", "templates/drg/Ultraschall_nach_FAST-Protokoll.html"],
+
     // The TOP 5 templates provided by RSNA (2018-0529)
     ["Chest Xray", "templates/rsna/Chest_Xray.html"],
     ["Chest Xray-2 Views", "templates/rsna/Chest_Xray-2_Views.html"],
@@ -32,11 +33,13 @@ var favoredTemplates = [
     ["CT Brain", "templates/rsna/CT_Brain.html"],
     ["MR Brain", "templates/rsna/MR_Brain.html"],
     
-    // Sample template
-    ["Sample valid", "templates/samples/sample-valid.html"],
-    ["DIN25300-1", "templates/samples/din25300.html"],
-    ["CT Schaedel", "templates/samples/ct-schaedel.html"],
-    ["CR Knochen", "templates/samples/cr-knochen.html"],
+    // Test template
+    ["Test valid", "templates/test/test-valid.html"],
+    
+    // Develop template
+    ["DIN25300-1", "templates/develop/din25300.html"],
+    ["CT Schaedel", "templates/develop/ct-schaedel.html"],
+    ["CR Knochen", "templates/develop/cr-knochen.html"],
 ];
 
 

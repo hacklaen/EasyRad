@@ -160,6 +160,7 @@ The following rules are applied for the conversion:
 - If the form element, which is referenced by the label, does not contain any text and the global parameter `IGNORE_LABELS_OF_EMPTY_ELEMENTS` is set to `true`, the label is ignored
 - If a template section does not contain any text and the global parameter `IGNORE_EMPTY_SECTION_ELEMENTS` is set to `true`, the section is ignored
 - The `<head>` tag and its children are removed
+- References in `<img>` and `<link>` tags are replaced with absolute URLs
 - `<mark>` tags and the children are removed
 - Tags with an attribute `disabled` are removed
 

@@ -17,14 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * @author T. Hacklaender
- * @date 2018-06-07
+ * @date 2018-06-14
  */
 
 
 // Relative Path from EasyRad's base directory to the directory where local template files (including referenced files) reside.
 // MUST be a child directory of EasyRad's base directory. 
 // This global value may be overwritten by parameter 'path' when starting EasyRad.
-REL_PATH_TO_LOCAL_TEMPLATES = "templates/local-sample-templates/";
+REL_PATH_TO_LOCAL_TEMPLATES = "templates/test/test-local-templates/";
 
 
 // index.js: The type of content of the clipboard when exporting the report:

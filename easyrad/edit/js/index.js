@@ -28,9 +28,7 @@
  *===========================================*/
 
 /* EasyRad Editor parameter: The URL of the template to edit when opening the editor */
-//var easyrad_param_template_to_edit = '../samples/IHE_MRRT_Example_TI_TH.html';
-//var easyrad_param_template_to_edit = '../samples/dicom20.html';
-//var easyrad_param_template_to_edit = 'file:///C:/Users/Tom/Desktop/EasyRad/EasyRadEdit_Project/GitHub/EasyRad/easyrad/samples/IHE_MRRT_Example_TI_TH.html';
+//var easyrad_param_template_to_edit = '../templates/test/test-valid.html';
 
 
 /* ========================================= */

@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<!-- Version: 2018-06-11 -->
+<!-- Version: 2017-06-14 -->
 <html>
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <title>Template zum Einfügen über eine Liste in 'sample-valid.html'</title>      
+        <title>Second level embedded Datei zu 'test-valid.html'</title>
         <!--Dublin Core metadata elements here-->
-        <meta name="dcterms.title" content="First level embedded Datei">
-        <meta name="dcterms.abstract" content="First level embedded Datei zu 'sample-valid.html'">
-        <meta name="dcterms.description" content="First level embedded Datei zu 'sample-valid.html'">
+        <meta name="dcterms.title" content="Second level embedded Datei">
+        <meta name="dcterms.abstract" content="Second level embedded Datei zu 'test-valid.html'">
+        <meta name="dcterms.description" content="Second level embedded Datei zu 'test-valid.html'">
         <meta name="dcterms.subject" content="CR; US; CT; MR; NM; PET;">
-        <meta name="dcterms.identifier" content="041807.05.80610.1">
-        <meta name="dcterms.references" content="041807.05.80610.1">
-        <meta name="dcterms.date" content="2018-09-10">
+        <meta name="dcterms.identifier" content="041807.05.80529.2">
+        <meta name="dcterms.references" content="041807.05.80529.2">
+        <meta name="dcterms.date" content="2018-05-29">
         <meta name="dcterms.publisher" content="IFTM GmbH">
         <meta name="dcterms.creator" content="Hackländer, Thomas">
         <meta name="dcterms.contributor" content="Hackländer, Thomas [Kodierung]">
@@ -35,23 +35,18 @@
             label {font-weight: normal;}
         </style>
 
-        <link rel="stylesheet" type="text/css" href="1.2.3.4.5.6.7.css">
+        <link rel="stylesheet" type="text/css" href="embedded-level2.css">
     </head>
 
     <body>
-        <section id="SE101" data-section-name="Eingebetteter Abschnitt Level 1" data-section-required="false">
-            <header class="level1 embed-list1"><strong>Eingebetteter Abschnitt Level 1</strong></header>
+        <section id="SE201" data-section-name="Eingebetteter Abschnitt Level 2" data-section-required="false">
+            <header class="level1 embed2"><strong>Eingebetteter Abschnitt Level 2</strong></header>
             <p>
-                <span>Dies ist eingebetteter Text Level 1 in einem span-Element.</span>
+                <span>Dies ist eingebetteter Text Level 2 in einem span-Element.</span>
             </p>
             <p>
                 <span>Im eingebetteten Inhalt können auch Bilder referenziert werden: </span>
-                <img src="1.2.3.4.5.6.7.jpg" alt="[Eingebettetes Bild]" height="128" width="128">
-            </p>
-            <p>
-                <span>Eingebetteter Inhalt kann ebenfalls einbetten:</span>
-                <!-- Relative references must be given relative to the top-level template -->
-                <embed src="embedded-templates/embedded-level1.html" type="text/html" height="60" />
+                <img src="embedded-resources/img2.jpg" alt="[Eingebettetes Bild Level 2]" height="128" width="128">
             </p>
         </section>
     </body>

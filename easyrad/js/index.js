@@ -69,11 +69,11 @@
 /* EasyRad parameter: The URL of the template display when opening the report creator.
  * Can be set with the URL parameter "tpl".                                             */
 //var param_template = '';
-var param_template = 'templates/samples/sample-valid.html';
-//var param_template = 'templates/samples/ct-schaedel.html';
-//var param_template = 'templates/samples/din25300.html';
-//var param_template = 'templates/samples/IHE_MRRT_Example_TI_TH.html';
-//var param_template = 'templates/samples/IHE_MRRT_Example_TI_TH_content_only.html';
+var param_template = 'templates/test/test-valid.html';
+//var param_template = 'templates/develop/ct-schaedel.html';
+//var param_template = 'templates/develop/din25300.html';
+//var param_template = 'templates/develop/IHE_MRRT_Example_TI_TH.html';
+//var param_template = 'templates/develop/IHE_MRRT_Example_TI_TH_content_only.html';
 //var param_template = 'templates/drg/CT-Thorax_Lungenembolie.html';
 
 /* EasyRad parameter: If true, the UI elements to select a new template are hidden.
@@ -399,7 +399,7 @@ $(document).ready(function () {
 
             // Store the URL of the loaded template in a global variable
             baseTemplateURL = url;
-            embeddingTemplaetURL = "";
+            embeddingTemplateURL = "";
             actualProcessedTemplateURL = url;
 
 //            // Log the paths
@@ -472,7 +472,7 @@ $(document).ready(function () {
             $("head").append($(this));
 
             var hrefUrl = $(this).attr("href");
-            var newHrefUrl = redirectUrl(hrefUrl);
+            var newHrefUrl = toAbsoluteURL(hrefUrl);
 
             $(this).attr("href", newHrefUrl);
         });
@@ -480,7 +480,7 @@ $(document).ready(function () {
         // For <img> elements: Change the path from relative to file to relative to index.html
         $(baseElm).find("img").each(function (index) {
             var srcUrl = $(this).attr("src");
-            var newSrcUrl = redirectUrl(srcUrl);
+            var newSrcUrl = toAbsoluteURL(srcUrl);
 
 //            console.log("modifyLoadedTemplate-img > srcUrl: " + srcUrl);
 //            console.log("modifyLoadedTemplate-img > newSrcUrl: " + newSrcUrl);
@@ -510,20 +510,25 @@ $(document).ready(function () {
 
 
     /*
+     * Converts a given URL to an absolute URL.
      * 
-     * @param {type} url
-     * @returns {unresolved}
+     * @param String url a relative or absolute URL
+     * @returns String the absolute URL
      */
-    function redirectUrl(url) {
+    function toAbsoluteURL(url) {
         var newURL;
 
         if ((baseDirURL.startsWith("http:")) || (baseDirURL.startsWith("https:"))) {
             // EasyRad runs on a server
             if (isRelativeURL(url)) {
-                // url to redirect is a relative URL
+                // URL to redirect is a relative URL
                 newURL = removeFilename(actualProcessedTemplateURL) + url;
+                if (isRelativeURL(newURL)) {
+                    // baseDirURL is always an absolute address
+                    newURL = baseDirURL + newURL;
+                }
             } else {
-                // url to redirect is an absolute URL
+                // URL to redirect is an absolute URL
                 newURL = url;
             }
         } else {
@@ -532,14 +537,16 @@ $(document).ready(function () {
                 if (isRelativeURL(url)) {
                     // url to redirect is a relative URL
                     if (embeddingTemplateURL.length === 0) {
-                        // baseDirURL is always an absolute address
                         newURL = removeFilename(baseTemplateURL) + url;
                     } else {
-                        // baseDirURL is always an absolute address
                         newURL = removeFilename(actualProcessedTemplateURL) + url;
                     }
+                    if (isRelativeURL(newURL)) {
+                        // baseDirURL is always an absolute address
+                        newURL = baseDirURL + newURL;
+                    }
                 } else {
-                    // url to redirect is an absolute URL
+                    // URL to redirect is an absolute URL
                     newURL = url;
                 }
             } else {
@@ -548,13 +555,13 @@ $(document).ready(function () {
             }
         }
 
-//        // Log the paths
-//        console.log("redirectUrl > url: " + url);
-//        console.log("redirectUrl > baseDirURL: " + baseDirURL);
-//        console.log("redirectUrl > baseTemplateURL: " + baseTemplateURL);
-//        console.log("redirectUrl > embeddingTemplateURL: " + embeddingTemplateURL);
-//        console.log("redirectUrl > actualProcessedTemplateURL: " + actualProcessedTemplateURL);
-//        console.log("redirectUrl > newURL: " + newURL);
+        // Log the paths
+        console.log("toAbsoluteURL > url: " + url);
+        console.log("toAbsoluteURL > baseDirURL: " + baseDirURL);
+        console.log("toAbsoluteURL > baseTemplateURL: " + baseTemplateURL);
+        console.log("toAbsoluteURL > embeddingTemplateURL: " + embeddingTemplateURL);
+        console.log("toAbsoluteURL > actualProcessedTemplateURL: " + actualProcessedTemplateURL);
+        console.log("toAbsoluteURL > newURL: " + newURL);
 
         return newURL;
     }
