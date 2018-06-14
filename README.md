@@ -145,10 +145,18 @@ No limitation to the standard.
 ### Rendering of templates
 When pressing the `COPY` button, the completed form is rendered in a two stage process: 
 
-In a first step, the completed template is converted into a reduced HTML format that no longer contains any form tags (`<input>`, `<select>`, `<option>` and `<textarea>`). The following rules are applied:
+In a first step, the completed template is converted by `function convertToHtml()` in file `converter-html.js` into a reduced HTML format that no longer contains any form tags (`<input>`, `<select>`, `<option>` and `<textarea>`). The following rules are applied:
 
 - `<input>`, `<textarea>` and `<select>` tags are replaced by a `<span>` tag
 - The attributes of the form tags are copied to the `<span>` tag
+- The text of the `<span>` tag is set to the value of the form-element as specified in MRRT. The text is praefixed and postfixed with the fixed string specified in the global parameters `HTML_FORM_PRAEFIX` and `HTML_FORM_POSTFIX`
+- If the template specifies a label for the form tag, the text of the `<label>` tag is inserted as an additional `<span>` tag
+  - If the form element, which is referenced by the label does not contain any text and the global parameter `IGNORE_LABELS_OF_EMPTY_ELEMENTS` is set to `true`, the label is ignored
+  - If the `<label>` tag is specified as a following sibling of the form tag in the DOM, it is postfixed to the `<span>` tag of the form
+  - In all other cases it is praefixed
+  - If the `<label>` tag is specified as a following sibling of the form tag in the DOM, it is postfixed to the `<span>` tag of - `<mark>` tags and the children are removed
+- Tags with an attribute `disabled` are removed
+
 
 In a second step the already rendered HTML content is rendered to plain text. For that the following rules apply:
 
