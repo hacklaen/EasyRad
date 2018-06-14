@@ -159,6 +159,7 @@ The following rules are applied for the conversion:
   - In all other cases it is praefixed
 - If the form element, which is referenced by the label, does not contain any text and the global parameter `IGNORE_LABELS_OF_EMPTY_ELEMENTS` is set to `true`, the label is ignored
 - If a template section does not contain any text and the global parameter `IGNORE_EMPTY_SECTION_ELEMENTS` is set to `true`, the section is ignored
+- The `<head>` tag and its children are removed
 - `<mark>` tags and the children are removed
 - Tags with an attribute `disabled` are removed
 
@@ -172,40 +173,19 @@ For that the following rules apply:
 |Element | Prefix | Content | Postfix |Evaluate children |
 |---|---|---|---| --- |
 |     |     |     |     |     |
-| **Special cases:** |     |     |     |     |
+| **Text:** |     |     |     |     |
 | Text between elements | --- | text (white spaces at the beginning and end are removed) | space |     |
 |     |     |     |     |     |
-| LABEL The following is inserted as a prefix of the referenced element. If the value of the referenced element is empty or a "INPUT/checkbox" is not checked, nothing is inserted. | --- | label.text | LABEL_SUFFIX + space |     |
-|     |     |     |     |     |
-| Elements with attribute "disabled" or "hidden" set are ignored |     |     |     |     |
-| Elements with a CSS property "display: none" or "visibility: hidden" are ignored |     |     |     |     |
-|     |     |     |     |     |
-| **The root element:** |     |     |     |     |
-| HTML | --- | --- | --- |     |
-|     |     |     |     |     |
-| **Document metadata:** |     |     |     |     |
-| HEAD | --- | --- | --- |     |
-| META | --- |     | --- |     |
-| STYLE | --- | --- | --- |     |
-| TITLE | --- |     | --- |  X  |
-| LINK | --- | --- | --- |     |
-|     |     |     |     |     |
-| **Scripting:** |     |     |     |     |
-| SCRIPT | --- | --- | --- |     |
-|     |     |     |     |     |
-| **Embedded content:** |     |     |     |     |
-| EMBED | --- | --- | --- |  X  |
-| IMG | --- | "[" + elm.src + ", " + elm.alt + "]"  | space | X |
-|     |     |     |     |     |
 | **Sections:** |     |     |     |     |
-| BODY | --- | --- | --- | X |
 | SECTION | newline + newline | --- | --- | X |
 | HEADER | --- | --- | newline + newline | X |
 |     |     |     |     |     |
 | **Grouping content:** |     |     |     |     |
+| SPAN | --- | --- | space | X |
+| DIV | --- | --- | newline + newline | X |
+| P | --- | --- | newline + newline | X |
 | LI | If the parent element is "UL": "-" + space. If the parent element is "OL": "x" + space | --- | newline | X |
 | OL | newline | --- | --- | X |
-| P | --- | --- | newline + newline | X |
 | UL | newline | --- | --- | X |
 |     |     |     |     |     |
 | **Tables:** |     |     |     |     |
@@ -213,14 +193,6 @@ For that the following rules apply:
 | TD | --- | --- | --- | X |
 | TH | --- | --- | --- | X |
 | TR | --- | --- | newline | X |
-|     |     |     |     |     |
-| **Forms:** |     |     |     |     |
-| INPUT type = text, number, date, time | --- | elm.value | space | X |
-| INPUT type = checkbox | --- | If the element is "checked": elm.value | If the element is "checked": space | X |
-| INPUT type = textarea | (---) | (elm.value) | (space) | X |
-| TEXTAREA | --- | elm.value | newline |   |
-| OPTION | --- | --- | --- |   |
-| SELECT | --- | The value of the selected option(s) | space | X |
 |     |     |     |     |     |
 | **Text-level semantics:** |     |     |     |   |
 | A | --- | "[" + elm.href + "]"  | space | X |
@@ -232,13 +204,14 @@ For that the following rules apply:
 | SUB | --- | --- | --- | X |
 | SUP | --- | --- | --- | X |
 | U | --- | --- | --- | X |
+|     |     |     |     |     |
+| **Embedded content:** |     |     |     |     |
+| IMG | --- | "[" + elm.src + ", " + elm.alt + "]"  | space | X |
 
-If the rendering results in two or more consecutive empty lines, they are replaced by one empty line before putting into the clipboard.
-
-If the rendering results in two or more consecutive spaces, they are replaced by one space before putting into the clipboard.
-
-If the rendering results contains a space directly followed by a period, the space is removed before putting into the clipboard.
-
+If the rendering results in
+- two or more consecutive empty lines, they are replaced by one empty line before putting into the clipboard.
+- in two or more consecutive spaces, they are replaced by one space before putting into the clipboard.
+- contains a space directly followed by a period, the space is removed before putting into the clipboard.
 
 
 ### Used libraries
