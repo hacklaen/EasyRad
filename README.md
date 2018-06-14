@@ -20,9 +20,7 @@ THAT's ALL!
 
 
 ## Compatibility
-In principle, EasyRad can be used with any browser. However, due to used libraries and security settings of individual browsers, certain restrictions apply. For example, some browsers cannot copy formatted HTML text to the clipboard.
-
-For security reasons, most browsers prohibit the integration of HTML code (in this case templates) into existing web pages if the code is located in a user selected file in the local file system.
+In principle, EasyRad can be used with any browser. However, due to used libraries and security settings of individual browsers, certain restrictions apply. For example, some browsers cannot copy formatted HTML text to the clipboard. For security reasons, some browsers prohibit the integration of HTML code (in this case templates) into existing web pages if the code is located in a user selected file in the local file system.
 
 
 |Browser | Version | Server based EasyRad | Local Filesystem based EasyRad | Local Filesystem based EasyRad |
