@@ -29,14 +29,12 @@ For security reasons, most browsers prohibit the integration of HTML code (in th
 |:---|:---:|:---:|:---:|:---:|
 | | | | Template selection: Dropdown list | Template selection: File selection dialog |
 |Firefox | 41+ | + | + | + |
+|Edge |  | + | + | + |
+|Safari | 10+ | + | + (local file restrictions must be disabled in the developer menu) | + (local file restrictions must be disabled in the developer menu) |
 |Chrome | 42+ | + | - | - |
-|Edge |  | + | + | - |
-|Safari | 10+ | + | + | - |
 |Internet Explorer | 9+ | + (text export only) | - | - |
 
-Full compatibility can be achieved with Firefox. If you do not have Firefox installed on your computer, you can download a portable (Windows) version from the following link: [PortableApps.com : Firefox](https://portableapps.com/de/apps/internet/firefox_portable).
-
-The portable version does not need to be installed, so you do not need administrator rights on your computer to use EasyRad.
+As an alternative to the browser installed on your computer, you can uise a portable version of Firefox on Windows systems. It can download from the following link: [PortableApps.com : Firefox](https://portableapps.com/de/apps/internet/firefox_portable). The portable version does not need to be installed, so you do not need administrator rights on your computer to use EasyRad.
 
 
 ## Usage
