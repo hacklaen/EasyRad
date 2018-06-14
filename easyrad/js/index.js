@@ -413,7 +413,7 @@ $(document).ready(function () {
 //            console.log("loadTemplate > $('#template-html').load > response: " + response);
 
             if (status !== "success") {
-                window.alert(i18n('err_could_not_load_template') + url);
+                window.alert(i18n('err_could_not_load_template') + url + " Status text: " + xhr.statusText);
                 return;
             }
 
@@ -618,7 +618,7 @@ $(document).ready(function () {
             // Function is executed after completition of load
 
             if (status !== "success") {
-                window.alert(i18n('err_could_not_load_template') + urlToLoad);
+                window.alert(i18n('err_could_not_load_template') + urlToLoad + " Status text: " + xhr.statusText);
                 return;
             }
 
