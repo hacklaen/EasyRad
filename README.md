@@ -145,7 +145,11 @@ No limitation to the standard.
 ### Rendering of templates
 When pressing the `COPY` button, the completed form is rendered in a two stage process: 
 
-In a first step, the completed template is converted by `function convertToHtml()` in file `converter-html.js` into a reduced HTML format that no longer contains any form tags (`<input>`, `<select>`, `<option>` and `<textarea>`). The following rules are applied:
+In a first step, the completed template is converted by `function convertToHtml()` in file `converter-html.js` into a reduced HTML format that no longer contains any form tags (`<input>`, `<select>`, `<option>` and `<textarea>`).
+
+This reduced HTML code may be exported to the clipboard.
+
+The following rules are applied for the conversion:
 
 - `<input>`, `<textarea>` and `<select>` tags are replaced by a `<span>` tag
 - The attributes of the form tag are copied to the `<span>` tag
@@ -159,7 +163,11 @@ In a first step, the completed template is converted by `function convertToHtml(
 - Tags with an attribute `disabled` are removed
 
 
-In a second step the already rendered HTML content is rendered to plain text. For that the following rules apply:
+In a second step the reduced HTML content is rendered by `function convertToText()` in file `converter-text.js` to plain text. 
+
+For that the following rules apply:
+
+
 
 |Element | Prefix | Content | Postfix |Evaluate children |
 |---|---|---|---| --- |
