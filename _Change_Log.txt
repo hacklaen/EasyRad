@@ -1,4 +1,19 @@
 
+============ 2018-06-19 ============
+
+Release Version 2.0.1
+
+EasyRad:
+
+x Bug fix: File /css/drg.css moved to /config/drg.css. The file is used as a user
+  specific configration of EasyRad. Therefore it is referenced by templates inside
+  the configuration directory.
+
+x Update: Metadata attribute 'dcterm.identifier' updated according to the naming
+  schema of DRG.
+x Update: Templates in templates/develop/ are modified to be XML compatible.
+
+
 ============ 2018-06-18 ============
 
 Release Version 2.0.0
