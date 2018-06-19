@@ -13,7 +13,7 @@
  * NOTE: Filenames may not contain spaces!     
  * 
  * @author T. Hacklaender
- * @date 2018-06-11
+ * @date 2018-06-19
  */
 
 var favoredTemplates = [
