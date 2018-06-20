@@ -155,8 +155,6 @@ The following rules are applied for the conversion:
 - The attributes of the form tag are copied to the `<span>` tag
 - The text of the `<span>` tag is set to the value of the form element as specified in MRRT. The text is praefixed and postfixed with the fixed strings specified in the global parameters `HTML_FORM_PRAEFIX` and `HTML_FORM_POSTFIX`
 - If the template specifies a label for the form tag, the text of the `<label>` tag is inserted as an additional `<span>` tag
-  - If the `<label>` tag is specified as a following sibling of the form tag in the DOM, it is postfixed to the `<span>` tag of the form
-  - In all other cases it is praefixed
 - If the form element, which is referenced by the label, does not contain any text and the global parameter `IGNORE_LABELS_OF_EMPTY_ELEMENTS` is set to `true`, the label is ignored
 - If a template section does not contain any text and the global parameter `IGNORE_EMPTY_SECTION_ELEMENTS` is set to `true`, the section is ignored
 - The `<head>` tag and its children are removed
