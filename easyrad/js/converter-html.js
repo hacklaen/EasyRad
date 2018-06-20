@@ -22,9 +22,9 @@
  * 
  * This file contains the HTML converter for the templates.
  *  
- * @version 2.0.0
+ * @version 2.1.0
  * @author T. Hacklaender
- * @date 2018-06-11
+ * @date 2018-06-20
  */
 
 
@@ -209,7 +209,13 @@ function processElementNodeHtml(elmToProcess, elmToAppendTo) {
             break;
 
         case "LABEL":   // 8.1.3.2 Linkage Between Template Text and Template Fields
-            // LABELs are evaluated by processing the referenced form element
+            // Test for DEPRECATED option
+            if (REORDER_LABELS === true) {
+                // LABELs are evaluated by processing the referenced form element
+            } else {
+                appendFormElement(elmToProcess, elmToAppendTo);
+                // LABELs have a text node child, which is evaluated in getFormElmAsText
+            }
             break;
 
         case "INPUT":   // Attribute type = text, number, single, multiple, date, time, checkbox (, textarea for backward compatibility)
@@ -272,47 +278,87 @@ function processElementNodeHtml(elmToProcess, elmToAppendTo) {
  * @param {Element} elmToAppendTo the element to append to
  */
 function appendFormElement(elm, elmToAppendTo) {
+    var id;
+    var refElm;
+    var refText;
+    var elmText;
     var elmSpan;
     var labelSpan;
+    var textNode;
 
-    // Get the form element as a span element
-    elmSpan = getFormElmAsSpan(elm);
+    // Test, whether a LABEL should be ignored
+    if (elm.nodeName === "LABEL") {
+        // Ele,ment is a LABEL
+        if (IGNORE_LABELS_OF_EMPTY_ELEMENTS) {
+            // Configuration allows to ignore labels of empty elements
+            id = elm.getAttribute("for");
+            if ((id !== null) && (id.length > 0)) {
+                // Get element referenced by LABEL
+                refElm = document.getElementById(id);
+                if (refElm !== null) {
+                    refText = getFormElmAsText(refElm);
+                    if (refText.length === 0) {
+                        // Referenced element has no content -> ignore
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    // Get the form element as a elmText element
+    elmText = getFormElmAsText(elm);
+
+    // Create a span element for the elmText
+    elmSpan = elm.ownerDocument.createElement('span');
+    // Set the attributes of span element accoring to the label element
+    for (var i = 0; i < elm.attributes.length; i++) {
+        var attrib = elm.attributes[i];
+        elmSpan.setAttribute(attrib.name, attrib.value);
+    }
+    // Preserve original element type
+    elmSpan.setAttribute("data-org-elm-type", elm.nodeName);
+
+    // Add the elmText as a child of the span
+    textNode = document.createTextNode(HTML_FORM_PRAEFIX + elmText + HTML_FORM_POSTFIX);
+    elmSpan.appendChild(textNode);
+
     if (elmSpan === null) {
         if (IGNORE_LABELS_OF_EMPTY_ELEMENTS) {
             return;
         }
     }
 
-    // Get the optional label as a span element
-    labelSpan = getFormElmLabelAsSpan(elm);
+    // Test for DEPRECATED option
+    if (REORDER_LABELS === true) {
+        // Get the optional label as a span element
+        labelSpan = getFormElmLabelAsSpan(elm);
 
-    if (labelSpan === null) {
-        elmToAppendTo.appendChild(elmSpan);
-    } else {
-        if (isElmLabelPostfix(elm)) {
+        if (labelSpan === null) {
             elmToAppendTo.appendChild(elmSpan);
-            elmToAppendTo.appendChild(labelSpan);
         } else {
-            elmToAppendTo.appendChild(labelSpan);
-            elmToAppendTo.appendChild(elmSpan);
+            if (isElmLabelPostfix(elm)) {
+                elmToAppendTo.appendChild(elmSpan);
+                elmToAppendTo.appendChild(labelSpan);
+            } else {
+                elmToAppendTo.appendChild(labelSpan);
+                elmToAppendTo.appendChild(elmSpan);
+            }
         }
+    } else {
+        elmToAppendTo.appendChild(elmSpan);
     }
 }
 
 
 /**
- * Converts a form element to a span-element.
- * The attributes of the form element is preserved in the span-element.
- * For reference purposes an attribute with name="data-org-elm-type" and a value
- * corresponding to the form's tag type is added.
+ * Return the content of a form element as text.
  * 
  * @param {Element} elm the element to convert.
- * @returns {Element} the span-element. Returns null if the completed form element
- *                    does not contain any text.
+ * @returns {Element} the text. An empty string is retrned if the element does 
+ *                    not contain any text or white spyces only
  */
-function getFormElmAsSpan(elm) {
-    var spanElm;
-    var textNode;
+function getFormElmAsText(elm) {
     var text;
     var childElms;
 
@@ -366,28 +412,19 @@ function getFormElmAsSpan(elm) {
             }
             break;
 
+        case "LABEL":
+            text = elm.textContent;
+            break;
+
         default:
             window.alert(i18n('err_form_not_specified') + elm.nodeName);
     }
 
-    if ((text === null) || (text.length === 0)) {
-        return null;
-    }
+    text = text.trim();
 
-    spanElm = elm.ownerDocument.createElement('span');
-    // Set the attributes of span element accoring to the label element
-    for (var i = 0; i < elm.attributes.length; i++) {
-        var attrib = elm.attributes[i];
-        spanElm.setAttribute(attrib.name, attrib.value);
-    }
-    // Preserve original element type
-    spanElm.setAttribute("data-org-elm-type", elm.nodeName);
-
-    textNode = document.createTextNode(HTML_FORM_PRAEFIX + text + HTML_FORM_POSTFIX);
-    spanElm.appendChild(textNode);
-
-    return spanElm;
+    return text;
 }
+
 
 /**
  * Gets an optional label-element referencing a given form element and returns 
