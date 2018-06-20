@@ -51,3 +51,8 @@ IGNORE_LABELS_OF_EMPTY_ELEMENTS = true;
 // A section element is empty, if its children (except the header elment) do not 
 // contain any text.
 IGNORE_EMPTY_SECTION_ELEMENTS = true;
+
+// DEPRECATED: Will be removed in future versions. Functionallity will be false.
+// converter-html.js: If true, label text is moved as praefix or postfix text to
+// the linked element.
+REORDER_LABELS = false;

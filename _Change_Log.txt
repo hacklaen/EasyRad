@@ -1,4 +1,17 @@
 
+============ 2018-06-20 ============
+
+Release Version 2.1.0
+
+EasyRad:
+
+x Update: The text of label is now included in its DOM position into the exported code.
+  The behaviour of up to version 2.0.1 could be archived by setting the option
+  REORDER_LABELS = true.
+
++ The test template test-valid.html now contains a section especially for labels.
+
+
 ============ 2018-06-19 ============
 
 Release Version 2.0.1
