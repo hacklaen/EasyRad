@@ -1,4 +1,16 @@
 
+============ 2018-06-26 ============
+
+Release Version 2.2.0
+
+EasyRad:
+
+x Bug fix: All test and develop templates now contain <meta charset="UTF-8" />
+
++ Update: Configuration parameter IGNORE_HIDDEN_ELEMENTS is included to select
+  whether hidden elements should be ignored in the output.
+
+
 ============ 2018-06-20 ============
 
 Release Version 2.1.0

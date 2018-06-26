@@ -22,9 +22,9 @@
  * 
  * This file contains the HTML converter for the templates.
  *  
- * @version 2.1.0
+ * @version 2.2.0
  * @author T. Hacklaender
- * @date 2018-06-20
+ * @date 2018-06-25
  */
 
 
@@ -123,19 +123,15 @@ function walkHtml(nodeToProcess, nodeToAppendTo) {
  * @param {Element} elmToAppendTo the element to append processed code to.
  */
 function processElementNodeHtml(elmToProcess, elmToAppendTo) {
-    var elmTextContent;
 
     // Clone the element, but not the children
     var elmToProcessWoChildren = elmToProcess.cloneNode(false);
 
-    // Do not process 'hidden' elements and their chidren
-    if (elmToProcess.hasAttribute("hidden")) {
-        return;
-    }
-
-    // Should not be used - use 'hidden' attribute instead: Do not process 'disabled' elements and their chidren
-    if (elmToProcess.hasAttribute("disabled")) {
-        return;
+    if (IGNORE_HIDDEN_ELEMENTS === true) {
+        // Do not process 'hidden' elements and their children
+        if (elmToProcess.hasAttribute("hidden")) {
+            return;
+        }
     }
 
     // CSS hiding of elements should not be used: Do not process elements and their chidren
@@ -288,7 +284,7 @@ function appendFormElement(elm, elmToAppendTo) {
 
     // Test, whether a LABEL should be ignored
     if (elm.nodeName === "LABEL") {
-        // Ele,ment is a LABEL
+        // Element is a LABEL
         if (IGNORE_LABELS_OF_EMPTY_ELEMENTS) {
             // Configuration allows to ignore labels of empty elements
             id = elm.getAttribute("for");
@@ -297,9 +293,17 @@ function appendFormElement(elm, elmToAppendTo) {
                 refElm = document.getElementById(id);
                 if (refElm !== null) {
                     refText = getFormElmAsText(refElm);
+
                     if (refText.length === 0) {
                         // Referenced element has no content -> ignore
                         return;
+                    }
+
+                    if (IGNORE_HIDDEN_ELEMENTS === true) {
+                        // Do not process 'hidden' elements and their children
+                        if (refElm.hasAttribute("hidden")) {
+                            return;
+                        }
                     }
                 }
             }

@@ -1,6 +1,6 @@
 ﻿# EasyRad
 
-**NEW:** Version 2.1.0
+**NEW:** Version 2.2.0
 
 
 EasyRad is a browser application that allows you to fill out radiology report templates and to copy the result as HTML or plain text into the clipboard for further processing. The templates must comply with the IHE Radiology Technical Framework Supplement Management of Radiology Report Templates (MRRT).
@@ -108,6 +108,7 @@ Some aspects of rendering the text are configurable by parameters specified in f
 | OPTIONS_DELIMITER | ", " | Delimiter between to options in one select element. |
 | HTML_FORM_PRAEFIX   | "" | The string to be used as praefix when converting form elements to text inside <span> elements. |
 | HTML_FORM_POSTFIX | " " | The string to be used as postfix when converting form elements to text inside <span> elements. |
+| IGNORE_HIDDEN_ELEMENTS | true | If true, elements and their children are ignored in the output if the 'hidden' attribute is set. |
 | IGNORE_LABELS_OF_EMPTY_ELEMENTS | true | If true,  labels of empty form elements (empty text value) are ignored in the output. |
 | IGNORE_EMPTY_SECTION_ELEMENTS | true | If true, empty section elements are ignored in the output. A section element is empty, if its children (except the header elment) do not contain any text. |
 
@@ -155,8 +156,6 @@ The following rules are applied for the conversion:
 - The attributes of the form tag are copied to the `<span>` tag
 - The text of the `<span>` tag is set to the value of the form element as specified in MRRT. The text is praefixed and postfixed with the fixed strings specified in the global parameters `HTML_FORM_PRAEFIX` and `HTML_FORM_POSTFIX`
 - If the template specifies a label for the form tag, the text of the `<label>` tag is inserted as an additional `<span>` tag
-- If the `<label>` tag is specified as a following sibling of the form tag in the DOM, it is postfixed to the `<span>` tag of the form
-- In all other cases it is praefixed
 - If the form element, which is referenced by the label, does not contain any text and the global parameter `IGNORE_LABELS_OF_EMPTY_ELEMENTS` is set to `true`, the label is ignored
 - If a template section does not contain any text and the global parameter `IGNORE_EMPTY_SECTION_ELEMENTS` is set to `true`, the section is ignored
 - The `<head>` tag and its children are removed
