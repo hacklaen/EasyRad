@@ -1,6 +1,6 @@
 ﻿# EasyRad
 
-**NEW:** Version 2.1.0
+**NEW:** Version 2.2.0
 
 
 EasyRad is a browser application that allows you to fill out radiology report templates and to copy the result as HTML or plain text into the clipboard for further processing. The templates must comply with the IHE Radiology Technical Framework Supplement Management of Radiology Report Templates (MRRT).
@@ -108,6 +108,7 @@ Some aspects of rendering the text are configurable by parameters specified in f
 | OPTIONS_DELIMITER | ", " | Delimiter between to options in one select element. |
 | HTML_FORM_PRAEFIX   | "" | The string to be used as praefix when converting form elements to text inside <span> elements. |
 | HTML_FORM_POSTFIX | " " | The string to be used as postfix when converting form elements to text inside <span> elements. |
+| IGNORE_HIDDEN_ELEMENTS | true | If true, elements and their children are ignored in the output if the 'hidden' attribute is set. |
 | IGNORE_LABELS_OF_EMPTY_ELEMENTS | true | If true,  labels of empty form elements (empty text value) are ignored in the output. |
 | IGNORE_EMPTY_SECTION_ELEMENTS | true | If true, empty section elements are ignored in the output. A section element is empty, if its children (except the header elment) do not contain any text. |
 

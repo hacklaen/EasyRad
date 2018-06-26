@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * @author T. Hacklaender
- * @date 2018-06-14
+ * @date 2018-06-25
  */
 
 
@@ -42,6 +42,10 @@ HTML_FORM_PRAEFIX = "";
 
 // converter-html.js: The string to be used as postfix when converting form elements to text inside <span> elements 
 HTML_FORM_POSTFIX = " ";
+
+// converter-html.js: If true, elements and their children are ignored if the 'hidden'
+// attribute is set.
+IGNORE_HIDDEN_ELEMENTS = true;
 
 // converter-html.js: If true,  labels of empty form elements (empty text value) 
 // are ignored in the output.
